@@ -9,7 +9,7 @@
         android:title="About" />
 
     <item
-        android:id="@+id/menuSettings"
+        android:id="@+id/rate_app"
         android:title="Settings" />
 
     <item

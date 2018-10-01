@@ -83,7 +83,7 @@ public class PastPapersActivity extends AppCompatActivity {
         if (id == R.id.menuAbout) {
             return true;
         }
-        if (id == R.id.menuSettings) {
+        if (id == R.id.rate_app) {
            return true ;
         }
         if (id == R.id.menuLogout) {
@@ -94,7 +94,7 @@ public class PastPapersActivity extends AppCompatActivity {
 
     private List<RowModel> getAllItemList(){
 
-        List<RowModel> allItems = new ArrayList<RowModel>();
+        List<RowModel> allItems = new ArrayList<>();
         allItems.add(new RowModel("KCSE 1996 - 2009", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2006", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2007", R.drawable.pdf));
@@ -114,7 +114,7 @@ public class PastPapersActivity extends AppCompatActivity {
     }
     //method to logout
     private void signOut(){
-        mGoogleSignInClient.signOut() ;
+        mAuth.signOut() ;
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

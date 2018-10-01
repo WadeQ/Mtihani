@@ -33,6 +33,26 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
                 Intent intentOne = new Intent(view.getContext() , PaperPerSubject.class);
                 view.getContext().startActivity(intentOne);
                 break;
+
+            case 2 :
+                Intent intentTwo = new Intent(view.getContext() , PaperPerSubject.class);
+                view.getContext().startActivity(intentTwo);
+                break;
+
+            case 3 :
+                Intent intentThree = new Intent(view.getContext() , PaperPerSubject.class);
+                view.getContext().startActivity(intentThree);
+                break;
+
+            case 4 :
+                Intent intentFour = new Intent(view.getContext() , PaperPerSubject.class);
+                view.getContext().startActivity(intentFour);
+                break;
+
+            case 5 :
+                Intent intentFive = new Intent(view.getContext() , PaperPerSubject.class);
+                view.getContext().startActivity(intentFive);
+                break;
         }
     }
 }
