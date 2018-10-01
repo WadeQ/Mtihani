@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1002922849019",
+    "firebase_url": "https://my-app-f84f9.firebaseio.com",
+    "project_id": "my-app-f84f9",
+    "storage_bucket": "my-app-f84f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002922849019:android:fec57a91d2bf1eaa",
+        "android_client_info": {
+          "package_name": "com.example.wadek.siri.Diary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002922849019-vtadurjktfn17t77osm3lg84r6t1nfmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNudw9CglUU36Wd7oahl_rWXslmHZdNeM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002922849019:android:0356c6c4d6601013",
+        "android_client_info": {
+          "package_name": "com.wadektech.mtihanirevise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002922849019-vtadurjktfn17t77osm3lg84r6t1nfmr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNudw9CglUU36Wd7oahl_rWXslmHZdNeM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

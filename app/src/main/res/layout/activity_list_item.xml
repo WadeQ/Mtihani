@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_margin="8dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleView"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/pdf"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/subject_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_paper"
+        android:layout_alignTop="@+id/circleView"
+        android:layout_toRightOf="@+id/circleView"
+        android:layout_marginTop="1dp"
+        android:layout_marginLeft="18dp"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#c2110e"
+        android:layout_toEndOf="@+id/circleView"
+        android:layout_marginStart="18dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/year"
+        android:id="@+id/tv_year"
+        android:textSize="13sp"
+        android:layout_marginTop="2dp"
+        android:layout_below="@+id/subject_name"
+        android:layout_alignLeft="@+id/subject_name"
+        android:layout_alignStart="@+id/subject_name" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#2196F3"
+        android:layout_below="@+id/circleView"
+        android:layout_alignLeft="@+id/circleView"
+        android:layout_marginTop="8dp"
+        android:layout_alignStart="@+id/circleView" />
+
+</RelativeLayout>

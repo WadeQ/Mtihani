@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Mtihani Revise</string>
+    <string name="desc_1">Find all the KCSE past papers from 1996 to 2017 and challenge your examiners with A\'s!</string>
+    <string name="slide_header_1">Revision...</string>
+    <string name="btn_next">skip</string>
+    <string name="password">password</string>
+    <string name="username">username</string>
+    <string name="sign_in">Sign In</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="font">sans-serif</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="do_not_have_an_account">Do not have an account?</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="login">Login</string>
+    <string name="reset_success">Welcome back! Password reset was successful,you can now log in below to access your account.</string>
+    <string name="email">email</string>
+    <string name="send">send</string>
+    <string name="enter_your_email_to_send_password_reset_instructions">Enter your email to send password reset instructions</string>
+    <string name="reset">Reset</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_new">Settings</string>
+    <string name="logo_desc">App logo</string>
+    <string name="country_name">Nigeria</string>
+    <string name="subject_paper">Subject Paper</string>
+    <string name="kcse_1996">KCSE 1996</string>
+    <string name="year">Year</string>
+    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="search">Search</string>
+    <string name="menu">menu</string>
+    <string name="rate_app">Rate app</string>
+    <string name="logout">Logout</string>
+</resources>

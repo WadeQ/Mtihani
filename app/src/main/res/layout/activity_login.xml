@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    tools:ignore="contentDescription"
+    tools:context=".Auth.LoginActivity">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/starehe" />
+
+
+        <Button
+            android:id="@+id/loginButton"
+            style="@style/allBlueButtons"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/button_bg"
+            android:drawableStart="@drawable/google_login_bg"
+            android:paddingStart="@dimen/padding_normal"
+            android:text="@string/sign_in_with_google"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:drawableLeft="@drawable/google_login_bg"
+            android:paddingLeft="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry" />
+
+</RelativeLayout>
