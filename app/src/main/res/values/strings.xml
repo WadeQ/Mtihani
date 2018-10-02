@@ -30,4 +30,13 @@
     <string name="menu">menu</string>
     <string name="rate_app">Rate app</string>
     <string name="logout">Logout</string>
+    <string name="twitterUsername">\@derrickwadek</string>
+    <string name="wadektech_gmail_com">wadektech@gmail.com</string>
+    <string name="profile">Android Developer || UX/UI Designer</string>
+    <string name="profile_two">Tech writer and i love to code!</string>
+    <string name="phone">Phone</string>
+    <string name="_254_738_327_378">+254-738-327-378</string>
+    <string name="twitter">Twitter</string>
+    <string name="facebook">Facebook</string>
+    <string name="facebook_com_wadektech">facebook.com/wadekTech</string>
 </resources>
