@@ -12,7 +12,7 @@
         android:width="1dp"
         android:color="@color/text" />
     <gradient
-        android:startColor="@color/colorAccent"
+        android:startColor="@color/colorPrimaryDark"
         android:endColor="@color/text"/>
 
 

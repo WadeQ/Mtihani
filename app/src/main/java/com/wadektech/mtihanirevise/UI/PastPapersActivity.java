@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -23,12 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import hotchemi.android.rate.AppRate;
 
 public class PastPapersActivity extends AppCompatActivity {
     private GridLayoutManager lLayout;
     FirebaseAuth mAuth ;
-    GoogleSignInClient mGoogleSignInClient ;
-
     CircleImageView userProfile ;
 
 
@@ -81,10 +79,11 @@ public class PastPapersActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menuAbout) {
+            startActivity(new Intent(getApplicationContext(), DeveloperProfile.class));
             return true;
         }
         if (id == R.id.rate_app) {
-           return true ;
+            rateApp();
         }
         if (id == R.id.menuLogout) {
             signOut();
@@ -128,6 +127,15 @@ public class PastPapersActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
+    }
+    private void rateApp(){
+        AppRate.with(this)
+                .setInstallDays(1)
+                .setLaunchTimes(3)
+                .setRemindInterval(2)
+                .monitor();
+        AppRate.showRateDialogIfMeetsConditions(this);
+        AppRate.with(this).showRateDialog(this);
     }
 
 }

@@ -11,10 +11,10 @@
         android:layout_height="203dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="42dp"
         android:src="@drawable/knecgirl"
         app:civ_border_color="@color/colorAccent"
-        app:civ_border_width="3dp" />
+        app:civ_border_width="1dp" />
 
     <TextView
         android:id="@+id/slide_heading"
@@ -22,28 +22,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="199dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="210dp"
         android:gravity="center"
+        android:shadowColor="#B71C1C"
+        android:shadowRadius="4"
+        android:shadowDx="2"
+        android:shadowDy="2"
         android:text="@string/slide_header_1"
         android:textColor="@color/colorWhite"
         android:textSize="24sp"
         android:textStyle="bold"
         app:fontFamily="sans-serif" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#2196F3"
-        android:layout_below="@+id/slide_heading"
-        android:layout_alignLeft="@+id/slide_heading"
-        android:layout_marginTop="8dp"
-        android:layout_alignStart="@+id/slide_heading" />
 
-    <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/card_view"
         android:layout_width="308dp"
-        android:layout_height="169dp"
+        android:layout_height="190dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="21dp"
@@ -57,16 +55,20 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:padding="10dp"
+                android:padding="7dp"
                 android:id="@+id/slide_desc"
                 android:layout_width="match_parent"
-                android:layout_height="119dp"
+                android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:gravity="center"
+                android:shadowColor="#B71C1C"
+                android:shadowRadius="2"
+                android:shadowDx="1"
+                android:shadowDy="1"
                 android:text="@string/desc_1"
-                android:textColor="@color/colorAccent"
+                android:textColor="#000000"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:fontFamily="sans-serif" />

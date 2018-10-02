@@ -31,7 +31,7 @@ public class SliderAdapter extends PagerAdapter {
             "Matiang'i Syndrome"
     };
     private String[] slide_desc = {
-            "Fancy super quick access to all KCSE past examination papers from 1996 - 2017 at the comfort of your smartphone? Mtihani revise leverages time and accessibility to give you what you want and when you want it! ",
+            "Fancy quick access to all KCSE past exam papers from 1996 to 2017 at the comfort of your phone? Mtihani revise leverages accessibility to give you what you want when you want it! ",
             "Retrieve, read and store your pdf documents for future access without ever using data again! Sounds like the real deal huh? Enjoy Mtihani Revise on the go" ,
             "Is the pressure of KCSE exams too burdening? Are rumors about Matiang'i shaving scores true? Here at Mtihani Revise, we believe in revision and putting real work to pass, so why wait?."
     };

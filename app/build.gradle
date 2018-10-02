@@ -38,6 +38,7 @@ dependencies {
     implementation 'com.android.support:palette-v7:27.1.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.barteksc:android-pdf-viewer:1.6.0'
+    implementation 'com.github.hotchemi:android-rate:1.0.1'
 
 
 }

@@ -22,6 +22,7 @@
         <activity android:name=".UI.PastPapersActivity" />
         <activity android:name=".UI.PaperPerSubject" />
         <activity android:name=".PdfViewer.PdfViewerActivity" />
+        <activity android:name=".UI.DeveloperProfile"></activity>
     </application>
 
 </manifest>

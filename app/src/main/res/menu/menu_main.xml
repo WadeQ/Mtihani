@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/rate_app"
-        android:title="Settings" />
+        android:title="Rate App" />
 
     <item
         android:id="@+id/menuLogout"

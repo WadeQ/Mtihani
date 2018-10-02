@@ -29,8 +29,8 @@
 
     <Button
         android:id="@+id/slideViewButton"
-        android:layout_width="63dp"
-        android:layout_height="27dp"
+        android:layout_width="69dp"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
@@ -39,8 +39,9 @@
         android:layout_marginRight="12dp"
         android:background="@drawable/btn_main"
         android:text="@string/btn_next"
+        android:textSize="20sp"
         android:textColor="@color/colorTransparent"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold" />
 
     </RelativeLayout>
 
