@@ -30,7 +30,6 @@ public class PastPapersActivity extends AppCompatActivity {
     CircleImageView userProfile ;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
