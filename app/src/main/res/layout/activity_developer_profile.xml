@@ -41,8 +41,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="15sp"
             android:fontFamily="sans-serif-light"
-            android:text="Derrick Wadek"
-            android:textColor="@color/white"
+            android:text="@string/derrick_wadek"
+            android:textColor="@color/colorWhite"
             android:textSize="32sp" />
 
 
@@ -53,7 +53,7 @@
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif"
-            android:text="Nairobi, Kenya"
+            android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
             android:textSize="14sp" />
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/profile"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhite"
                     android:textSize="18sp" />
 
                 <TextView
@@ -99,7 +99,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhite"
                     android:textSize="13sp" />
 
             </LinearLayout>

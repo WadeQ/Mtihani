@@ -29,6 +29,8 @@
     <string name="search">Search</string>
     <string name="menu">menu</string>
     <string name="rate_app">Rate app</string>
+    <string name="rate_dialog_title">Rate Mtihani Revise</string>
+    <string name="rate_dialog_message">If you are enjoying Mtihani Revise, would you mind taking a moment to rate it? It wont take more than a minute. Thanks for your support!</string>
     <string name="logout">Logout</string>
     <string name="twitterUsername">\@derrickwadek</string>
     <string name="wadektech_gmail_com">wadektech@gmail.com</string>
@@ -38,5 +40,12 @@
     <string name="_254_738_327_378">+254-738-327-378</string>
     <string name="twitter">Twitter</string>
     <string name="facebook">Facebook</string>
-    <string name="facebook_com_wadektech">facebook.com/wadekTech</string>
+    <string name="facebook_com_wadektech">facebook.com/WadekTech Ltd.</string>
+    <string name="about">About</string>
+    <string name="rate">Rate App</string>
+    <string name="_menu">Logout</string>
+    <string name="derrick_wadek">Derrick Wadek</string>
+    <string name="nairobi_kenya">Nairobi, Kenya</string>
+    <string name="login_title">Mtihani Revise</string>
+    <string name="quote">Knowledge is power. Information is liberating. Education is the premise of progress, in every society, in every family.</string>
 </resources>

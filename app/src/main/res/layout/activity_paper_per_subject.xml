@@ -12,7 +12,9 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#2196F3"
-        android:minHeight="?android:attr/actionBarSize" />
+        android:minHeight="?android:attr/actionBarSize" >
+
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:layout_width="match_parent"

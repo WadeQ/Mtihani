@@ -2,6 +2,7 @@ package com.wadektech.mtihanirevise.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -24,10 +29,11 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hotchemi.android.rate.AppRate;
 
-public class PastPapersActivity extends AppCompatActivity {
+public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
     private GridLayoutManager lLayout;
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
+    GoogleApiClient mGoogleApiClient ;
 
 
     @Override
@@ -39,6 +45,19 @@ public class PastPapersActivity extends AppCompatActivity {
         setSupportActionBar(topToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleApiClient with access to the Google Sign-In Api and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
+
         mAuth = FirebaseAuth.getInstance() ;
         userProfile = findViewById(R.id.profileImage);
 
@@ -47,6 +66,7 @@ public class PastPapersActivity extends AppCompatActivity {
         if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
+                    .placeholder(R.drawable.profile)
                     .into(userProfile);
         }
 
@@ -65,7 +85,6 @@ public class PastPapersActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        // Retrieve the SearchView and plug it into SearchManager
         return true;
     }
 
@@ -78,13 +97,16 @@ public class PastPapersActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.menuAbout) {
+            //open the developer profile
             startActivity(new Intent(getApplicationContext(), DeveloperProfile.class));
             return true;
         }
         if (id == R.id.rate_app) {
+            //we will call our rateApp method here
             rateApp();
         }
         if (id == R.id.menuLogout) {
+            //we will call our signOut method here
             signOut();
         }
         return super.onOptionsItemSelected(item);
@@ -112,7 +134,11 @@ public class PastPapersActivity extends AppCompatActivity {
     }
     //method to logout
     private void signOut(){
-        mAuth.signOut() ;
+        //signOut user from firebase database
+        mAuth.signOut();
+        //clear user account
+        //send intent to the Login activity
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient) ;
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
@@ -127,6 +153,7 @@ public class PastPapersActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
     }
+    //Implement the rate app functionality from the rateApp library
     private void rateApp(){
         AppRate.with(this)
                 .setInstallDays(1)
@@ -137,4 +164,8 @@ public class PastPapersActivity extends AppCompatActivity {
         AppRate.with(this).showRateDialog(this);
     }
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
 }

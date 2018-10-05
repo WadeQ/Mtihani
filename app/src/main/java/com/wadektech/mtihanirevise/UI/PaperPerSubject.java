@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,9 @@ public class PaperPerSubject extends AppCompatActivity {
         setSupportActionBar(topToolBar);
         topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
 
+
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -40,14 +43,18 @@ public class PaperPerSubject extends AppCompatActivity {
         MenuItem searchItem = menu.findItem(R.id.action_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        if (searchManager != null) {
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        }
         Drawable drawColor = getResources().getDrawable(R.drawable.searchcolor);
         searchView.setBackground( drawColor );
         Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT);
         searchView.setLayoutParams(params);
+        searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setIconified(false);
-        searchView.setPadding(0,29,0,0);
+        searchView.setPadding(0,32,0,0);
         searchView.setQueryHint("Search");
+        searchView.clearFocus();
         MenuItemCompat.expandActionView(searchItem);
         return super.onCreateOptionsMenu(menu);
 
@@ -60,11 +67,8 @@ public class PaperPerSubject extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_search) {
             return true;
-        }
-        if(id == R.id.action_search){
-            return true ;
         }
         return super.onOptionsItemSelected(item);
     }
