@@ -33,9 +33,7 @@ public class PaperPerSubject extends AppCompatActivity {
         setSupportActionBar(topToolBar);
         topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
 
-
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
