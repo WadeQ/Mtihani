@@ -1,8 +1,6 @@
 package com.wadektech.mtihanirevise.UI;
 
 import android.app.SearchManager;
-import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -10,16 +8,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wadektech.mtihanirevise.R;
-
-import static android.support.v7.widget.SearchView.*;
 
 public class PaperPerSubject extends AppCompatActivity {
     private LinearLayoutManager mLayoutManager;
@@ -32,7 +24,6 @@ public class PaperPerSubject extends AppCompatActivity {
         Toolbar topToolBar = findViewById(R.id.toolbar);
         setSupportActionBar(topToolBar);
         topToolBar.setLogoDescription(getResources().getString(R.string.logo_desc));
-
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
