@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
+
 <item android:title=""
     android:icon="@drawable/menu_item"
     app:showAsAction="ifRoom" >
@@ -16,17 +18,24 @@
         app:showAsAction="never"
         android:title="@string/about" />
 
-    <item
+        <item
+            android:id="@+id/menu_share"
+            android:icon="@drawable/share"
+            android:orderInCategory="200"
+            android:title="@string/menu_share"
+            app:showAsAction="never" />
+
+        <item
         android:id="@+id/rate_app"
         android:icon="@drawable/rate"
-        android:orderInCategory="200"
+        android:orderInCategory="300"
         app:showAsAction="never"
         android:title="@string/rate" />
 
     <item
         android:id="@+id/menuLogout"
         android:icon="@drawable/logout"
-        android:orderInCategory="300"
+        android:orderInCategory="400"
         app:showAsAction="never"
         android:title="@string/_menu" />
 

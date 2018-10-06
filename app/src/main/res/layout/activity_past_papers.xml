@@ -23,7 +23,8 @@
             android:elevation="8dp"
             android:src="@drawable/profile"
             app:civ_border_color="#FFF8B7"
-            app:civ_border_width="2dp" />
+            app:civ_border_width="2dp"
+            tools:targetApi="lollipop" />
 
         <ImageView
             android:src="@drawable/menu_item"
@@ -31,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="68dp"
             android:paddingStart="235dp"
-            tools:ignore="RtlSymmetry" />
+            tools:ignore="ContentDescription,RtlSymmetry" />
 
 
     </android.support.v7.widget.Toolbar>

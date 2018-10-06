@@ -3,18 +3,15 @@ package com.wadektech.mtihanirevise.UI;
 import android.app.SearchManager;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.wadektech.mtihanirevise.R;
-
+import static android.support.v4.view.MenuItemCompat.expandActionView;
+import static android.support.v4.view.MenuItemCompat.getActionView;
 public class PaperPerSubject extends AppCompatActivity {
-    private LinearLayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +27,7 @@ public class PaperPerSubject extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
         MenuItem searchItem = menu.findItem(R.id.action_search);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        final SearchView searchView = (SearchView) getActionView(menu.findItem(R.id.action_search));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         if (searchManager != null) {
             searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -44,9 +41,8 @@ public class PaperPerSubject extends AppCompatActivity {
         searchView.setPadding(0,32,0,0);
         searchView.setQueryHint("Search");
         searchView.clearFocus();
-        MenuItemCompat.expandActionView(searchItem);
+        expandActionView(searchItem);
         return super.onCreateOptionsMenu(menu);
-
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -61,5 +57,4 @@ public class PaperPerSubject extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

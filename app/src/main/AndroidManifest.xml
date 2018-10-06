@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wadektech.mtihanirevise">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/logoicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".Adapter.MainSliderActivity">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".Adapter.MainSliderActivity"
+            tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Auth.LoginActivity" />
-        <activity android:name=".UI.PastPapersActivity" />
-        <activity android:name=".UI.PaperPerSubject" />
-        <activity android:name=".PdfViewer.PdfViewerActivity" />
-        <activity android:name=".UI.DeveloperProfile"></activity>
+        <activity android:name=".Auth.LoginActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".UI.PastPapersActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".UI.PaperPerSubject"
+            tools:ignore="InnerclassSeparator" />
+        <activity android:name=".PdfViewer.PdfViewerActivity"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".UI.DeveloperProfile"
+            tools:ignore="InnerclassSeparator" />
     </application>
 
 </manifest>

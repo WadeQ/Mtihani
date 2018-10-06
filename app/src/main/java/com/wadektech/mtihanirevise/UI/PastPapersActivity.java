@@ -62,7 +62,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         userProfile = findViewById(R.id.profileImage);
 
         FirebaseUser user = mAuth.getCurrentUser() ;
-
+       //get user profile details and display on toolbar
         if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
@@ -104,6 +104,10 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         if (id == R.id.rate_app) {
             //we will call our rateApp method here
             rateApp();
+        }
+        if (id == R.id.menu_share) {
+            //we will call our shareApp method here
+            shareApp();
         }
         if (id == R.id.menuLogout) {
             //we will call our signOut method here
@@ -167,5 +171,13 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+    public void shareApp(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT,
+                "Hey check out KCSE Revise at: https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 }

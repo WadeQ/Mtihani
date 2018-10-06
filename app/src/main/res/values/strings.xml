@@ -1,7 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Mtihani Revise</string>
     <string name="desc_1">Find all the KCSE past papers from 1996 to 2017 and challenge your examiners with A\'s!</string>
-    <string name="slide_header_1">Revision...</string>
+    <string name="slide_header_1" tools:ignore="TypographyEllipsis">Revision...</string>
     <string name="btn_next">skip</string>
     <string name="password">password</string>
     <string name="username">username</string>
@@ -34,10 +34,10 @@
     <string name="logout">Logout</string>
     <string name="twitterUsername">\@derrickwadek</string>
     <string name="wadektech_gmail_com">wadektech@gmail.com</string>
-    <string name="profile">Android Developer || UX/UI Designer</string>
+    <string name="profile">Android Engineer || UX/UI Designer</string>
     <string name="profile_two">Tech writer and i love to code!</string>
     <string name="phone">Phone</string>
-    <string name="_254_738_327_378">+254-738-327-378</string>
+    <string name="_254_738_327_378" tools:ignore="TypographyDashes">+254-738-327-378</string>
     <string name="twitter">Twitter</string>
     <string name="facebook">Facebook</string>
     <string name="facebook_com_wadektech">facebook.com/WadekTech Ltd.</string>
@@ -48,4 +48,6 @@
     <string name="nairobi_kenya">Nairobi, Kenya</string>
     <string name="login_title">Mtihani Revise</string>
     <string name="quote">Knowledge is power. Information is liberating. Education is the premise of progress, in every society, in every family.</string>
+    <string name="email_profile">Email</string>
+    <string name="menu_share">Share</string>
 </resources>
