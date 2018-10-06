@@ -16,8 +16,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -27,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.UI.PastPapersActivity;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
         //initialized the firebase object
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -73,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
                     @Override
                     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(getApplicationContext(), "You got an error", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "You got an error", LENGTH_SHORT).show();
                     }
                 })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -106,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            mConnectionProgressDialog = new ProgressDialog(this, R.style.MyAlertDialogStyle);
             mConnectionProgressDialog.setMessage("Signing in...");
             mConnectionProgressDialog.show();
             if (result.isSuccess()) {
@@ -117,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
 
                 Toast.makeText(getApplicationContext(), "Something went wrong.",
-                        Toast.LENGTH_SHORT).show();
+                        LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
                 // ...
             }
@@ -141,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
+                                    LENGTH_SHORT).show();
                             // updateUI(null);
                         }
 
