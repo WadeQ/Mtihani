@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ContextThemeWrapper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -63,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Configure the ProgressDialog that will be shown if there is a
         // delay in presenting the user with the next sign in step.
-        mConnectionProgressDialog = new ProgressDialog(this, R.style.ThemeOverlay_AppCompat_Dialog_Alert);
+        mConnectionProgressDialog = new ProgressDialog(this, R.style.DialogCustom);
         mConnectionProgressDialog.setMessage("Signing in...");
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -107,13 +108,15 @@ public class LoginActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            mConnectionProgressDialog = new ProgressDialog(this, R.style.MyAlertDialogStyle);
-            mConnectionProgressDialog.setMessage("Signing in...");
-            mConnectionProgressDialog.show();
+            mConnectionProgressDialog = new ProgressDialog(this,R.style.DialogCustom);
+            mConnectionProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            ProgressDialog.show(new ContextThemeWrapper(this, R.style.DialogCustom), "Signing In", "Please be patient...");
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
-                firebaseAuthWithGoogle(account);
+                if (account != null) {
+                    firebaseAuthWithGoogle(account);
+                }
 
             } else {
                 // Google Sign In failed, update UI appropriately
