@@ -17,6 +17,7 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
     public RecyclerViewHolders(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
+
         examYear = itemView.findViewById(R.id.tv_kcse);
         examPhoto= itemView.findViewById(R.id.tv_subject_icon);
     }

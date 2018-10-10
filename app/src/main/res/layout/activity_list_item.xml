@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
@@ -9,16 +10,18 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/circleView"
-        android:layout_width="48dp"
+        android:layout_width="50dp"
         android:layout_height="48dp"
         android:layout_marginTop="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
+        app:civ_border_color="#c2110e"
+        app:civ_border_width="1dp"
         android:src="@drawable/pdf"
         android:layout_alignParentStart="true" />
 
     <TextView
-        android:id="@+id/subject_name"
+        android:id="@+id/tv_subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/subject_paper"
@@ -39,9 +42,9 @@
         android:id="@+id/tv_year"
         android:textSize="13sp"
         android:layout_marginTop="2dp"
-        android:layout_below="@+id/subject_name"
-        android:layout_alignLeft="@+id/subject_name"
-        android:layout_alignStart="@+id/subject_name" />
+        android:layout_below="@+id/tv_subject_name"
+        android:layout_alignLeft="@+id/tv_subject_name"
+        android:layout_alignStart="@+id/tv_subject_name" />
 
     <View
         android:layout_width="match_parent"
