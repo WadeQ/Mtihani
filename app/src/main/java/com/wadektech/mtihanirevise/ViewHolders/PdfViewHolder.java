@@ -22,6 +22,7 @@ public class PdfViewHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View view) {
+
         Intent intent = new Intent(view.getContext() , PdfViewerActivity.class);
         view.getContext().startActivity(intent);
     }
