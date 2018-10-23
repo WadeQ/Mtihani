@@ -8,6 +8,50 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:345858231004:android:e31ea2c9c7fce307",
+        "android_client_info": {
+          "package_name": "com.wadektech.mtihaniadminpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345858231004-4949iqrq400v2mkauff7h981ltjntquh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.mtihaniadminpanel",
+            "certificate_hash": "fb00a524a98eb182f16237a09b3351e935b94f75"
+          }
+        },
+        {
+          "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS03HtwUOrNm_y96bOpxVQPF-lFX0zPAg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:345858231004:android:0356c6c4d6601013",
         "android_client_info": {
           "package_name": "com.wadektech.mtihanirevise"

@@ -50,4 +50,26 @@
     <string name="quote">Knowledge is power. Information is liberating. Education is the premise of progress, in every society, in every family.</string>
     <string name="email_profile">Email</string>
     <string name="menu_share">Share</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="change_profile_image">Change Profile Image</string>
+    <string name="hi_there_am_using_mtihani_revise">Hi there, am using Mtihani Revise</string>
+    <string name="update_status">Update status</string>
+    <string name="display_name">Display Name</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="current_user_status">Current User Status</string>
+    <string name="_profile">Display Name</string>
+    <string name="send_friend_request">SEND FRIEND REQUEST</string>
+    <string name="decline_friend_request">DECLINE FRIEND REQUEST</string>
+    <string name="upload_image">upload image</string>
+    <string name="send_button_label">Send</string>
+    <string name="or">OR</string>
+    <string name="_email">email</string>
+    <string name="hello_username">Hello!</string>
+    <string name="chat_room">Chat Room</string>
+    <string name="type_message">Type message...</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
 </resources>

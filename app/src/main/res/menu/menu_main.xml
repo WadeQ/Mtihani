@@ -5,41 +5,53 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-<item android:title=""
-    android:icon="@drawable/menu_item"
-    app:showAsAction="ifRoom" >
-
-    <menu>
-
     <item
-        android:id="@+id/menuAbout"
-        android:icon="@drawable/about"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="@string/about" />
+        android:icon="@drawable/menu_item"
+        android:title=""
+        app:showAsAction="ifRoom">
 
-        <item
-            android:id="@+id/menu_share"
-            android:icon="@drawable/share"
-            android:orderInCategory="200"
-            android:title="@string/menu_share"
-            app:showAsAction="never" />
 
-        <item
-        android:id="@+id/rate_app"
-        android:icon="@drawable/rate"
-        android:orderInCategory="300"
-        app:showAsAction="never"
-        android:title="@string/rate" />
+        <menu>
 
-    <item
-        android:id="@+id/menuLogout"
-        android:icon="@drawable/logout"
-        android:orderInCategory="400"
-        app:showAsAction="never"
-        android:title="@string/_menu" />
+            <item
+                android:id="@+id/menuAbout"
+                android:icon="@drawable/about"
+                android:orderInCategory="100"
+                android:title="@string/about"
+                app:showAsAction="never" />
 
-    </menu>
-</item>
+            <item
+                android:icon="@drawable/chat"
+                android:orderInCategory="200"
+                android:id="@+id/menu_chat"
+                android:title="@string/chat_room"
+                app:showAsAction="ifRoom"/>
+
+
+            <item
+                android:id="@+id/menu_share"
+                android:icon="@drawable/share"
+                android:orderInCategory="300"
+                android:title="@string/menu_share"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/rate_app"
+                android:icon="@drawable/rate"
+                android:orderInCategory="400"
+                android:title="@string/rate"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/menuLogout"
+                android:icon="@drawable/logout"
+                android:orderInCategory="500"
+                android:title="@string/_menu"
+                app:showAsAction="never" />
+
+        </menu>
+
+
+    </item>
 
 </menu>

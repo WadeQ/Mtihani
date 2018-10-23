@@ -8,13 +8,17 @@
     android:background="#FFF8B7"
     android:orientation="vertical">
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="76dp"
         android:background="#2196F3"
         android:minHeight="?android:attr/actionBarSize">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profileImage"
@@ -26,15 +30,42 @@
             app:civ_border_width="2dp"
             tools:targetApi="lollipop" />
 
-        <ImageView
-            android:src="@drawable/menu_item"
-            android:paddingLeft="235dp"
-            android:layout_width="wrap_content"
-            android:layout_height="68dp"
-            android:paddingStart="235dp"
-            tools:ignore="ContentDescription,RtlSymmetry" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="11dp"
+        android:hint="@string/hello_username"
+        android:paddingLeft="8dp"
+        android:paddingStart="10dp"
+        android:textColor="@color/colorWhite"
+        android:paddingTop="16dp"
+        android:textSize="16sp"
+        tools:ignore="RtlSymmetry"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="79dp" />
 
+    <TextView
+        android:id="@+id/tv_display_name"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:textColor="@color/colorWhite"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="6dp"
+        android:layout_marginLeft="87dp"
+        android:layout_marginStart="87dp"
+        android:textSize="16sp"
+        android:hint="@string/hello_username"
+        android:paddingLeft="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="20dp"
+        tools:ignore="RtlSymmetry" />
 
+</RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -49,6 +80,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical" />
+
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        </com.google.android.gms.ads.AdView>
 
     </RelativeLayout>
 

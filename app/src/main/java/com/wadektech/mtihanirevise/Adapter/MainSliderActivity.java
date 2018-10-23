@@ -10,21 +10,17 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.wadektech.mtihanirevise.Adapter.SliderAdapter;
-import com.wadektech.mtihanirevise.Auth.LoginActivity;
-import com.wadektech.mtihanirevise.UI.PastPapersActivity;
+import com.wadektech.mtihanirevise.Auth.SignUpActivity;
 import com.wadektech.mtihanirevise.R;
 
 public class MainSliderActivity extends AppCompatActivity {
 
     public ViewPager mSlideViewPager ;
     private LinearLayout mDotLayout ;
-
     public TextView[] mDot ;
-
     public SliderAdapter sliderAdapter;
-
     public Button slideViewButton;
+
 
 
     @Override
@@ -36,7 +32,7 @@ public class MainSliderActivity extends AppCompatActivity {
         slideViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
                 startActivity(intent);
             }
         });

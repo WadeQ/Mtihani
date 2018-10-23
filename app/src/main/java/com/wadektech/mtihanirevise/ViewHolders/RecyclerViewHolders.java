@@ -25,6 +25,7 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
     @Override
     public void onClick(View view) {
         switch (getAdapterPosition()){
+
             case 0 :
                 Intent intent = new Intent(view.getContext() , PaperPerSubject.class);
                 view.getContext().startActivity(intent);

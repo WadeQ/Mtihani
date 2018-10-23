@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
-
-import com.wadektech.mtihanirevise.PdfViewer.PdfViewerActivity;
+import com.wadektech.mtihanirevise.PdfViewer.ItemDetailActivity;
 import com.wadektech.mtihanirevise.R;
 
 public class PdfViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -22,8 +21,9 @@ public class PdfViewHolder extends RecyclerView.ViewHolder implements View.OnCli
 
     @Override
     public void onClick(View view) {
-
-        Intent intent = new Intent(view.getContext() , PdfViewerActivity.class);
+        //showPdf();
+        //OPEN DETAIL ACTIVITY
+        Intent intent = new Intent(view.getContext() , ItemDetailActivity.class);
         view.getContext().startActivity(intent);
     }
 }

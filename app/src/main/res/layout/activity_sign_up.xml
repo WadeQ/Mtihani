@@ -11,15 +11,15 @@
     tools:ignore="contentDescription"
     tools:context=".Auth.SignUpActivity">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/tree"
-        android:layout_alignParentLeft="true" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/tree"
+            android:layout_alignParentLeft="true" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -62,23 +62,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp">
-
-        <ImageView
-            android:id="@+id/imageViewLogo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:adjustViewBounds="true"
-            android:background="?android:attr/selectableItemBackground"
-            android:scaleType="fitCenter" />
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -88,6 +71,32 @@
         android:layout_marginTop="140dp"
         android:orientation="vertical"
         tools:ignore="NotSibling">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username"
+            android:textAllCaps="true"
+            android:textColor="@color/text"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:fontFamily="sans-serif-light" />
+
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edit_text_bg"
+            android:hint="@string/username"
+            android:inputType="textPersonName"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingStart="25dp"
+            android:textColor="@color/colorWhite"
+            android:textSize="15sp"
+            app:fontFamily="sans-serif-light" />
 
     </LinearLayout>
 
@@ -132,14 +141,14 @@
 
 
     <Button
-        android:id="@+id/btn_login"
+        android:id="@+id/btn_SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="101dp"
         android:background="@drawable/btn_bg"
-        android:text="@string/login"
+        android:text="@string/sign_up"
         app:fontFamily="@string/font" />
 
     <TextView
@@ -147,31 +156,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="74dp"
+        android:layout_marginBottom="73dp"
         android:text="@string/or"
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         app:fontFamily="@string/font" />
 
 
-    <Button
-        android:id="@+id/loginButton"
-        style="@style/allBlueButtons"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_normal"
-        android:background="@drawable/button_bg"
-        android:drawableStart="@drawable/google_login_bg"
-        android:paddingStart="@dimen/padding_normal"
-        android:text="@string/sign_in_with_google"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite"
-        android:textSize="24sp"
-        android:drawableLeft="@drawable/google_login_bg"
-        android:paddingLeft="@dimen/padding_normal"
-        tools:ignore="RtlSymmetry" />
+        <Button
+            android:id="@+id/loginButton"
+            style="@style/allBlueButtons"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_normal"
+            android:background="@drawable/button_bg"
+            android:drawableStart="@drawable/google_login_bg"
+            android:paddingStart="@dimen/padding_normal"
+            android:text="@string/sign_in_with_google"
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite"
+            android:textSize="24sp"
+            android:drawableLeft="@drawable/google_login_bg"
+            android:paddingLeft="@dimen/padding_normal"
+            tools:ignore="RtlSymmetry" />
+
+
 
 </RelativeLayout>
