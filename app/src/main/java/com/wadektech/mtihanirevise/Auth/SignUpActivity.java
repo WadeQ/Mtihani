@@ -51,6 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
     private ProgressDialog mConnectionProgressDialog;
     FirebaseUser firebaseUser ;
     SharedPreferences sharedPrefManager ;
+    private ProgressDialog pDialog ;
 
 
     @Override
@@ -64,6 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp = findViewById(R.id.btn_SignUp);
 
         mAuth = FirebaseAuth.getInstance() ;
+        pDialog = new ProgressDialog(this);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,14 +74,18 @@ public class SignUpActivity extends AppCompatActivity {
                 String password = etPassword.getText().toString().trim();
                 String email = etEmail.getText().toString().trim();
 
-                if (TextUtils.isEmpty(userNmae) || TextUtils.isEmpty(password) || TextUtils.isEmpty(email)) {
-                    Toast.makeText(getApplicationContext(), "All fields require to be filled!", LENGTH_SHORT).show();
-                } else if (password.length() < 6) {
-                    Toast.makeText(getApplicationContext() , "Password must be six characters long!" , LENGTH_SHORT).show();
-                }else {
+                if (TextUtils.isEmpty(email)) {
+                    etEmail.setError("Please Enter Your Email Address!");
+
+                } else if(TextUtils.isEmpty(password) || password.length() < 6) {
+                    etPassword.setError("Please Enter Secure Password or make sure your password is six characters long!");
+                }
+                    else if (TextUtils.isEmpty(userNmae)) {
+                    etUsername.setError("Please Enter username!");
+                }
+                else {
                     registerUser(password , userNmae , email);
                 }
-
             }
         });
 
@@ -187,10 +193,23 @@ public class SignUpActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void registerUser(final String etUsername, String etPassword , String etEmail){
+        //showing progress dialog when registering user
+        pDialog = new ProgressDialog(SignUpActivity.this);
+        pDialog.setTitle("Signing In");
+        pDialog.setMessage("Signing user, please be patient.");
+        pDialog.setIndeterminate(false);
+        pDialog.setCancelable(false);
+        pDialog.show();
+
        mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
            @Override
            public void onComplete(@NonNull Task<AuthResult> task) {
+               //We have received a response, we need to close/exit the Progress Dialog now
+               pDialog.dismiss();
+               //checking if task is succesfully implemented
                if (task.isSuccessful()) {
                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
                    String userId = null;
@@ -208,7 +227,6 @@ public class SignUpActivity extends AppCompatActivity {
                            public void onComplete(@NonNull Task<Void> task) {
                                if (task.isSuccessful()){
                                    Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
-                                   intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                    startActivity(intent);
                                    finish();
                                }

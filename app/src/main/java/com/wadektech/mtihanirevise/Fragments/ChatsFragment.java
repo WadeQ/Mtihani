@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.Adapter.UserAdapter;
+import com.wadektech.mtihanirevise.POJO.Chat;
 import com.wadektech.mtihanirevise.POJO.User;
 import com.wadektech.mtihanirevise.R;
 
@@ -58,8 +59,16 @@ public class ChatsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                usersList.clear();
                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-
+                   Chat chat = snapshot.getValue(Chat.class);
+                   assert chat != null;
+                   if (chat.getSender().equals(firebaseUser.getUid())){
+                       usersList.add(chat.getReceiver());
+                   }
+                   if (chat.getReceiver().equals(firebaseUser.getUid())){
+                       usersList.add(chat.getSender());
+                   }
                }
+               readChats();
             }
 
             @Override
@@ -69,5 +78,39 @@ public class ChatsFragment extends Fragment {
         });
         return v ;
     }
+    public void readChats(){
+        users = new ArrayList<>() ;
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users") ;
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+              users.clear();
+              //display one user on chat room
+              for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                  User user = snapshot.getValue(User.class);
+                  for (String id : usersList){
+                      assert user != null;
+                      if (user.getId().equals(id)){
+                          if (users.size() != 0){
+                              for (User user1 : users){
+                                  if (!user.getId().equals(user1.getId())){
+                                      users.add(user);
+                                  }
+                              }
+                          }else {
+                              users.add(user);
+                          }
+                      }
+                  }
+              }
+              userAdapter = new UserAdapter(getContext(), users);
+              recyclerView.setAdapter(userAdapter);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 }

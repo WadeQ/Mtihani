@@ -16,33 +16,37 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/main_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:background="@color/colorPrimaryDark"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:theme="@android:style/Theme.Holo.Light">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_user_profile"
-                android:src="@drawable/profile"
                 android:layout_width="50dp"
-                android:layout_height="50dp" />
+                android:layout_height="50dp"
+                app:civ_border_width="2dp"
+                app:civ_border_color="@color/colorAccent"
+                android:src="@drawable/profile" />
 
             <TextView
                 android:id="@+id/username"
-                android:text="@string/username"
                 android:layout_width="wrap_content"
-                android:layout_toRightOf="@+id/chat_user_profile"
-                android:layout_toEndOf="@id/chat_user_profile"
-                android:layout_centerVertical="true"
-                android:textSize="18sp"
-                android:layout_marginLeft="25dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="25dp" />
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="25dp"
+                android:layout_marginStart="25dp"
+                android:textColor="@color/colorWhite"
+                android:layout_toEndOf="@id/chat_user_profile"
+                android:layout_toRightOf="@+id/chat_user_profile"
+                android:text="@string/username"
+                android:textSize="18sp" />
 
         </android.support.v7.widget.Toolbar>
 
            </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
+
         android:id="@+id/rv_message"
         android:layout_below="@+id/appBarLayout"
         android:layout_above="@+id/message"
@@ -67,17 +71,19 @@
             android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:hint="@string/type_message"
+            android:inputType="text"
             android:layout_toLeftOf="@+id/btn_send_message"
             android:layout_toStartOf="@+id/btn_send_message" />
+
         <ImageButton
             android:id="@+id/btn_send_message"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_action_name"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            tools:ignore="ContentDescription" />
 
     </RelativeLayout>
-
 
 </RelativeLayout>

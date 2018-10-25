@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,7 @@ public class UsersFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_users, container, false);
         recyclerView = view.findViewById(R.id.rv_classroom);
@@ -48,12 +48,9 @@ public class UsersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         users = new ArrayList<>();
-
         readUsers();
-
         return view ;
     }
-
     private void readUsers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
@@ -64,19 +61,21 @@ public class UsersFragment extends Fragment {
               users.clear();
               for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                   User user = snapshot.getValue(User.class) ;
-                  if (user != null && !user.getId().equals(firebaseUser.getUid())) {
+                  assert user != null;
+                  assert firebaseUser != null;
+                  if (!user.getId().equals(firebaseUser.getUid())){
                       users.add(user);
                   }
               }
+
+              Log.e("TAG","Message");
               userAdapter = new UserAdapter(getContext(), users);
               recyclerView.setAdapter(userAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
     }
-
 }

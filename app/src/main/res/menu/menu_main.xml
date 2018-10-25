@@ -21,7 +21,7 @@
                 app:showAsAction="never" />
 
             <item
-                android:icon="@drawable/chat"
+                android:icon="@drawable/chaticon"
                 android:orderInCategory="200"
                 android:id="@+id/menu_chat"
                 android:title="@string/chat_room"

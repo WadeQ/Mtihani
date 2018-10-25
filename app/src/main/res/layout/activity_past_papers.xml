@@ -8,8 +8,6 @@
     android:background="#FFF8B7"
     android:orientation="vertical">
 
-
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -19,6 +17,7 @@
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profileImage"

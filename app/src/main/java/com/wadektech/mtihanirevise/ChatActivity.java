@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.Fragments.ChatsFragment;
+import com.wadektech.mtihanirevise.Fragments.ProfileFragment;
 import com.wadektech.mtihanirevise.Fragments.UsersFragment;
 import com.wadektech.mtihanirevise.POJO.User;
 
@@ -58,6 +59,7 @@ public class ChatActivity extends AppCompatActivity {
              ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
              viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
              viewPagerAdapter.addFragment(new UsersFragment(), "Classroom");
+             viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
 
              mViewPager.setAdapter(viewPagerAdapter);
              mTabLayout.setupWithViewPager(mViewPager);

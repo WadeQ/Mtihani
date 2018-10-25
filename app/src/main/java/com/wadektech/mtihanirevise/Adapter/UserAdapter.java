@@ -4,11 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.MessageActivity;
 import com.wadektech.mtihanirevise.POJO.User;
@@ -45,9 +45,11 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                     .load(user.getImageURL())
                     .into(holder.mProfileImage);
         }
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.e("TAG","Message");
                 Intent intent = new Intent(context, MessageActivity.class);
                 intent.putExtra("userid", user.getId());
                 context.startActivity(intent);
@@ -59,7 +61,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public int getItemCount() {
         return users.size();
     }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
            public TextView mUsername ;
            public CircleImageView mProfileImage ;
