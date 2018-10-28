@@ -23,6 +23,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
+import com.wadektech.mtihanirevise.Adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.Adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.Auth.SignUpActivity;
 import com.wadektech.mtihanirevise.ChatActivity;
@@ -161,7 +162,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         //clear user account
         //send intent to the Login activity
         Auth.GoogleSignInApi.signOut(mGoogleApiClient) ;
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }

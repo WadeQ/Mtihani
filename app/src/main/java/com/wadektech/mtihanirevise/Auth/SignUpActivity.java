@@ -31,6 +31,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.mtihanirevise.AdminPanelActivity;
+import com.wadektech.mtihanirevise.LoginActivity;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.UI.PastPapersActivity;
 
@@ -62,7 +63,17 @@ public class SignUpActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.et_password);
         etUsername = findViewById(R.id.et_username);
         etEmail = findViewById(R.id.et_email);
-        btnSignUp = findViewById(R.id.btn_SignUp);
+        btnSignUp = findViewById(R.id.btnSignUp);
+        mLogin = findViewById(R.id.btnLogin);
+
+        mLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance() ;
         pDialog = new ProgressDialog(this);
@@ -239,7 +250,8 @@ public class SignUpActivity extends AppCompatActivity {
            });
        }
        private void checkAdminStatus(){
-        if (mAuth.getCurrentUser().getEmail().equals("derrickwadek@gmail.com")){
+        if (mAuth.getCurrentUser().getEmail().equals("derrickwadek@gmail.com")
+                || mAuth.getCurrentUser().getEmail().equals("wadektech@gmail.com")){
             Intent intent = new Intent(getApplicationContext(), AdminPanelActivity.class);
             startActivity(intent);
             finish();

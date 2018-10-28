@@ -73,6 +73,7 @@
     <string name="upload_pdf">Upload Pdf</string>
     <string name="navigate_to_app">Navigate to App</string>
     <string name="logout_admin">Logout</string>
+    <string name="already_registered_login">Already registered? Login</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
