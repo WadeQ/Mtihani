@@ -39,7 +39,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
     GoogleApiClient mGoogleApiClient ;
-    private AdView mAdView;
 
     NiftyDialogBuilder materialDesignAnimatedDialog ;
 
@@ -48,8 +47,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_papers);
-        setTitle(null);
         Toolbar topToolBar = findViewById(R.id.toolbar);
+        topToolBar.setTitle(null);
         setSupportActionBar(topToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 

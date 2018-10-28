@@ -10,7 +10,6 @@
         android:title=""
         app:showAsAction="ifRoom">
 
-
         <menu>
 
             <item
@@ -26,7 +25,6 @@
                 android:id="@+id/menu_chat"
                 android:title="@string/chat_room"
                 app:showAsAction="ifRoom"/>
-
 
             <item
                 android:id="@+id/menu_share"
@@ -50,8 +48,5 @@
                 app:showAsAction="never" />
 
         </menu>
-
-
     </item>
-
 </menu>

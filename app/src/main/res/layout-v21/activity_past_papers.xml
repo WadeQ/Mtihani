@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,20 +11,25 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="76dp"
         android:background="#2196F3"
         android:minHeight="?android:attr/actionBarSize">
-
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profileImage"
             android:layout_width="68dp"
             android:layout_height="68dp"
             android:elevation="8dp"
+            android:layout_marginTop="4dp"
             android:src="@drawable/profile"
             app:civ_border_color="#FFF8B7"
-            app:civ_border_width="2dp" />
+            app:civ_border_width="2dp"
+            tools:targetApi="lollipop" />
 
+</RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout

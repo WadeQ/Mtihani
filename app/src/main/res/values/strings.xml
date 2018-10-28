@@ -70,6 +70,9 @@
     <string name="chat_room">Chat Room</string>
     <string name="type_message">Type message...</string>
     <string name="profile_title">Profile</string>
+    <string name="upload_pdf">Upload Pdf</string>
+    <string name="navigate_to_app">Navigate to App</string>
+    <string name="logout_admin">Logout</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

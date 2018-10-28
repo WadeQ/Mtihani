@@ -30,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.wadektech.mtihanirevise.AdminPanelActivity;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.UI.PastPapersActivity;
 
@@ -52,7 +53,6 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseUser firebaseUser ;
     SharedPreferences sharedPrefManager ;
     private ProgressDialog pDialog ;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if (firebaseAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(getApplicationContext(), PastPapersActivity.class));
+                    checkAdminStatus();
                 }
             }
         };
@@ -216,6 +216,7 @@ public class SignUpActivity extends AppCompatActivity {
                    if (firebaseUser != null) {
                        userId = firebaseUser.getUid();
                    }
+                   assert userId != null;
                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
                        HashMap<String , String> hashMap = new HashMap<>();
                        hashMap.put("id", userId);
@@ -226,9 +227,7 @@ public class SignUpActivity extends AppCompatActivity {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
                                if (task.isSuccessful()){
-                                   Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
-                                   startActivity(intent);
-                                   finish();
+                                  checkAdminStatus();
                                }
                            }
                        });
@@ -239,5 +238,15 @@ public class SignUpActivity extends AppCompatActivity {
                }
            });
        }
-
+       private void checkAdminStatus(){
+        if (mAuth.getCurrentUser().getEmail().equals("derrickwadek@gmail.com")){
+            Intent intent = new Intent(getApplicationContext(), AdminPanelActivity.class);
+            startActivity(intent);
+            finish();
+        }else {
+            Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
+            startActivity(intent);
+            finish();
+        }
+       }
     }

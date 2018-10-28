@@ -23,23 +23,22 @@ public class SliderAdapter extends PagerAdapter {
     private int[] slide_images = {
             R.drawable.knecgirl,
             R.drawable.starehe,
-            R.drawable.matiangi
+            R.drawable.chatgirl
     };
     private String[] slide_headings = {
             "Timely Revision",
             "Offline Accessibility",
-            "Matiang'i Syndrome"
+            "Live Chat"
     };
     private String[] slide_desc = {
             "Fancy quick access to all KCSE past exam papers from 1996 to 2017 at the comfort of your phone? Mtihani revise leverages accessibility to give you what you want when you want it! ",
-            "Retrieve, read and store your pdf documents for future access without ever using data again! Sounds like the real deal huh? Enjoy Mtihani Revise on the go" ,
-            "Is the pressure of KCSE exams too burdening? Are rumors about Matiang'i shaving scores true? Here at Mtihani Revise, we believe in revision and putting real work to pass, so why wait?."
+            "Retrieve, read and store your pdf documents for future access without ever using data again! Sounds like the real deal huh? Enjoy Mtihani Revise on the go!" ,
+            "Enjoy realtime chatting with your fellow students and/or friends and discuss, tackle questions and discover potentials together and to scale the heights of academic excellence"
     };
     @Override
     public int getCount() {
         return slide_headings.length;
     }
-
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
         return view == object;
