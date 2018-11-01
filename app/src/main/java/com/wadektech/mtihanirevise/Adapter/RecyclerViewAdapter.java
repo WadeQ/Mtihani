@@ -7,16 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.InterstitialAd;
+import com.wadektech.mtihanirevise.POJO.RowModel;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ViewHolders.RecyclerViewHolders;
-import com.wadektech.mtihanirevise.POJO.RowModel;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
-    public InterstitialAd mInterstitialAd ;
+
     private List<RowModel> itemList;
     private Context context;
 

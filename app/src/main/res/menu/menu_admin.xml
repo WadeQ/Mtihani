@@ -13,17 +13,17 @@
         <menu>
 
             <item
-                android:id="@+id/menuUploads"
-                android:icon="@drawable/about"
+                android:id="@+id/menuNavigate"
+                android:icon="@drawable/key"
                 android:orderInCategory="100"
-                android:title="@string/upload_pdf"
+                android:title="@string/navigate"
                 app:showAsAction="never" />
 
             <item
-                android:icon="@drawable/chaticon"
+                android:icon="@drawable/email"
                 android:orderInCategory="200"
-                android:id="@+id/menu_chat"
-                android:title="@string/logout_admin"
+                android:id="@+id/menu_broadcast_message"
+                android:title="@string/broadcast_message"
                 app:showAsAction="ifRoom"/>
 
         </menu>

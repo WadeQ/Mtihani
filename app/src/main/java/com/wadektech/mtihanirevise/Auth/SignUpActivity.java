@@ -238,7 +238,9 @@ public class SignUpActivity extends AppCompatActivity {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
                                if (task.isSuccessful()){
-                                  checkAdminStatus();
+                                   Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
+                                   startActivity(intent);
+                                   finish();
                                }
                            }
                        });

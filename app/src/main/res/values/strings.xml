@@ -74,6 +74,14 @@
     <string name="navigate_to_app">Navigate to App</string>
     <string name="logout_admin">Logout</string>
     <string name="already_registered_login">Already registered? Login</string>
+    <string name="user_information">User information</string>
+    <string name="users_analytics">Users Analytics</string>
+    <string name="broadcast_message">Broadcast Message</string>
+    <string name="select_file">Select File</string>
+    <string name="navigate">Navigate to App</string>
+    <string name="tap">Select File</string>
+    <string name="upload">Upload File</string>
+    <string name="no_selected_file">No selected file!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

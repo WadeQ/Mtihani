@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -27,7 +26,6 @@ import com.wadektech.mtihanirevise.Adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.Adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.Auth.SignUpActivity;
 import com.wadektech.mtihanirevise.ChatActivity;
-import com.wadektech.mtihanirevise.LoginActivity;
 import com.wadektech.mtihanirevise.POJO.RowModel;
 import com.wadektech.mtihanirevise.R;
 import java.util.ArrayList;
