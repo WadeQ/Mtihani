@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".Adapter.MainSliderActivity"
+            android:name=".adapter.MainSliderActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,24 +25,24 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Auth.SignUpActivity"
+            android:name=".auth.SignUpActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".UI.PastPapersActivity"
+            android:name=".ui.PastPapersActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".UI.PaperPerSubject"
+            android:name=".ui.PaperPerSubject"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".PdfViewer.ItemDetailActivity"
+            android:name=".pdfViewer.ItemDetailActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".UI.DeveloperProfile"
+            android:name=".ui.DeveloperProfile"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MessageActivity" />
-        <activity android:name=".AdminPanelActivity"></activity>
+        <activity android:name=".ui.ChatActivity" />
+        <activity android:name=".auth.LoginActivity" />
+        <activity android:name=".ui.MessageActivity" />
+        <activity android:name=".ui.AdminPanelActivity"></activity>
     </application>
 
 </manifest>

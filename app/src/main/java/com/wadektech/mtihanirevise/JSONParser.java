@@ -6,8 +6,8 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
-import com.wadektech.mtihanirevise.Adapter.PdfAdapter;
-import com.wadektech.mtihanirevise.POJO.Model;
+import com.wadektech.mtihanirevise.adapter.PdfAdapter;
+import com.wadektech.mtihanirevise.pojo.Model;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

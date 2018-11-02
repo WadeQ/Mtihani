@@ -9,7 +9,7 @@
     android:orientation="vertical"
     android:background="@color/colorWhite"
     tools:ignore="contentDescription"
-    tools:context=".Auth.SignUpActivity">
+    tools:context=".auth.SignUpActivity">
 
     <ImageView
         android:id="@+id/imageView"
