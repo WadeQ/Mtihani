@@ -41,6 +41,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.3'
     implementation 'com.google.firebase:firebase-storage:16.0.2'
     implementation 'com.google.firebase:firebase-database:16.0.2'
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.android.support:palette-v7:27.1.1'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.github.barteksc:android-pdf-viewer:1.6.0'
@@ -49,6 +50,9 @@ dependencies {
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
+    implementation 'com.squareup.retrofit2:retrofit:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
 }
 apply plugin: 'com.google.gms.google-services'
+com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

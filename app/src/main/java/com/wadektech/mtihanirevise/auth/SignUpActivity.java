@@ -49,9 +49,7 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "wadektech";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
-    FirebaseUser firebaseUser ;
-    SharedPreferences sharedPrefManager ;
-    private ProgressDialog pDialog ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance() ;
-        pDialog = new ProgressDialog(this);
+        mConnectionProgressDialog = new ProgressDialog(this);
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,8 +84,8 @@ public class SignUpActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(email)) {
                     etEmail.setError("Please Enter Your Email Address!");
 
-                } else if(TextUtils.isEmpty(password) || password.length() < 6) {
-                    etPassword.setError("Please Enter Secure Password or make sure your password is six characters long!");
+                } else if(TextUtils.isEmpty(password)) {
+                    etPassword.setError("Please Enter Secure Password!");
                 }
                     else if (TextUtils.isEmpty(userNmae)) {
                     etUsername.setError("Please Enter username!");
@@ -192,32 +190,28 @@ public class SignUpActivity extends AppCompatActivity {
 
                       } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                    LENGTH_SHORT).show();
+                            Log.e("SignupActivity", "Failed Registration" +task.getException());
+                            Toast.makeText(getApplicationContext(), "Authentication failed."+task.getException(), LENGTH_SHORT).show();
                             // updateUI(null);
-                        }
-
-                        // ...
+                        }// ...
                     }
                 });
     }
-
     private void registerUser(final String etUsername, String etPassword , String etEmail){
         //showing progress dialog when registering user
-        pDialog = new ProgressDialog(SignUpActivity.this);
-        pDialog.setTitle("Signing In");
-        pDialog.setMessage("Signing user, please be patient.");
-        pDialog.setIndeterminate(false);
-        pDialog.setCancelable(false);
-        pDialog.show();
+        mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
+        mConnectionProgressDialog.setTitle("Signing In");
+        mConnectionProgressDialog.setMessage("Signing user, please be patient.");
+        mConnectionProgressDialog.setIndeterminate(false);
+        mConnectionProgressDialog.setCancelable(false);
+        mConnectionProgressDialog.show();
 
-       mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-
+       mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+       {
            @Override
            public void onComplete(@NonNull Task<AuthResult> task) {
                //We have received a response, we need to close/exit the Progress Dialog now
-               pDialog.dismiss();
+               mConnectionProgressDialog.dismiss();
                //checking if task is succesfully implemented
                if (task.isSuccessful()) {
                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
@@ -231,7 +225,8 @@ public class SignUpActivity extends AppCompatActivity {
                        hashMap.put("id", userId);
                        hashMap.put("username", etUsername);
                        hashMap.put("imageURL", "default");
-
+                       hashMap.put("status" , "offline");
+                       hashMap.put("search" , etUsername.toLowerCase());
                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
@@ -242,9 +237,8 @@ public class SignUpActivity extends AppCompatActivity {
                                }
                            }
                        });
-
                    } else {
-                       Toast.makeText(getApplicationContext(), "Oops! Something went wrong, try again.", LENGTH_SHORT).show();
+                       Toast.makeText(getApplicationContext(), "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
                    }
                }
            });

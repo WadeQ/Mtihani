@@ -25,6 +25,7 @@ import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
       TextView mUsername ;
@@ -94,6 +95,23 @@ public class ChatActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return titles.get(position);
         }
+    }
+    private void status(String status){
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+
+        HashMap<String , Object> hashMap = new HashMap<>();
+        hashMap.put("status" , status) ;
+        reference.updateChildren(hashMap);
+    }
+    @Override
+    protected void onResume(){
+        super.onResume();
+        status("online");
+    }
+    @Override
+    protected void onPause(){
+        super.onPause();
+        status("offline");
     }
 }
 

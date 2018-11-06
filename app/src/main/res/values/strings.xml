@@ -68,12 +68,12 @@
     <string name="_email">email</string>
     <string name="hello_username">Hello!</string>
     <string name="chat_room">Chat Room</string>
-    <string name="type_message">Type message...</string>
+    <string name="type_message">write message...</string>
     <string name="profile_title">Profile</string>
     <string name="upload_pdf">Upload Pdf</string>
     <string name="navigate_to_app">Navigate to App</string>
     <string name="logout_admin">Logout</string>
-    <string name="already_registered_login">Already registered? Login</string>
+    <string name="already_registered_login">Already registered?</string>
     <string name="user_information">User information</string>
     <string name="users_analytics">Users Analytics</string>
     <string name="broadcast_message">Broadcast Message</string>
@@ -82,6 +82,11 @@
     <string name="tap">Select File</string>
     <string name="upload">Upload File</string>
     <string name="no_selected_file">No selected file!</string>
+    <string name="not_yet_registered">Not yet registered?</string>
+    <string name="status">status</string>
+    <string name="hello_am_using_mtihani_revise">Hello! Am using mtihani revise.</string>
+    <string name="search_users">Search...</string>
+    <string name="seen">seen</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

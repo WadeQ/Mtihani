@@ -1,5 +1,6 @@
 package com.wadektech.mtihanirevise.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,14 +23,13 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     private List<Chat> chats ;
     private String imageurl ;
 
-    private FirebaseUser firebaseUser ;
+    FirebaseUser firebaseUser ;
 
     public MessageAdapter(Context context, List<Chat> chats , String imageurl) {
         this.context = context;
         this.chats = chats;
         this.imageurl = imageurl;
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,6 +41,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
             return new MessageAdapter.ViewHolder(view);
         }
     }
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Chat chat = chats.get(position) ;
@@ -52,8 +53,16 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
                     .load(imageurl)
                     .into(holder.chatImage);
         }
+        if (position == chats.size()-1){
+               if (chat.isIsseen()){
+                   holder.mSeen.setText("seen");
+               }else {
+                   holder.mSeen.setText("Delivered");
+               }
+        }else {
+            holder.mSeen.setVisibility(View.GONE);
+        }
     }
-
     @Override
     public int getItemCount() {
         return chats.size();
@@ -62,18 +71,21 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     public class ViewHolder extends RecyclerView.ViewHolder{
            public TextView chatMessage ;
            public CircleImageView chatImage ;
+           public TextView mSeen ;
 
         public ViewHolder(View itemView) {
             super(itemView);
             chatMessage = itemView.findViewById(R.id.chat_message);
             chatImage = itemView.findViewById(R.id.chat_profile);
+            mSeen = itemView.findViewById(R.id.tv_last_seen);
         }
     }
+
     @Override
-    public long getItemId(int position) {
+    public int getItemViewType(int position) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (chats.get(position).getSender().equals(firebaseUser.getUid())){
-                return MSG_TYPE_RIGHT ;
+            return MSG_TYPE_RIGHT ;
         } else {
             return MSG_TYPE_LEFT ;
         }

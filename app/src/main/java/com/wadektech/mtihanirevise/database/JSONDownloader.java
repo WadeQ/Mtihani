@@ -1,4 +1,4 @@
-package com.wadektech.mtihanirevise.JSON;
+package com.wadektech.mtihanirevise.database;
 
 import android.app.ProgressDialog;
 import android.content.Context;

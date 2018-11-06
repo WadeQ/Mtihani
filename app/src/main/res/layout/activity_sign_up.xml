@@ -75,7 +75,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/username"
+            android:text="@string/password"
             android:textAllCaps="true"
             android:textColor="@color/text"
             android:textSize="15sp"
@@ -88,8 +88,8 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_bg"
-            android:hint="@string/username"
-            android:inputType="text"
+            android:hint="@string/password"
+            android:inputType="textPassword"
             android:paddingEnd="15dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
@@ -114,7 +114,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/password"
+            android:text="@string/username"
             android:textAllCaps="true"
             android:textColor="@color/text"
             android:textSize="15sp"
@@ -127,15 +127,16 @@
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_bg"
-            android:hint="@string/password"
-            android:inputType="textPassword"
+            android:hint="@string/username"
+            android:inputType="text"
             android:paddingEnd="15dp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingStart="25dp"
             android:textColor="@color/text"
             android:textSize="15sp"
-            app:fontFamily="sans-serif-light" />
+            app:fontFamily="sans-serif-light"
+            tools:ignore="TextFields" />
 
     </LinearLayout>
 

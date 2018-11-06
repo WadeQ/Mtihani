@@ -9,7 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wadektech.mtihanirevise.JSON.Downloader;
+import com.wadektech.mtihanirevise.database.Downloader;
 import com.wadektech.mtihanirevise.pojo.Model;
 import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
 import com.wadektech.mtihanirevise.R;

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/chatwallpaper"
     tools:context=".ui.MessageActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -16,17 +17,19 @@
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/main_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="60dp"
             android:background="@color/colorPrimaryDark"
-            android:theme="@android:style/Theme.Holo.Light">
+            app:navigationIcon="@drawable/back"
+            android:theme="@android:style/Theme.Holo.Light"
+            app:popupTheme="@style/MenuStyle">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_user_profile"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/colorAccent"
-                android:src="@drawable/profile" />
+                android:src="@drawable/profile"
+                app:civ_border_color="#FF7500"
+                app:civ_border_width="2dp" />
 
             <TextView
                 android:id="@+id/username"
@@ -35,10 +38,10 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="25dp"
                 android:layout_marginStart="25dp"
-                android:textColor="@color/colorWhite"
                 android:layout_toEndOf="@id/chat_user_profile"
                 android:layout_toRightOf="@+id/chat_user_profile"
                 android:text="@string/username"
+                android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
 
         </android.support.v7.widget.Toolbar>
@@ -46,13 +49,11 @@
            </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
-
         android:id="@+id/rv_message"
         android:layout_below="@+id/appBarLayout"
         android:layout_above="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
     </android.support.v7.widget.RecyclerView>
 
     <RelativeLayout
@@ -62,7 +63,6 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
 
         <EditText
             android:id="@+id/et_send_message"

@@ -8,9 +8,16 @@
     tools:context=".fragments.UsersFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:id="@+id/tv_search_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/search_users"
+        android:layout_margin="5dp"/>
 
 <android.support.v7.widget.RecyclerView
     android:id="@+id/rv_classroom"
+    android:layout_below="@+id/tv_search_users"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

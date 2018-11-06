@@ -1,6 +1,7 @@
 package com.wadektech.mtihanirevise.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,12 +21,21 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.pojo.RowModel;
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.pojo.User;
+
 import java.util.ArrayList;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,6 +46,10 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
     GoogleApiClient mGoogleApiClient ;
+    private Uri imageUri ;
+    DatabaseReference databaseReference ;
+    FirebaseUser firebaseUser ;
+    StorageReference storageReference ;
 
     NiftyDialogBuilder materialDesignAnimatedDialog ;
 
@@ -71,12 +85,33 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
 
         FirebaseUser user = mAuth.getCurrentUser() ;
        //get user profile details and display on toolbar
-        if (user != null) {
+            if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
                     .placeholder(R.drawable.profile)
                     .into(userProfile);
         }
+        storageReference = FirebaseStorage.getInstance().getReference("uploads") ;
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    if (user.getImageURL().equals("default")){
+                        userProfile.setImageResource(R.drawable.profile);
+                    }else  {
+                        Picasso.with(getApplicationContext())
+                                .load(user.getImageURL())
+                                .into(userProfile);
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
 
        mAuth = FirebaseAuth.getInstance() ;
         List<RowModel> rowListItem = getAllItemList();
@@ -159,7 +194,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         //send intent to the Login activity
         Auth.GoogleSignInApi.signOut(mGoogleApiClient) ;
         Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
     @Override

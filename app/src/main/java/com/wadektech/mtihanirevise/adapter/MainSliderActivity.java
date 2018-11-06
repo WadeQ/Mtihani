@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.wadektech.mtihanirevise.auth.LoginActivity;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.R;
 
@@ -32,7 +33,7 @@ public class MainSliderActivity extends AppCompatActivity {
         slideViewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SignUpActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivity(intent);
             }
         });
