@@ -1,5 +1,6 @@
 package com.wadektech.mtihanirevise.ui;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.fragments.ChatsFragment;
 import com.wadektech.mtihanirevise.fragments.ProfileFragment;
 import com.wadektech.mtihanirevise.fragments.UsersFragment;
+import com.wadektech.mtihanirevise.pojo.Chat;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
 
@@ -41,6 +43,7 @@ public class ChatActivity extends AppCompatActivity {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mUsername = findViewById(R.id.tv_username);
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference.keepSynced (true);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -58,13 +61,37 @@ public class ChatActivity extends AppCompatActivity {
              mTabLayout = findViewById(R.id.main_tabs);
              mViewPager = findViewById(R.id.main_tabPager);
 
-             ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-             viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
-             viewPagerAdapter.addFragment(new UsersFragment(), "Classroom");
-             viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+        reference = FirebaseDatabase.getInstance ().getReference ("Chats");
+        reference.addValueEventListener (new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+                int unread = 0;
+                for (DataSnapshot snapshot : dataSnapshot.getChildren ()){
+                    Chat chat = snapshot.getValue (Chat.class);
+                    assert chat != null;
+                    if (chat.getReceiver ().equals (firebaseUser.getUid ()) && !chat.isIsseen ()){
+                       unread++ ;
+                    }
+                }
+                if (unread == 0){
+                     viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
+                } else {
+                    viewPagerAdapter.addFragment(new ChatsFragment(), "("+unread+") Chats");
+                }
 
-             mViewPager.setAdapter(viewPagerAdapter);
-             mTabLayout.setupWithViewPager(mViewPager);
+                viewPagerAdapter.addFragment(new UsersFragment(), "Classroom");
+                viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
+                mViewPager.setAdapter(viewPagerAdapter);
+                mTabLayout.setupWithViewPager(mViewPager);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
     }
     public class ViewPagerAdapter extends FragmentPagerAdapter{
            private ArrayList<Fragment> fragments ;
@@ -96,6 +123,7 @@ public class ChatActivity extends AppCompatActivity {
             return titles.get(position);
         }
     }
+
     private void status(String status){
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
 

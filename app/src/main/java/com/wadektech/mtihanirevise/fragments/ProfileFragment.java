@@ -30,6 +30,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
@@ -70,7 +72,7 @@ public class ProfileFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                final User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
                     userName.setText(user.getUsername());
                 }
@@ -80,7 +82,20 @@ public class ProfileFragment extends Fragment {
                     }else  {
                         Picasso.with(getContext())
                                 .load(user.getImageURL())
-                                .into(profileImage);
+                                .networkPolicy (NetworkPolicy.OFFLINE)
+                                .into (profileImage, new Callback () {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Picasso.with (getContext ())
+                                                .load (user.getImageURL ())
+                                                .into (profileImage);
+                                    }
+                                });
                     }
                 }
             }

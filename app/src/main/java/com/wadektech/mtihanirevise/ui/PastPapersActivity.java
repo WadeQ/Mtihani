@@ -28,6 +28,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
@@ -88,23 +90,38 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
             if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
+                    .networkPolicy (NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.profile)
                     .into(userProfile);
         }
         storageReference = FirebaseStorage.getInstance().getReference("uploads") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        databaseReference.keepSynced (true);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                final User user = dataSnapshot.getValue(User.class);
                 if (user != null) {
                     if (user.getImageURL().equals("default")){
                         userProfile.setImageResource(R.drawable.profile);
                     }else  {
                         Picasso.with(getApplicationContext())
                                 .load(user.getImageURL())
-                                .into(userProfile);
+                                .networkPolicy (NetworkPolicy.OFFLINE)
+                                .into (userProfile, new Callback () {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+
+                                    @Override
+                                    public void onError() {
+                                        Picasso.with (getApplicationContext ())
+                                                .load (user.getImageURL ())
+                                                .into (userProfile);
+                                    }
+                                });
                     }
                 }
             }
