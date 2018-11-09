@@ -156,7 +156,10 @@ public class SignUpActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             mConnectionProgressDialog = new ProgressDialog(this,R.style.DialogCustom);
             mConnectionProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            ProgressDialog.show(new ContextThemeWrapper(this, R.style.DialogCustom), "Signing In", "Please be patient...");
+            mConnectionProgressDialog.setTitle ("Signing in...");
+            mConnectionProgressDialog.setMessage ("Please be patient");
+            mConnectionProgressDialog.show ();
+
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
@@ -227,6 +230,7 @@ public class SignUpActivity extends AppCompatActivity {
                        hashMap.put("imageURL", "default");
                        hashMap.put("status" , "offline");
                        hashMap.put("search" , etUsername.toLowerCase());
+                       hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {

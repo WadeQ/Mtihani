@@ -14,22 +14,24 @@
         android:layout_height="76dp"
         android:background="#2196F3"
         android:minHeight="?android:attr/actionBarSize">
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profileImage"
             android:layout_width="68dp"
             android:layout_height="68dp"
-            android:elevation="8dp"
             android:layout_marginTop="4dp"
+            android:elevation="8dp"
             android:src="@drawable/profile"
             app:civ_border_color="#FFF8B7"
             app:civ_border_width="2dp"
             tools:targetApi="lollipop" />
-
 </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
@@ -37,7 +39,6 @@
         android:layout_height="match_parent"
         android:padding="8dp"
         tools:context=".MainActivity">
-
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"

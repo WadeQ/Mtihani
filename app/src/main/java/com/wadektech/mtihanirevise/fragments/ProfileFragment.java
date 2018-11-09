@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.wadektech.mtihanirevise.StatusUpdate;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
 
@@ -47,12 +50,13 @@ import static android.app.Activity.RESULT_OK;
  */
 public class ProfileFragment extends Fragment {
         CircleImageView profileImage ;
-        TextView userName ;
+        TextView userName , statusDisplay;
         DatabaseReference databaseReference ;
         FirebaseUser firebaseUser ;
         StorageReference storageReference ;
         public static final int IMAGE_REQUEST = 1;
         private Uri imageUri ;
+        private Button btnStatus ;
         private StorageTask<UploadTask.TaskSnapshot> uploadTask ;
 
     public ProfileFragment() {
@@ -65,6 +69,15 @@ public class ProfileFragment extends Fragment {
 
         profileImage = view.findViewById(R.id.profile_image);
         userName = view.findViewById(R.id.username);
+        btnStatus = view.findViewById (R.id.update);
+
+        btnStatus.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent (getContext (), StatusUpdate.class);
+                startActivity (intent);
+            }
+        });
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
@@ -88,7 +101,6 @@ public class ProfileFragment extends Fragment {
                                     public void onSuccess() {
 
                                     }
-
                                     @Override
                                     public void onError() {
                                         Picasso.with (getContext ())
@@ -176,7 +188,7 @@ public class ProfileFragment extends Fragment {
             imageUri = data.getData() ;
             if (uploadTask != null && uploadTask.isInProgress()){
                 Toast.makeText(getContext(),"Upload is in progress...", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
                 uploadImage();
             }
         }

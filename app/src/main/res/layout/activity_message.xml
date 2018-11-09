@@ -59,30 +59,36 @@
     <RelativeLayout
         android:id="@+id/message"
         android:padding="5dp"
-        android:background="@color/colorWhite"
+        android:layout_margin="8dp"
         android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_rounded_input_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_send_message"
-            android:layout_width="match_parent"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
             android:layout_centerVertical="true"
             android:hint="@string/type_message"
-            android:inputType="text"
+            android:paddingLeft="2dp"
+            android:inputType="textMultiLine"
+            android:background="@android:color/transparent"
             android:layout_toLeftOf="@+id/btn_send_message"
-            android:layout_toStartOf="@+id/btn_send_message" />
+            android:layout_toStartOf="@+id/btn_send_message"
+            android:paddingStart="2dp" />
 
         <ImageButton
             android:id="@+id/btn_send_message"
-            android:layout_width="30dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:background="@drawable/ic_action_name"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/ic_action_name"
+            tools:ignore="ContentDescription"
             android:layout_alignParentRight="true"
-            tools:ignore="ContentDescription" />
+            android:layout_marginRight="12dp" />
 
     </RelativeLayout>
 

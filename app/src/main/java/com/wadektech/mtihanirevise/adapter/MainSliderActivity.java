@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.wadektech.mtihanirevise.auth.LoginActivity;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.R;
@@ -28,6 +29,8 @@ public class MainSliderActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_slider);
+
+
 
         slideViewButton = findViewById(R.id.slideViewButton);
         slideViewButton.setOnClickListener(new View.OnClickListener() {

@@ -10,45 +10,140 @@
 
     <!-- TODO: Update blank fragment layout -->
    <android.support.v7.widget.CardView
-       app:cardElevation="8dp"
+       android:id="@+id/card"
+       app:cardElevation="2dp"
        android:layout_width="match_parent"
        android:layout_height="wrap_content">
 
        <RelativeLayout
-           android:padding="8dp"
            android:layout_width="match_parent"
-           android:layout_height="wrap_content">
+           android:layout_height="match_parent"
+           android:padding="8dp">
 
            <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
                android:text="@string/profile_title"
                android:textColor="@color/colorPrimaryDark"
-               android:textStyle="bold"
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content" />
+               android:textStyle="bold" />
 
            <de.hdodenhof.circleimageview.CircleImageView
                android:id="@+id/profile_image"
-               android:src="@drawable/profile"
-               android:layout_width="100dp"
-               android:layout_height="100dp"
-               android:layout_marginTop="50dp"
-               android:layout_centerHorizontal="true"/>
+               android:layout_width="150dp"
+               android:layout_height="150dp"
+               android:layout_centerHorizontal="true"
+               android:layout_marginTop="30dp"
+               android:src="@drawable/profile" />
+
            <TextView
                android:id="@+id/username"
-               android:hint="@string/username"
-               android:layout_below="@+id/profile_image"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
+               android:layout_below="@+id/profile_image"
+               android:layout_centerHorizontal="true"
+               android:layout_marginBottom="0dp"
+               android:layout_marginTop="10dp"
                android:gravity="center"
-               android:textStyle="bold"
-               android:textSize="18sp"
+               android:hint="@string/username"
                android:textColor="@color/colorPrimaryDark"
-               android:layout_marginTop="15dp"
-               android:layout_marginBottom="20dp"
-               android:layout_centerHorizontal="true"/>
+               android:textSize="18sp"
+               android:textStyle="bold" />
 
        </RelativeLayout>
 
    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card2"
+        app:cardElevation="2dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/card"
+        app:cardCornerRadius="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sta"
+                android:textSize="16sp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@color/headings"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true" />
+
+            <TextView
+                android:id="@+id/status_display"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="60dp"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textColorHint="@color/colorPrimary"
+                android:hint="@string/def_status_banner"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_profile"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:layout_below="@+id/card2"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/update"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginBottom="10dp"
+                android:layout_above="@+id/tv"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/tap" />
+
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="96dp"
+                android:gravity="center"
+                android:layout_marginBottom="10dp"
+                android:text="@string/update_your_status"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                tools:ignore="UnknownId"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="96dp" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
 
 </RelativeLayout>

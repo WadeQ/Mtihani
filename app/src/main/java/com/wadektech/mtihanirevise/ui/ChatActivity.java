@@ -52,7 +52,6 @@ public class ChatActivity extends AppCompatActivity {
                     mUsername.setText(user.getUsername());
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

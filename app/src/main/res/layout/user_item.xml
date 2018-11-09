@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
     android:layout_width="match_parent"
@@ -8,8 +9,8 @@
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/chat_user_profile"
         android:src="@drawable/profile"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
 
     <TextView
         android:id="@+id/username"
@@ -17,13 +18,28 @@
         android:layout_width="wrap_content"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:layout_toEndOf="@id/chat_user_profile"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="8dp"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="15dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp" />
+        android:layout_marginStart="15dp" />
+
+    <TextView
+        android:id="@+id/status"
+        android:text="@string/status_banner"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="0dp"
+        android:layout_toRightOf="@+id/chat_user_profile"
+        android:layout_toEndOf="@id/chat_user_profile"
+        android:layout_below="@+id/username"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorPrimaryDark"
+        android:layout_marginLeft="15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_on"
@@ -33,9 +49,9 @@
         android:src="@drawable/ic_launcher_background"
         android:layout_below="@+id/username"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="-15dp"
+        android:layout_marginLeft="-25dp"
         android:visibility="gone"
-        android:layout_height="15dp"
+        android:layout_height="25dp"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:layout_toEndOf="@+id/chat_user_profile"
         android:layout_marginStart="-15dp" />
@@ -49,8 +65,8 @@
         android:src="@drawable/ic_launcher_background"
         android:layout_below="@+id/username"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="-15dp"
-        android:layout_height="15dp"
+        android:layout_marginLeft="-25dp"
+        android:layout_height="25dp"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:layout_toEndOf="@+id/chat_user_profile"
         android:layout_marginStart="-15dp" />

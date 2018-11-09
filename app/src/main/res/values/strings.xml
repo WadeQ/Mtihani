@@ -87,6 +87,14 @@
     <string name="hello_am_using_mtihani_revise">Hello! Am using mtihani revise.</string>
     <string name="search_users">Search...</string>
     <string name="seen">seen</string>
+    <string name="banner">write message</string>
+    <string name="def_status_banner">I am a proud user of Mtihani Revise</string>
+    <string name="update_your_status">Update your status</string>
+    <string name="sta">Status</string>
+    <string name="status_update">Status Update</string>
+    <string name="hint_status">Status</string>
+    <string name="_status_update">Update Status</string>
+    <string name="status_banner">Am a proud user of Mtihani Revise!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

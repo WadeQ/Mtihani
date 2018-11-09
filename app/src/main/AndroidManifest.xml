@@ -42,23 +42,26 @@
         <activity android:name=".ui.ChatActivity" />
         <activity android:name=".auth.LoginActivity" />
         <activity android:name=".ui.MessageActivity" />
-        <activity android:name=".ui.AdminPanelActivity"></activity>
+        <activity android:name=".ui.AdminPanelActivity" />
 
-        <service android:name=".notification.MyFirebaseIdService"
+        <service
+            android:name=".notification.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".notification.MyFirebaseMessaging"
+        <service
+            android:name=".notification.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".StatusUpdate"></activity>
     </application>
 
 </manifest>
