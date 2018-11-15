@@ -61,7 +61,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".StatusUpdate"></activity>
+        <activity android:name=".ui.StatusUpdate"></activity>
     </application>
 
 </manifest>

@@ -125,6 +125,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void status(String status){
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        reference.keepSynced (true);
 
         HashMap<String , Object> hashMap = new HashMap<>();
         hashMap.put("status" , status) ;

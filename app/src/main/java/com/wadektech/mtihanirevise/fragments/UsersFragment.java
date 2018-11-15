@@ -103,7 +103,7 @@ public class UsersFragment extends Fragment {
     private void readUsers() {
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-
+        reference.keepSynced (true);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

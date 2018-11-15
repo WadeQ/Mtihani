@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +34,7 @@ import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
-import com.wadektech.mtihanirevise.StatusUpdate;
+import com.wadektech.mtihanirevise.ui.StatusUpdate;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
 
@@ -70,6 +69,25 @@ public class ProfileFragment extends Fragment {
         profileImage = view.findViewById(R.id.profile_image);
         userName = view.findViewById(R.id.username);
         btnStatus = view.findViewById (R.id.update);
+
+        statusDisplay = view.findViewById (R.id.status_display);
+
+        firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
+        assert firebaseUser != null;
+        String userID = firebaseUser.getUid ();
+        databaseReference = FirebaseDatabase.getInstance ().getReference ("Users").child (userID);
+        databaseReference.addValueEventListener (new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String status = dataSnapshot.child("update").getValue().toString();
+                statusDisplay.setText(status);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         btnStatus.setOnClickListener (new View.OnClickListener () {
             @Override

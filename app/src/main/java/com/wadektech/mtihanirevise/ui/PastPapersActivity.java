@@ -67,7 +67,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
 
         materialDesignAnimatedDialog =  NiftyDialogBuilder.getInstance(this);
 
-        FirebaseDatabase.getInstance ().getReference ().keepSynced (true);
+        FirebaseDatabase.getInstance ().getReference ("Users").keepSynced (true);
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.

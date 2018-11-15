@@ -8,10 +8,6 @@
     android:background="@drawable/chatwallpaper"
     tools:context=".ui.MessageActivity">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout">
 
         <android.support.v7.widget.Toolbar
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -46,15 +42,23 @@
 
         </android.support.v7.widget.Toolbar>
 
-           </android.support.design.widget.AppBarLayout>
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_message"
+        android:layout_below="@+id/main_app_bar"
+        android:layout_above="@+id/message"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_message"
-        android:layout_below="@+id/appBarLayout"
+        android:layout_below="@+id/main_app_bar"
         android:layout_above="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/message"
@@ -76,7 +80,8 @@
             android:background="@android:color/transparent"
             android:layout_toLeftOf="@+id/btn_send_message"
             android:layout_toStartOf="@+id/btn_send_message"
-            android:paddingStart="2dp" />
+            android:paddingStart="2dp"
+            tools:ignore="RtlSymmetry" />
 
         <ImageButton
             android:id="@+id/btn_send_message"

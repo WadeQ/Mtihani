@@ -97,6 +97,8 @@ public class ChatsFragment extends Fragment {
                 }
                 userAdapter = new UserAdapter(getContext(), users , true);
                 recyclerView.setAdapter(userAdapter);
+
+                recyclerView.scrollToPosition (users.size () -1);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {

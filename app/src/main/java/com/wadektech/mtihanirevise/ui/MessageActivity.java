@@ -84,6 +84,9 @@ public class MessageActivity extends AppCompatActivity {
         });
         apiService = Client.getClient ("https://fcm.googleapis.com/").create (APIService.class);
 
+        reference = FirebaseDatabase.getInstance ().getReference ("Chats");
+        reference.keepSynced (true);
+
         imageView = findViewById(R.id.chat_user_profile);
         userName = findViewById(R.id.username);
         editSend = findViewById(R.id.et_send_message);
@@ -222,6 +225,7 @@ public class MessageActivity extends AppCompatActivity {
                               @Override
                               public void onResponse(Call<MyResponse> call, Response<MyResponse> response) {
                                   if (response.code () == 200){
+                                      assert response.body () != null;
                                       if (response.body ().success != 1){
                                        Toast.makeText (getApplicationContext (), "Failed!" ,Toast.LENGTH_SHORT).show ();
                                       }
@@ -260,6 +264,7 @@ public class MessageActivity extends AppCompatActivity {
                  }
                  mAdapter = new MessageAdapter(MessageActivity.this, chats , imageurl);
                  mRecycler.setAdapter(mAdapter);
+                 mRecycler.scrollToPosition (chats.size () -1);
              }
              }
              @Override
