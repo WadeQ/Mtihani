@@ -9,19 +9,23 @@ import android.view.ViewGroup;
 
 import com.wadektech.mtihanirevise.pojo.RowModel;
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 import com.wadektech.mtihanirevise.viewHolders.RecyclerViewHolders;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
 
+    private OnItemClickHandler mHandler ;
     private List<RowModel> itemList;
-    private Context context;
 
-    public RecyclerViewAdapter(Context context, List<RowModel> itemList) {
+    public RecyclerViewAdapter( List<RowModel> itemList , OnItemClickHandler mHandler) {
         this.itemList = itemList;
-        this.context = context;
+        this.mHandler = mHandler ;
 
+    }
+
+    public RecyclerViewAdapter(PastPapersActivity pastPapersActivity, List<RowModel> rowListItem) {
     }
 
     @NonNull
@@ -41,6 +45,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     @Override
     public int getItemCount() {
         return this.itemList.size();
+    }
+
+    public interface OnItemClickHandler{
+        void onGridItemClicked(RowModel rowModel);
     }
 
 }

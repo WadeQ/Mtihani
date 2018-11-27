@@ -1,12 +1,11 @@
 package com.wadektech.mtihanirevise.auth;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.view.ContextThemeWrapper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -30,10 +29,13 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
-import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -50,6 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "wadektech";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
+    private String userID;
 
 
     @Override
@@ -71,6 +74,8 @@ public class SignUpActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        saveCurrentTime ();
 
         mAuth = FirebaseAuth.getInstance() ;
         mConnectionProgressDialog = new ProgressDialog(this);
@@ -232,7 +237,6 @@ public class SignUpActivity extends AppCompatActivity {
                        hashMap.put("status" , "offline");
                        hashMap.put("search" , etUsername.toLowerCase());
                        hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
-                       hashMap.put ("time" , );
                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
@@ -260,5 +264,21 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+       }
+       private void saveCurrentTime(){
+        String saveCurrentTime , saveCurrentDate ;
+           Calendar calendar = Calendar.getInstance ();
+           @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
+           saveCurrentDate =currentDate.format (calendar.getTime ());
+
+           @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
+           saveCurrentTime =currentTime.format (calendar.getTime ());
+
+           HashMap<String , Object> hashMap = new HashMap<> ();
+           hashMap.put ("time" ,saveCurrentTime);
+           hashMap.put ("date" , saveCurrentDate);
+
+           userID = mAuth.getCurrentUser ().getUid ();
+           reference.child ("Users").child (userID).updateChildren (hashMap);
        }
     }

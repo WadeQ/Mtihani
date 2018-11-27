@@ -43,7 +43,7 @@
         import de.hdodenhof.circleimageview.CircleImageView;
         import hotchemi.android.rate.AppRate;
 
-public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+    public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private GridLayoutManager lLayout;
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
@@ -152,7 +152,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(PastPapersActivity.this, rowListItem);
+        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter( this ,rowListItem, RecyclerViewAdapter.OnItemClickHandler);
         rView.setAdapter(rcAdapter);
     }
     @Override
