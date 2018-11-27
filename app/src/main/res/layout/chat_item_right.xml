@@ -24,7 +24,6 @@
               android:background="@drawable/background_right"
               android:layout_alignParentEnd="true"
               android:textSize="18sp"
-              android:text="hello"
               android:fontFamily="sans-serif"
               android:padding="8dp"
               android:textColor="#fff"

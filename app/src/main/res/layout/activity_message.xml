@@ -19,26 +19,49 @@
             android:theme="@android:style/Theme.Holo.Light"
             app:popupTheme="@style/MenuStyle">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/chat_user_profile"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:layout_centerVertical="true"
                 android:src="@drawable/profile"
                 app:civ_border_color="#FF7500"
                 app:civ_border_width="2dp" />
 
-            <TextView
-                android:id="@+id/username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="25dp"
-                android:layout_marginStart="25dp"
-                android:layout_toEndOf="@id/chat_user_profile"
-                android:layout_toRightOf="@+id/chat_user_profile"
-                android:text="@string/username"
-                android:textColor="@color/colorWhite"
-                android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="60dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/username"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="81dp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/chat_user_profile"
+                    android:layout_alignStart="@+id/username"
+                    android:text="00:00"
+                    android:layout_marginBottom="5dp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="14sp"
+                    android:layout_alignLeft="@+id/username"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
 
         </android.support.v7.widget.Toolbar>
 

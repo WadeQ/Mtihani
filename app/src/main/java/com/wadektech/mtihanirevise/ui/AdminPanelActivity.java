@@ -109,7 +109,6 @@ public class AdminPanelActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override
@@ -138,7 +137,6 @@ public class AdminPanelActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == 9 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
@@ -181,7 +179,7 @@ public class AdminPanelActivity extends AppCompatActivity {
                                 //return url of uploaded file
                                 String url = storageReference.getDownloadUrl().toString();
                                 //store url to realtime database
-                                DatabaseReference databaseReference = database.getReference().child("pdf").child("2008");
+                                DatabaseReference databaseReference = database.getReference().child("pdf").child("2012");
                                 //return path to root
                                 databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -222,16 +220,16 @@ public class AdminPanelActivity extends AppCompatActivity {
         pDialog.setProgress(0);
         pDialog.show();
 
-        final String fileName = System.currentTimeMillis()+"" ;
+        final String fileName = System.currentTimeMillis()+".pdf" ;
         final StorageReference storageReference = storage.getReference() ;
-        storageReference.child("2008").child(fileName).putFile(pdfUri)
+        storageReference.child("pdf").child(fileName).putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //return url of uploaded file
                       String url = storageReference.getDownloadUrl().toString();
                       //store url to realtime database
-                        DatabaseReference databaseReference = database.getReference().child("2008") ;
+                        DatabaseReference databaseReference = database.getReference().child("2012") ;
                         //return path to root
                         databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

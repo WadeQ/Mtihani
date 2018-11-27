@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:padding="10dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -27,19 +27,31 @@
         android:layout_marginStart="15dp" />
 
     <TextView
-        android:id="@+id/status"
-        android:text="@string/status_banner"
+        android:id="@+id/tv_timestamp"
+        android:text="00:00"
         android:layout_width="wrap_content"
-        android:layout_marginTop="0dp"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:layout_toEndOf="@id/chat_user_profile"
-        android:layout_below="@+id/username"
+        android:layout_marginTop="8dp"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/colorPrimaryDark"
-        android:layout_marginLeft="15dp"
+        android:layout_marginLeft="195dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp" />
+        android:layout_marginStart="195dp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/username"
+        android:layout_below="@+id/username"
+        android:text="@string/status_banner"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_alignLeft="@+id/username" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_on"

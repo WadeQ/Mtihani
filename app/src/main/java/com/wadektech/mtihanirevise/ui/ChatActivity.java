@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ChatActivity extends AppCompatActivity {
-      TextView mUsername ;
+      TextView mUsername , mStatus;
       FirebaseUser firebaseUser ;
       DatabaseReference reference ;
       TabLayout mTabLayout ;
@@ -60,6 +60,7 @@ public class ChatActivity extends AppCompatActivity {
              mTabLayout = findViewById(R.id.main_tabs);
              mViewPager = findViewById(R.id.main_tabPager);
 
+
         reference = FirebaseDatabase.getInstance ().getReference ("Chats");
         reference.addValueEventListener (new ValueEventListener () {
             @Override
@@ -84,7 +85,6 @@ public class ChatActivity extends AppCompatActivity {
                 mViewPager.setAdapter(viewPagerAdapter);
                 mTabLayout.setupWithViewPager(mViewPager);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -141,5 +141,6 @@ public class ChatActivity extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
+
 }
 

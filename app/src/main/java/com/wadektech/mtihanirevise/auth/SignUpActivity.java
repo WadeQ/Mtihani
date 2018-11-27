@@ -29,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
@@ -231,6 +232,7 @@ public class SignUpActivity extends AppCompatActivity {
                        hashMap.put("status" , "offline");
                        hashMap.put("search" , etUsername.toLowerCase());
                        hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
+                       hashMap.put ("time" , );
                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {

@@ -6,15 +6,17 @@ public class User {
     private String imageURL ;
     private String status ;
     private String search ;
-    private String updatestatus ;
+    private String update ;
+    private String time ;
 
-    public User(String id, String username, String imageURL, String status, String search, String updatestatus) {
+    public User(String id, String username, String imageURL, String status, String search, String update, String time) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
         this.status = status;
         this.search = search ;
-        this.updatestatus = updatestatus ;
+        this.update = update ;
+        this.time = time ;
     }
 
     public User() {
@@ -60,11 +62,19 @@ public class User {
         this.search = search;
     }
 
-    public String getUpdatestatus() {
-        return updatestatus;
+    public String getUpdate() {
+        return update;
     }
 
-    public void setUpdatestatus(String updatestatus) {
-        this.updatestatus = updatestatus;
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

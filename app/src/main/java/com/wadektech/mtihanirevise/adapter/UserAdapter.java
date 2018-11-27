@@ -33,7 +33,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     private Context context;
     private List<User> users ;
     private boolean isChatting ;
-
     private String theLastMessage ;
 
     public UserAdapter(Context context, List<User> users, boolean isChatting) {
@@ -53,7 +52,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final User user = users.get(position) ;
+        holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
+        holder.mTime.setText (user.getTime ());
         if (user.getImageURL().equals("default") ){
             holder.mProfileImage.setImageResource(R.drawable.profile);
         }else {
@@ -96,9 +97,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         return users.size();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
-           public TextView mUsername , mLastMessage;
+           public TextView mUsername , mLastMessage, mStatus;
            public CircleImageView mProfileImage ;
            public CircleImageView mStatusOff , mStatusOn;
+           public TextView mTime ;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -107,6 +109,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             mStatusOff = itemView.findViewById(R.id.img_off);
             mStatusOn = itemView.findViewById(R.id.img_on);
             mLastMessage = itemView.findViewById(R.id.tv_last_msg);
+            mStatus = itemView.findViewById (R.id.tv_status);
+            mTime = itemView.findViewById (R.id.tv_timestamp);
         }
     }
     private void lastMessage(final String userid , final TextView mLastMessage){
@@ -135,6 +139,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                           mLastMessage.setText(theLastMessage);
                           break;
               }
+
               theLastMessage = "default" ;
             }
 

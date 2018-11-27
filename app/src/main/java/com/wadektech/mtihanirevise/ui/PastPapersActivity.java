@@ -202,10 +202,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     private List<RowModel> getAllItemList(){
 
         List<RowModel> allItems = new ArrayList<>();
-        allItems.add(new RowModel("KCSE 2009", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2008", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2009", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2010", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2011", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2012", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2013", R.drawable.pdf));

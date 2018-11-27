@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.wadektech.mtihanirevise.ui.PaperPerSubject;
 import com.wadektech.mtihanirevise.R;
 
@@ -13,6 +15,8 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
 
     public TextView examYear;
     public ImageView examPhoto;
+    private DatabaseReference databaseReference;
+    private FirebaseUser firebaseUser;
 
     public RecyclerViewHolders(View itemView) {
         super(itemView);

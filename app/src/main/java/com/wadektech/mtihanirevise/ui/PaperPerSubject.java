@@ -2,6 +2,7 @@ package com.wadektech.mtihanirevise.ui;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +10,18 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.adapter.PdfAdapter;
-import com.wadektech.mtihanirevise.pojo.Model;
+import com.wadektech.mtihanirevise.pojo.PdfModel;
 import com.wadektech.mtihanirevise.R;
 
 import java.util.ArrayList;
@@ -24,7 +34,9 @@ import static android.support.v4.view.MenuItemCompat.getActionView;
 public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener {
     private RecyclerView mRecycler;
     public PdfAdapter mAdapter;
-    String jsonURL="https://api.jsonbin.io/b/5bc0d2babaccb064c0b2696a/2";
+    private DatabaseReference mDatabase ;
+    private FirebaseUser firebaseUser ;
+    public TextView mStatus ;
 
 
     @Override
@@ -40,10 +52,12 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Model> pdfListItems = getAllItemList();
+        List<PdfModel> pdfListItems = getAllItemList();
 
         PdfAdapter mAdapter = new PdfAdapter(pdfListItems, PaperPerSubject.this);
         mRecycler.setAdapter(mAdapter);
+
+        mStatus = findViewById (R.id.tv_status);
     }
 
     @Override
@@ -79,20 +93,41 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         return super.onOptionsItemSelected(item);
     }
 
-    private List<Model> getAllItemList() {
-        List<Model> allItems = new ArrayList<>();
-        allItems.add(new Model("KCSE 2008", "2008"));
-        allItems.add(new Model("KCSE 2009", "2008"));
-        allItems.add(new Model("KCSE 2010", "2010"));
-        allItems.add(new Model("KCSE 2011", "2011"));
-        allItems.add(new Model("KCSE 2012", "2012"));
-        allItems.add(new Model("KCSE 2013", "2013"));
-        allItems.add(new Model("KCSE 2014", "2014"));
-        allItems.add(new Model("KCSE 2015", "2015"));
-        allItems.add(new Model("KCSE 2016", "2016"));
-        allItems.add(new Model("KCSE 2017", "2017"));
-        allItems.add(new Model("KCSE ANSWERS", "2018"));
+    private List<PdfModel> getAllItemList() {
+        final List<PdfModel> allItems = new ArrayList<>();
 
+        firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
+        mDatabase = FirebaseDatabase.getInstance ().getReference ("pdf") ;
+        mDatabase.addValueEventListener (new ValueEventListener () {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                allItems.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    PdfModel pdfModel = snapshot.getValue(PdfModel.class);
+                    allItems.add(pdfModel);
+            }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        }) ;
+
+       /* allItems.add(new PdfModel ("KCSE 2008", "2008"));
+        allItems.add(new PdfModel ("KCSE 2009", "2008"));
+        allItems.add(new PdfModel ("KCSE 2010", "2010"));
+        allItems.add(new PdfModel ("KCSE 2011", "2011"));
+        allItems.add(new PdfModel ("KCSE 2012", "2012"));
+        allItems.add(new PdfModel ("KCSE 2013", "2013"));
+        allItems.add(new PdfModel ("KCSE 2014", "2014"));
+        allItems.add(new PdfModel ("KCSE 2015", "2015"));
+        allItems.add(new PdfModel ("KCSE 2016", "2016"));
+        allItems.add(new PdfModel ("KCSE 2017", "2017"));
+        allItems.add(new PdfModel ("KCSE ANSWERS", "2018"));
+
+        **/
         return allItems;
     }
 
@@ -105,5 +140,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     public boolean onQueryTextChange(String newText) {
         newText = newText.toLowerCase();
         return true;
+
     }
 }

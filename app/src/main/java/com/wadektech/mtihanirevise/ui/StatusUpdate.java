@@ -41,8 +41,7 @@ public class StatusUpdate extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 pDialog = new ProgressDialog (StatusUpdate.this);
-                pDialog.setTitle ("Updating Status...");
-                pDialog.setMessage ("Please be patient as we update your status.");
+                pDialog.setMessage ("Please be patient as we update your status");
                 pDialog.show ();
 
                 String updatestatus = statusUpdate.getEditText ().getText ().toString ();

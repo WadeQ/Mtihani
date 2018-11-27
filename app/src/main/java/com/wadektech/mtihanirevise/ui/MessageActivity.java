@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
@@ -46,7 +47,7 @@ import retrofit2.Response;
 
 public class MessageActivity extends AppCompatActivity {
       private CircleImageView imageView ;
-      private TextView userName ;
+      private TextView userName , mTime  ;
       FirebaseUser firebaseUser ;
       DatabaseReference reference ;
       EditText editSend ;
@@ -92,6 +93,7 @@ public class MessageActivity extends AppCompatActivity {
         editSend = findViewById(R.id.et_send_message);
         btnSend = findViewById(R.id.btn_send_message);
         mRecycler = findViewById(R.id.rv_message);
+        mTime = findViewById (R.id.tv_time);
         mRecycler.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
@@ -114,6 +116,7 @@ public class MessageActivity extends AppCompatActivity {
                 editSend.setText("");
             }
         });
+
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -153,7 +156,6 @@ public class MessageActivity extends AppCompatActivity {
                           HashMap<String , Object> hashMap = new HashMap<>();
                           hashMap.put("isseen" , true);
                           snapshot.getRef().updateChildren(hashMap);
-
                   }
               }
           }

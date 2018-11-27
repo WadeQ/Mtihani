@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.wadektech.mtihanirevise.database.Downloader;
-import com.wadektech.mtihanirevise.pojo.Model;
+import com.wadektech.mtihanirevise.pojo.PdfModel;
 import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.viewHolders.PdfViewHolder;
@@ -21,16 +21,16 @@ import java.util.List;
 
 public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
 
-    List<Model> users ;
+    List<PdfModel> users ;
     Context context ;
     String pdf ;
 
-    public PdfAdapter(List<Model> users, Context context) {
+    public PdfAdapter(List<PdfModel> users, Context context) {
         this.users = users;
         this.context = context;
     }
 
-    public PdfAdapter(Context context, ArrayList<Model> users) {
+    public PdfAdapter(Context context, ArrayList<PdfModel> users) {
 
     }
 
@@ -44,14 +44,14 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
         holder.mSubjectName.setText(users.get(position).getTitle());
-        holder.mSubjectName.setText(users.get(position).getPdf());
+        holder.mSubjectName.setText(users.get(position).getYear ());
     }
 
     @Override
     public int getItemCount() {
         return users.size();
     }
-    public void searchFilter(ArrayList<Model> listItems){
+    public void searchFilter(ArrayList<PdfModel> listItems){
         //re-initialize the variable ArrayList
         users = new ArrayList<>();
         users.addAll(listItems);

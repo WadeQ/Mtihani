@@ -78,6 +78,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
             chatMessage = itemView.findViewById(R.id.chat_message);
             chatImage = itemView.findViewById(R.id.chat_profile);
             mSeen = itemView.findViewById(R.id.tv_last_seen);
+
         }
     }
 

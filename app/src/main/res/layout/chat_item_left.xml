@@ -26,14 +26,14 @@
         android:layout_toRightOf="@+id/chat_profile"
         android:layout_marginLeft="5dp"
         android:padding="8dp"
-        android:layout_alignParentEnd="true"
+        android:text="hello"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="18sp"
         android:background="@drawable/background_left"
         android:fontFamily="sans-serif"
         android:layout_toEndOf="@+id/chat_profile"
         android:layout_marginStart="5dp"
-        android:layout_alignParentRight="true" />
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/tv_last_seen"
