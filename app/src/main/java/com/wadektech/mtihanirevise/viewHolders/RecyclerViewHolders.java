@@ -15,8 +15,6 @@ public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View
 
     public TextView examYear;
     public ImageView examPhoto;
-    private DatabaseReference databaseReference;
-    private FirebaseUser firebaseUser;
 
     public RecyclerViewHolders(View itemView) {
         super(itemView);

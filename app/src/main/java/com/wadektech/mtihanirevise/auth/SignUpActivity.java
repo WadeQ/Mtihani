@@ -75,8 +75,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
-        saveCurrentTime ();
-
         mAuth = FirebaseAuth.getInstance() ;
         mConnectionProgressDialog = new ProgressDialog(this);
 

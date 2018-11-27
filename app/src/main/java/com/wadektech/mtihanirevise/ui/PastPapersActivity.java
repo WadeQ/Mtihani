@@ -43,7 +43,7 @@
         import de.hdodenhof.circleimageview.CircleImageView;
         import hotchemi.android.rate.AppRate;
 
-    public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, RecyclerViewAdapter.OnItemClickHandler {
     private GridLayoutManager lLayout;
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
@@ -152,7 +152,7 @@
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter( this ,rowListItem, RecyclerViewAdapter.OnItemClickHandler);
+        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(rowListItem , this );
         rView.setAdapter(rcAdapter);
     }
     @Override
@@ -289,5 +289,13 @@
                     }
                 });
         materialDesignAnimatedDialog.show() ;
+    }
+
+    @Override
+    public void onGridItemClicked(int position) {
+
+                Intent intent = new Intent(this, PaperPerSubject.class);
+                startActivity(intent);
+
     }
 }

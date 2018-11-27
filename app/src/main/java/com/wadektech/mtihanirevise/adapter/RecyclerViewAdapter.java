@@ -1,20 +1,20 @@
 package com.wadektech.mtihanirevise.adapter;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.wadektech.mtihanirevise.pojo.RowModel;
+import android.widget.ImageView;
+import android.widget.TextView;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.ui.PastPapersActivity;
-import com.wadektech.mtihanirevise.viewHolders.RecyclerViewHolders;
+import com.wadektech.mtihanirevise.pojo.RowModel;
+import com.wadektech.mtihanirevise.ui.PaperPerSubject;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolders> {
+public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolders> {
 
     private OnItemClickHandler mHandler ;
     private List<RowModel> itemList;
@@ -23,9 +23,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
         this.itemList = itemList;
         this.mHandler = mHandler ;
 
-    }
-
-    public RecyclerViewAdapter(PastPapersActivity pastPapersActivity, List<RowModel> rowListItem) {
     }
 
     @NonNull
@@ -48,7 +45,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewHolder
     }
 
     public interface OnItemClickHandler{
-        void onGridItemClicked(RowModel rowModel);
+        void onGridItemClicked(int position);
+    }
+    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        public TextView examYear;
+        public ImageView examPhoto;
+
+        public RecyclerViewHolders(View itemView) {
+            super(itemView);
+            itemView.setOnClickListener(this);
+
+            examYear = itemView.findViewById(R.id.tv_kcse);
+            examPhoto= itemView.findViewById(R.id.tv_subject_icon);
+        }
+
+        @Override
+        public void onClick(View view) {
+
+            mHandler.onGridItemClicked (getAdapterPosition ());
+
+        }
     }
 
 }
