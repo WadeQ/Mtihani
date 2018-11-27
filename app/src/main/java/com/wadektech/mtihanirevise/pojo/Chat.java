@@ -5,10 +5,10 @@ public class Chat {
   private String receiver ;
   private String message ;
   private boolean isseen ;
-  private Long createdAt ;
+  private long createdAt ;
 
 
-    public Chat(String sender, String receiver, String message , boolean isseen, Long createdAt ) {
+    public Chat(String sender, String receiver, String message , boolean isseen, long createdAt ) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
@@ -50,11 +50,11 @@ public class Chat {
         this.isseen = isseen;
     }
 
-    public Long getCreatedAt() {
+    public long getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(Long createdAt) {
+    public void setCreatedAt(long createdAt) {
         this.createdAt = createdAt;
     }
 }
