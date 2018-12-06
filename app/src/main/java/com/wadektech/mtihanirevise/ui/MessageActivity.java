@@ -1,7 +1,9 @@
 package com.wadektech.mtihanirevise.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,7 +37,9 @@ import com.wadektech.mtihanirevise.pojo.Chat;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,9 +61,9 @@ public class MessageActivity extends AppCompatActivity {
       RecyclerView mRecycler ;
 
       Intent intent ;
-    private String myid;
-    private String userid;
-    boolean notify = false;
+      private String myid;
+      private String userid;
+      boolean notify = false;
 
     APIService apiService ;
 
@@ -119,11 +123,13 @@ public class MessageActivity extends AppCompatActivity {
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
         reference.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class) ;
                 if (user != null) {
                     userName.setText(user.getUsername());
+                    mTime.setText ("Last seen " + user.getTime ());
                 }
                 if (user != null) {
                     if (user.getImageURL().equals("default")){
@@ -280,9 +286,13 @@ public class MessageActivity extends AppCompatActivity {
         editor.apply ();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart ();
+    }
+
     private void status(String status){
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-
         HashMap<String , Object> hashMap = new HashMap<>();
         hashMap.put("status" , status) ;
         reference.updateChildren(hashMap);
@@ -292,6 +302,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onResume();
         status("online");
         currentUser (userid);
+        updateTimeAndDate ();
     }
     @Override
     protected void onPause(){
@@ -299,5 +310,29 @@ public class MessageActivity extends AppCompatActivity {
         reference.removeEventListener(seenListener);
         status("offline");
         currentUser ("none");
+        updateTimeAndDate ();
+    }
+    private void updateTimeAndDate(){
+        String saveCurrentTime , saveCurrentDate ;
+        Calendar calendar = Calendar.getInstance ();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
+        saveCurrentDate =currentDate.format (calendar.getTime ());
+
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
+        saveCurrentTime =currentTime.format (calendar.getTime ());
+        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
+        HashMap<String , Object> hashMap = new HashMap<>();
+        hashMap.put ("time" , saveCurrentTime);
+        hashMap.put ("date" , saveCurrentDate);
+        reference.updateChildren (hashMap);
+    }
+    private void saveUserDetailsFromGoogleLogin(){
+        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
+        String name = firebaseUser.getDisplayName ();
+        Uri image = firebaseUser.getPhotoUrl ();
+        HashMap<String , Object> hashMap = new HashMap<> ();
+        hashMap.put ("username" , name);
+        hashMap.put ("imageURL" , image);
+        reference.updateChildren (hashMap);
     }
 }

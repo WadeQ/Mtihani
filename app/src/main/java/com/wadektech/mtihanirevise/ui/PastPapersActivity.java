@@ -1,49 +1,50 @@
     package com.wadektech.mtihanirevise.ui;
 
         import android.content.Intent;
-        import android.net.Uri;
-        import android.os.Bundle;
-        import android.support.annotation.NonNull;
-        import android.support.v7.app.AppCompatActivity;
-        import android.support.v7.widget.GridLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.support.v7.widget.Toolbar;
-        import android.view.Menu;
-        import android.view.MenuItem;
-        import android.view.View;
-        import android.widget.Toast;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
-        import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
-        import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
-        import com.google.android.gms.auth.api.Auth;
-        import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-        import com.google.android.gms.common.ConnectionResult;
-        import com.google.android.gms.common.api.GoogleApiClient;
-        import com.google.firebase.auth.FirebaseAuth;
-        import com.google.firebase.auth.FirebaseUser;
-        import com.google.firebase.database.DataSnapshot;
-        import com.google.firebase.database.DatabaseError;
-        import com.google.firebase.database.DatabaseReference;
-        import com.google.firebase.database.FirebaseDatabase;
-        import com.google.firebase.database.ValueEventListener;
-        import com.google.firebase.storage.FirebaseStorage;
-        import com.google.firebase.storage.StorageReference;
-        import com.squareup.picasso.Callback;
-        import com.squareup.picasso.NetworkPolicy;
-        import com.squareup.picasso.Picasso;
-        import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
-        import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
-        import com.wadektech.mtihanirevise.auth.SignUpActivity;
-        import com.wadektech.mtihanirevise.pojo.RowModel;
-        import com.wadektech.mtihanirevise.R;
-        import com.wadektech.mtihanirevise.pojo.User;
+import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
+import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
+import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
+import com.wadektech.mtihanirevise.auth.SignUpActivity;
+import com.wadektech.mtihanirevise.pojo.RowModel;
+import com.wadektech.mtihanirevise.pojo.User;
 
-        import java.util.ArrayList;
-        import java.util.List;
-        import de.hdodenhof.circleimageview.CircleImageView;
-        import hotchemi.android.rate.AppRate;
+import java.util.ArrayList;
+import java.util.List;
 
-public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, RecyclerViewAdapter.OnItemClickHandler {
+import de.hdodenhof.circleimageview.CircleImageView;
+import hotchemi.android.rate.AppRate;
+
+public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, RecyclerViewAdapter.OnItemClickHandler{
     private GridLayoutManager lLayout;
     FirebaseAuth mAuth ;
     CircleImageView userProfile ;
@@ -187,7 +188,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         }
         if (id == R.id.menuLogout) {
             //we will call our signOut method here
-            signOut();
+            animatedDialog ();
             return true;
         }
         if (id == R.id.menu_chat) {
@@ -269,23 +270,20 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                 .withMessage("Are you sure you want to log out of Mtihani Revise? Your session will be deleted.")
                 .withDialogColor("#1c90ec")
                 .withButton1Text("OK")
+                .isCancelableOnTouchOutside (true)
                 .withButton2Text("Cancel")
                 .withDuration(700)
                 .withEffect(Effectstype.Fall)
-                .setButton1Click(new View.OnClickListener() {
+                .setButton1Click (new View.OnClickListener () {
                     @Override
                     public void onClick(View v) {
-                        /*
-                        if clicked call the signOut method
-                        else cancel dialog
-                        */
-                        signOut();
+                        signOut ();
                     }
                 })
-                .setButton1Click(new View.OnClickListener() {
+                .setButton2Click (new View.OnClickListener () {
                     @Override
                     public void onClick(View v) {
-                        materialDesignAnimatedDialog.dismiss() ;
+                        materialDesignAnimatedDialog.dismiss ();
                     }
                 });
         materialDesignAnimatedDialog.show() ;
@@ -295,7 +293,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     public void onGridItemClicked(int position) {
 
                 Intent intent = new Intent(this, PaperPerSubject.class);
+                intent.putExtra ("AdapterPosition" , position);
                 startActivity(intent);
-
     }
+
 }

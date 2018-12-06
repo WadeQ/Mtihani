@@ -36,7 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <Button
                 android:id="@+id/btn_select"
                 android:layout_width="70dp"
@@ -94,7 +93,7 @@
                 android:layout_marginRight="40dp" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/tv_notify"
                 android:textSize="18sp"
                 android:textStyle="italic"
                 android:textColor="@color/colorPrimaryDark"

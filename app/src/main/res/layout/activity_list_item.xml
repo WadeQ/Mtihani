@@ -24,27 +24,16 @@
         android:id="@+id/tv_subject_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="120dp"
         android:text="@string/subject_paper"
-        android:layout_alignTop="@+id/circleView"
-        android:layout_toRightOf="@+id/circleView"
-        android:layout_marginTop="1dp"
-        android:layout_marginLeft="18dp"
+        android:textColor="#c2110e"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#c2110e"
-        android:layout_toEndOf="@+id/circleView"
-        android:layout_marginStart="18dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="120dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/year"
-        android:id="@+id/tv_year"
-        android:textSize="13sp"
-        android:layout_marginTop="2dp"
-        android:layout_below="@+id/tv_subject_name"
-        android:layout_alignLeft="@+id/tv_subject_name"
-        android:layout_alignStart="@+id/tv_subject_name" />
 
     <View
         android:layout_width="match_parent"
@@ -54,5 +43,4 @@
         android:layout_alignLeft="@+id/circleView"
         android:layout_marginTop="8dp"
         android:layout_alignStart="@+id/circleView" />
-
 </RelativeLayout>

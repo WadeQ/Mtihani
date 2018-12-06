@@ -2,36 +2,28 @@ package com.wadektech.mtihanirevise.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wadektech.mtihanirevise.database.Downloader;
-import com.wadektech.mtihanirevise.pojo.PdfModel;
-import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
+import android.widget.TextView;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.viewHolders.PdfViewHolder;
-import java.io.File;
-import java.io.IOException;
+import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
+
 import java.util.ArrayList;
-import java.util.List;
 
-public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
 
-    List<PdfModel> users ;
-    Context context ;
-    String pdf ;
 
-    public PdfAdapter(List<PdfModel> users, Context context) {
-        this.users = users;
+
+public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder>{
+
+    private ArrayList<String> pdfItems ;
+    public Context context ;
+
+    public PdfAdapter(ArrayList<String> pdfItems, Context context) {
+        this.pdfItems = pdfItems;
         this.context = context;
-    }
-
-    public PdfAdapter(Context context, ArrayList<PdfModel> users) {
-
     }
 
     @NonNull
@@ -43,57 +35,30 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull PdfViewHolder holder, int position) {
-        holder.mSubjectName.setText(users.get(position).getTitle());
-        holder.mSubjectName.setText(users.get(position).getYear ());
+        holder.mSubjectName.setText(pdfItems.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return pdfItems.size();
     }
-    public void searchFilter(ArrayList<PdfModel> listItems){
-        //re-initialize the variable ArrayList
-        users = new ArrayList<>();
-        users.addAll(listItems);
-        //refresh adapter since we implemented changes
-        notifyDataSetChanged();
-    }
-    ////open activity
-    private void openDetailActivity(String...details)
-    {
-        Intent i=new Intent(context,ItemDetailActivity.class);
-        i.putExtra("NAME_KEY",details[0]);
-        i.putExtra("PDF_KEY",details[1]);
+    public class PdfViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        public TextView mSubjectName ;
 
-        //c.startActivity(i);
+        public PdfViewHolder(View itemView) {
 
-        String extStorageDirectory = Environment.getExternalStorageDirectory()
-                .toString();
-        File folder = new File(extStorageDirectory, "pdf");
-        folder.mkdir();
-        File file = new File(folder, "Read.pdf");
-        try {
-            file.createNewFile();
-        } catch (IOException e1) {
-            e1.printStackTrace();
+            super(itemView);
+            itemView.setOnClickListener(this);
+
+            mSubjectName = itemView.findViewById(R.id.tv_subject_name);
         }
-        Downloader.DownloadFile(pdf, file);
-        File newFile = new File(Environment.getExternalStorageDirectory()+"/Mypdf/Read.pdf");
 
-        //PackageManager packageManager = ItemListActivity.getPackageManager();
-        Intent testIntent = new Intent(Intent.ACTION_VIEW);
-        testIntent.setType("application/pdf");
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = Uri.fromFile(file);
-
-        //pdfView.fromUri(uri);
-        intent.setDataAndType(uri, "application/pdf");
-        context.startActivity(intent);
-    }
-
-    private void showPdf()
-    {
-
+        @Override
+        public void onClick(View view) {
+            //showPdf();
+            //OPEN DETAIL ACTIVITY
+            Intent intent = new Intent(view.getContext() , ItemDetailActivity.class);
+            view.getContext().startActivity(intent);
+        }
     }
 }

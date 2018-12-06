@@ -41,11 +41,8 @@ public class AdminPanelActivity extends AppCompatActivity {
      private Button btnSelect, btnUpload ;
      private BarChart barChart ;
      private TextView notify ;
-
      FirebaseStorage storage ;
      FirebaseDatabase database;
-
-     ProgressDialog pDialog ;
      Uri pdfUri ;
 
     @Override
@@ -59,6 +56,7 @@ public class AdminPanelActivity extends AppCompatActivity {
 
        btnSelect = findViewById(R.id.btn_select);
        btnUpload = findViewById(R.id.btn_upload);
+       notify = findViewById (R.id.tv_notify);
 
         barChart = findViewById(R.id.user_bar_graph);
         ArrayList<BarEntry> barEntries = new ArrayList<>();
@@ -110,14 +108,12 @@ public class AdminPanelActivity extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_admin, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -159,53 +155,12 @@ public class AdminPanelActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //check if file has been selected by user
-        if (requestCode==86 && resultCode==RESULT_OK && data.getClipData()!=null){
+        if (requestCode == 86 && resultCode == RESULT_OK && data.getClipData()!=null){
             int totalPdfSelected = data.getClipData().getItemCount();
             for (int i = 0 ; i < totalPdfSelected ; i++) {
                 pdfUri = data.getClipData().getItemAt(i).getUri();
 
-                final ProgressDialog pDialog = new ProgressDialog(this);
-                pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                pDialog.setTitle("Uploading File...");
-                pDialog.setProgress(0);
-                pDialog.show();
-
-                final String fileName = System.currentTimeMillis()+"" ;
-                final StorageReference storageReference = storage.getReference() ;
-                storageReference.child("pdf").child(fileName).putFile(pdfUri)
-                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                //return url of uploaded file
-                                String url = storageReference.getDownloadUrl().toString();
-                                //store url to realtime database
-                                DatabaseReference databaseReference = database.getReference().child("pdf").child("2012");
-                                //return path to root
-                                databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            Toast.makeText(getApplicationContext(),"File succesfully uploaded.",Toast.LENGTH_SHORT).show();
-                                            pDialog.dismiss();
-                                        } else {
-                                            Toast.makeText(getApplicationContext(),"File not uploaded!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(getApplicationContext(),"File not uploaded!", Toast.LENGTH_SHORT).show();
-                    }
-                }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                        //track uploading of file
-                        int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                        pDialog.setProgress(currentProgress);
-                    }
-                });
+                notify.setText ("Selected: " + totalPdfSelected);
             }
         }else if (data.getData()!= null){
             pdfUri = data.getData();
@@ -220,18 +175,20 @@ public class AdminPanelActivity extends AppCompatActivity {
         pDialog.setProgress(0);
         pDialog.show();
 
-        final String fileName = System.currentTimeMillis()+".pdf" ;
+        final String fileName = System.currentTimeMillis()+"" ;
+        final String fileName1 = System.currentTimeMillis ()+"";
+
         final StorageReference storageReference = storage.getReference() ;
         storageReference.child("pdf").child(fileName).putFile(pdfUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         //return url of uploaded file
-                      String url = storageReference.getDownloadUrl().toString();
-                      //store url to realtime database
-                        DatabaseReference databaseReference = database.getReference().child("2012") ;
+                        String url = storageReference.getDownloadUrl().toString();
+                        //store url to realtime database
+                        DatabaseReference databaseReference = database.getReference().child("pdf").child("2011");
                         //return path to root
-                        databaseReference.child(fileName).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        databaseReference.child(fileName1).setValue(url).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
@@ -251,9 +208,9 @@ public class AdminPanelActivity extends AppCompatActivity {
         }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-       //track uploading of file
-          int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-          pDialog.setProgress(currentProgress);
+                //track uploading of file
+                int currentProgress = (int) (100*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                pDialog.setProgress(currentProgress);
             }
         });
     }

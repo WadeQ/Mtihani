@@ -3,6 +3,7 @@ package com.wadektech.mtihanirevise.auth;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,14 +29,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import static android.widget.Toast.LENGTH_SHORT;
@@ -52,7 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
     private static final String TAG = "wadektech";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
-    private String userID;
+    private FirebaseUser firebaseUser;
 
 
     @Override
@@ -120,6 +119,7 @@ public class SignUpActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile ()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
@@ -158,7 +158,7 @@ public class SignUpActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            mConnectionProgressDialog = new ProgressDialog(this,R.style.DialogCustom);
+            mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
             mConnectionProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             mConnectionProgressDialog.setTitle ("Signing in...");
             mConnectionProgressDialog.setMessage ("Please be patient");
@@ -192,6 +192,16 @@ public class SignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                           /* if (firebaseUser != null){
+                                assert user != null;
+                                reference = FirebaseDatabase.getInstance ().getReference ("Users").child (user.getUid ()).child ("username");
+                                String name = user.getDisplayName ();
+                                HashMap<String , Object> hashMap = new HashMap<> ();
+                                hashMap.put ("username" , name);
+                                reference.updateChildren (hashMap);
+                            **/
+
                             mConnectionProgressDialog.dismiss();
                             //  updateUI(user);
 
@@ -209,8 +219,6 @@ public class SignUpActivity extends AppCompatActivity {
         mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
         mConnectionProgressDialog.setTitle("Signing In");
         mConnectionProgressDialog.setMessage("Signing user, please be patient.");
-        mConnectionProgressDialog.setIndeterminate(false);
-        mConnectionProgressDialog.setCancelable(false);
         mConnectionProgressDialog.show();
 
        mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>()
@@ -228,6 +236,14 @@ public class SignUpActivity extends AppCompatActivity {
                    }
                    assert userId != null;
                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+
+                   String saveCurrentTime , saveCurrentDate ;
+                   Calendar calendar = Calendar.getInstance ();
+                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
+                   saveCurrentDate =currentDate.format (calendar.getTime ());
+
+                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
+                   saveCurrentTime =currentTime.format (calendar.getTime ());
                        HashMap<String , String> hashMap = new HashMap<>();
                        hashMap.put("id", userId);
                        hashMap.put("username", etUsername);
@@ -235,6 +251,8 @@ public class SignUpActivity extends AppCompatActivity {
                        hashMap.put("status" , "offline");
                        hashMap.put("search" , etUsername.toLowerCase());
                        hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
+                       hashMap.put ("time" , saveCurrentTime);
+                       hashMap.put ("date" , saveCurrentDate);
                        reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
@@ -252,8 +270,8 @@ public class SignUpActivity extends AppCompatActivity {
            });
        }
        private void checkAdminStatus(){
-        if (mAuth.getCurrentUser().getEmail().equals("derrickwadek@gmail.com")
-                || mAuth.getCurrentUser().getEmail().equals("wadektech@gmail.com")){
+        if ( mAuth.getCurrentUser ().getEmail().equals("derrickwadek@gmail.com")
+                || mAuth.getCurrentUser ().getEmail().equals("wadektech@gmail.com")){
             Intent intent = new Intent(getApplicationContext(), AdminPanelActivity.class);
             startActivity(intent);
             finish();
@@ -263,20 +281,13 @@ public class SignUpActivity extends AppCompatActivity {
             finish();
         }
        }
-       private void saveCurrentTime(){
-        String saveCurrentTime , saveCurrentDate ;
-           Calendar calendar = Calendar.getInstance ();
-           @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
-           saveCurrentDate =currentDate.format (calendar.getTime ());
-
-           @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
-           saveCurrentTime =currentTime.format (calendar.getTime ());
-
-           HashMap<String , Object> hashMap = new HashMap<> ();
-           hashMap.put ("time" ,saveCurrentTime);
-           hashMap.put ("date" , saveCurrentDate);
-
-           userID = mAuth.getCurrentUser ().getUid ();
-           reference.child ("Users").child (userID).updateChildren (hashMap);
-       }
+    private void saveUserDetailsFromGoogleLogin(){
+        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
+        String name = firebaseUser.getDisplayName ();
+        Uri image = firebaseUser.getPhotoUrl ();
+        HashMap<String , Object> hashMap = new HashMap<> ();
+        hashMap.put ("username" , name);
+        hashMap.put ("imageURL" , image);
+        reference.updateChildren (hashMap);
+    }
     }

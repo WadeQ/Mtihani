@@ -1,5 +1,6 @@
 package com.wadektech.mtihanirevise.ui;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +11,6 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,6 +37,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private DatabaseReference mDatabase ;
     private FirebaseUser firebaseUser ;
     public TextView mStatus ;
+    private int adapterPosition ;
 
 
     @Override
@@ -52,12 +53,18 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         mRecycler.setHasFixedSize(true);
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
 
-        List<PdfModel> pdfListItems = getAllItemList();
+        List<String> pdfItems = getAllItemList();
 
-        PdfAdapter mAdapter = new PdfAdapter(pdfListItems, PaperPerSubject.this);
+        PdfAdapter mAdapter = new PdfAdapter((ArrayList<String>) pdfItems, PaperPerSubject.this );
         mRecycler.setAdapter(mAdapter);
 
         mStatus = findViewById (R.id.tv_status);
+       /* Intent intent = getIntent ();
+        intent.getStringExtra ("position") ;
+        **/
+        Intent i= getIntent();
+        adapterPosition = i.getIntExtra ("AdapterPosition" , 0) ;
+
     }
 
     @Override
@@ -92,10 +99,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         }
         return super.onOptionsItemSelected(item);
     }
-
-    private List<PdfModel> getAllItemList() {
-        final List<PdfModel> allItems = new ArrayList<>();
-
+    private List<String> getAllItemList() {
+        final List<String> allItems = new ArrayList<>();
         firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
         mDatabase = FirebaseDatabase.getInstance ().getReference ("pdf") ;
         mDatabase.addValueEventListener (new ValueEventListener () {
@@ -103,12 +108,23 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allItems.clear();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    PdfModel pdfModel = snapshot.getValue(PdfModel.class);
-                    allItems.add(pdfModel);
-            }
+                    /*
+                   PdfModel pdfModel = snapshot.getValue(PdfModel.class);
+                   allItems.add(pdfModel);
+                   **/
+                switch (adapterPosition){
+                    case 0:
+                        String pdfModel = snapshot.child ("2008").getValue (String.class);
+                        allItems.add (pdfModel);
+                        break;
 
+                    case 1:
+                        String pdfModel1 = snapshot.child ("2011").getValue (String.class);
+                        allItems.add (pdfModel1);
+                        break;
+                }
             }
-
+            }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -126,11 +142,9 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         allItems.add(new PdfModel ("KCSE 2016", "2016"));
         allItems.add(new PdfModel ("KCSE 2017", "2017"));
         allItems.add(new PdfModel ("KCSE ANSWERS", "2018"));
-
         **/
         return allItems;
     }
-
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -140,6 +154,5 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     public boolean onQueryTextChange(String newText) {
         newText = newText.toLowerCase();
         return true;
-
     }
 }
