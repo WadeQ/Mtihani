@@ -159,8 +159,6 @@ public class AdminPanelActivity extends AppCompatActivity {
             int totalPdfSelected = data.getClipData().getItemCount();
             for (int i = 0 ; i < totalPdfSelected ; i++) {
                 pdfUri = data.getClipData().getItemAt(i).getUri();
-
-                notify.setText ("Selected: " + totalPdfSelected);
             }
         }else if (data.getData()!= null){
             pdfUri = data.getData();
