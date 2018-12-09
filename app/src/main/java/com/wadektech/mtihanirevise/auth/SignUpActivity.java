@@ -21,6 +21,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
@@ -150,11 +152,9 @@ public class SignUpActivity extends AppCompatActivity {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -192,15 +192,48 @@ public class SignUpActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String userId = "";
+                            if (user != null) {
+                                userId = user.getUid ();
+                            }
+                            assert user != null;
+                            reference = FirebaseDatabase.getInstance ().getReference ("Users").child (user.getUid ());
+                            reference.keepSynced (true);
 
-                           /* if (firebaseUser != null){
-                                assert user != null;
-                                reference = FirebaseDatabase.getInstance ().getReference ("Users").child (user.getUid ()).child ("username");
-                                String name = user.getDisplayName ();
-                                HashMap<String , Object> hashMap = new HashMap<> ();
-                                hashMap.put ("username" , name);
-                                reference.updateChildren (hashMap);
-                            **/
+                            String name = user.getDisplayName ();
+                            Uri image = user.getPhotoUrl ();
+                            String imageUrl = "";
+                            if (image != null){
+                                imageUrl = image.toString ();
+                            }
+                            String saveCurrentTime , saveCurrentDate ;
+                            Calendar calendar = Calendar.getInstance ();
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
+                            saveCurrentDate =currentDate.format (calendar.getTime ());
+
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
+                            saveCurrentTime =currentTime.format (calendar.getTime ());
+                            HashMap<String , Object> hashMap = new HashMap<> ();
+                            hashMap.put("id", userId);
+                            hashMap.put("status" , "offline");
+                            hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
+                            assert name != null;
+                            hashMap.put("search" , name.toLowerCase ());
+                            hashMap.put ("time" , saveCurrentTime);
+                            hashMap.put ("date" , saveCurrentDate);
+                            hashMap.put ("username" , name);
+                            hashMap.put ("imageURL" , imageUrl);
+                            reference.updateChildren (hashMap).addOnSuccessListener (new OnSuccessListener<Void> () {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                }
+                            }).addOnFailureListener (new OnFailureListener () {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText (getApplicationContext (), "Error saving data " + e.toString () , LENGTH_SHORT).show ();
+                                }
+                            });
 
                             mConnectionProgressDialog.dismiss();
                             //  updateUI(user);
@@ -239,7 +272,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                    String saveCurrentTime , saveCurrentDate ;
                    Calendar calendar = Calendar.getInstance ();
-                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
+                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
                    saveCurrentDate =currentDate.format (calendar.getTime ());
 
                    @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
@@ -281,13 +314,4 @@ public class SignUpActivity extends AppCompatActivity {
             finish();
         }
        }
-    private void saveUserDetailsFromGoogleLogin(){
-        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
-        String name = firebaseUser.getDisplayName ();
-        Uri image = firebaseUser.getPhotoUrl ();
-        HashMap<String , Object> hashMap = new HashMap<> ();
-        hashMap.put ("username" , name);
-        hashMap.put ("imageURL" , image);
-        reference.updateChildren (hashMap);
-    }
     }

@@ -3,6 +3,7 @@ package com.wadektech.mtihanirevise.persistence;
 import android.app.Application;
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Downloader;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 

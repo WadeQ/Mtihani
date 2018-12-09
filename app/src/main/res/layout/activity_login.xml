@@ -50,6 +50,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/edit_text_bg"
             android:hint="@string/password"
+            app:passwordToggleEnabled="true"
             android:inputType="textPassword"
             android:paddingEnd="15dp"
             android:paddingLeft="15dp"
@@ -57,7 +58,8 @@
             android:paddingStart="25dp"
             android:textColor="@color/colorWhite"
             android:textSize="15sp"
-            app:fontFamily="sans-serif-light" />
+            app:fontFamily="sans-serif-light"
+            tools:ignore="MissingPrefix" />
 
     </LinearLayout>
 

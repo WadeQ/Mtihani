@@ -32,6 +32,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.ui.StatusUpdate;
@@ -74,7 +75,7 @@ public class ProfileFragment extends Fragment {
 
         firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
         assert firebaseUser != null;
-        String userID = firebaseUser.getUid ();
+        String userID = firebaseUser.getUid () ;
         databaseReference = FirebaseDatabase.getInstance ().getReference ("Users").child (userID);
         databaseReference.addValueEventListener (new ValueEventListener () {
             @Override
@@ -111,6 +112,7 @@ public class ProfileFragment extends Fragment {
                     if (user.getImageURL().equals("default")){
                         profileImage.setImageResource(R.drawable.profile);
                     }else  {
+                        final int defaultImageResId = R.drawable.profile;
                         Picasso.with(getContext())
                                 .load(user.getImageURL())
                                 .networkPolicy (NetworkPolicy.OFFLINE)
@@ -123,6 +125,8 @@ public class ProfileFragment extends Fragment {
                                     public void onError() {
                                         Picasso.with (getContext ())
                                                 .load (user.getImageURL ())
+                                                .networkPolicy (NetworkPolicy.NO_CACHE)
+                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
                                                 .into (profileImage);
                                     }
                                 });

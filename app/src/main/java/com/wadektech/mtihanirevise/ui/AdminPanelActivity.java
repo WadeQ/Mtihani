@@ -40,7 +40,6 @@ import java.util.ArrayList;
 public class AdminPanelActivity extends AppCompatActivity {
      private Button btnSelect, btnUpload ;
      private BarChart barChart ;
-     private TextView notify ;
      FirebaseStorage storage ;
      FirebaseDatabase database;
      Uri pdfUri ;
@@ -56,7 +55,6 @@ public class AdminPanelActivity extends AppCompatActivity {
 
        btnSelect = findViewById(R.id.btn_select);
        btnUpload = findViewById(R.id.btn_upload);
-       notify = findViewById (R.id.tv_notify);
 
         barChart = findViewById(R.id.user_bar_graph);
         ArrayList<BarEntry> barEntries = new ArrayList<>();

@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.adapter.MessageAdapter;
@@ -87,6 +88,7 @@ public class MessageActivity extends AppCompatActivity {
                         .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
             }
         });
+
         apiService = Client.getClient ("https://fcm.googleapis.com/").create (APIService.class);
 
         reference = FirebaseDatabase.getInstance ().getReference ("Chats");
@@ -126,7 +128,7 @@ public class MessageActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class) ;
+                final User user = dataSnapshot.getValue(User.class) ;
                 if (user != null) {
                     userName.setText(user.getUsername());
                     mTime.setText ("Last seen " + user.getTime ());
@@ -135,10 +137,24 @@ public class MessageActivity extends AppCompatActivity {
                     if (user.getImageURL().equals("default")){
                        imageView.setImageResource(R.drawable.profile);
                     } else {
-                        Picasso.with(getApplicationContext())
+                        final int defaultImageResId = R.drawable.profile;
+                        Picasso.with(getApplicationContext ())
                                 .load(user.getImageURL())
                                 .networkPolicy (NetworkPolicy.OFFLINE)
-                                .into(imageView);
+                                .into (imageView, new com.squareup.picasso.Callback () {
+                                    @Override
+                                    public void onSuccess() {
+
+                                    }
+                                    @Override
+                                    public void onError() {
+                                        Picasso.with (getApplicationContext ())
+                                                .load (user.getImageURL ())
+                                                .networkPolicy (NetworkPolicy.NO_CACHE)
+                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
+                                                .into (imageView);
+                                    }
+                                });
                     }
                     readMessages(firebaseUser.getUid(), userid,user.getImageURL());
                 }
@@ -315,7 +331,7 @@ public class MessageActivity extends AppCompatActivity {
     private void updateTimeAndDate(){
         String saveCurrentTime , saveCurrentDate ;
         Calendar calendar = Calendar.getInstance ();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd, yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
         saveCurrentDate =currentDate.format (calendar.getTime ());
 
         @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");

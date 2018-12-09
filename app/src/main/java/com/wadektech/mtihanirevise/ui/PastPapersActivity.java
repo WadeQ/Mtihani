@@ -29,7 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.NetworkPolicy;
+        import com.squareup.picasso.MemoryPolicy;
+        import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
@@ -121,7 +122,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                     if (user.getImageURL().equals("default")){
                         userProfile.setImageResource(R.drawable.profile);
                     }else  {
-                        Picasso.with(getApplicationContext())
+                        final int defaultImageResId = R.drawable.profile;
+                        Picasso.with(getApplicationContext ())
                                 .load(user.getImageURL())
                                 .networkPolicy (NetworkPolicy.OFFLINE)
                                 .into (userProfile, new Callback () {
@@ -129,11 +131,12 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                                     public void onSuccess() {
 
                                     }
-
                                     @Override
                                     public void onError() {
                                         Picasso.with (getApplicationContext ())
                                                 .load (user.getImageURL ())
+                                                .networkPolicy (NetworkPolicy.NO_CACHE)
+                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
                                                 .into (userProfile);
                                     }
                                 });

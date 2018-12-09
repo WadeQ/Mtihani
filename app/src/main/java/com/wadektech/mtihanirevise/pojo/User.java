@@ -8,8 +8,9 @@ public class User {
     private String search ;
     private String update ;
     private String time ;
+    private String date ;
 
-    public User(String id, String username, String imageURL, String status, String search, String update, String time) {
+    public User(String id, String username, String imageURL, String status, String search, String update, String time , String date) {
         this.id = id;
         this.username = username;
         this.imageURL = imageURL;
@@ -17,6 +18,7 @@ public class User {
         this.search = search ;
         this.update = update ;
         this.time = time ;
+        this.date = date;
     }
 
     public User() {
@@ -76,5 +78,13 @@ public class User {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

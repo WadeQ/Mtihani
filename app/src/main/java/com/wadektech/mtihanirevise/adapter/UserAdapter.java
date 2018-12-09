@@ -19,6 +19,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.pojo.Chat;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
@@ -50,17 +53,35 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final User user = users.get(position) ;
+
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
         holder.mTime.setText (user.getTime ());
+       // holder.mDate.setText (user.getDate ());
+
         if (user.getImageURL().equals("default") ){
             holder.mProfileImage.setImageResource(R.drawable.profile);
         }else {
+            final int defaultImageResId = R.drawable.profile;
             Picasso.with(context)
                     .load(user.getImageURL())
-                    .into(holder.mProfileImage);
+                    .networkPolicy (NetworkPolicy.OFFLINE)
+                    .into (holder.mProfileImage, new Callback () {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+                        @Override
+                        public void onError() {
+                            Picasso.with (context)
+                                    .load (user.getImageURL ())
+                                    .networkPolicy (NetworkPolicy.NO_CACHE)
+                                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
+                                    .into (holder.mProfileImage);
+                        }
+                    });
         }
         if (isChatting){
            lastMessage(user.getId() , holder.mLastMessage);
@@ -100,7 +121,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
            public TextView mUsername , mLastMessage, mStatus;
            public CircleImageView mProfileImage ;
            public CircleImageView mStatusOff , mStatusOn;
-           public TextView mTime ;
+           public TextView mTime , mDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -111,6 +132,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             mLastMessage = itemView.findViewById(R.id.tv_last_msg);
             mStatus = itemView.findViewById (R.id.tv_status);
             mTime = itemView.findViewById (R.id.tv_timestamp);
+            mDate = itemView.findViewById (R.id.tv_datestamp);
         }
     }
     private void lastMessage(final String userid , final TextView mLastMessage){
