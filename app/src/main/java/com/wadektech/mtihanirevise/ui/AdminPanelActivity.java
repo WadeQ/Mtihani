@@ -38,8 +38,8 @@ import com.wadektech.mtihanirevise.R;
 import java.util.ArrayList;
 
 public class AdminPanelActivity extends AppCompatActivity {
-     private Button btnSelect, btnUpload ;
-     private BarChart barChart ;
+     Button btnSelect, btnUpload ;
+     BarChart barChart ;
      FirebaseStorage storage ;
      FirebaseDatabase database;
      Uri pdfUri ;
