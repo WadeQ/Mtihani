@@ -342,13 +342,4 @@ public class MessageActivity extends AppCompatActivity {
         hashMap.put ("date" , saveCurrentDate);
         reference.updateChildren (hashMap);
     }
-    private void saveUserDetailsFromGoogleLogin(){
-        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
-        String name = firebaseUser.getDisplayName ();
-        Uri image = firebaseUser.getPhotoUrl ();
-        HashMap<String , Object> hashMap = new HashMap<> ();
-        hashMap.put ("username" , name);
-        hashMap.put ("imageURL" , image);
-        reference.updateChildren (hashMap);
-    }
 }

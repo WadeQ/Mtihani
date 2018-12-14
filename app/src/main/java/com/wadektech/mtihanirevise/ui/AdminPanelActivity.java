@@ -127,7 +127,6 @@ public class AdminPanelActivity extends AppCompatActivity {
         if (id == R.id.menu_broadcast_message) {
                 //call the broadcast message method here
                 return true;
-
             }
             return super.onOptionsItemSelected(item);
         }

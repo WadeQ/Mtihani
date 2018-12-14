@@ -13,8 +13,7 @@ import android.widget.TextView;
 import com.wadektech.mtihanirevise.R;
 
 public class SliderAdapter extends PagerAdapter {
-    Context context;
-    LayoutInflater layoutInflater;
+    private Context context;
 
     SliderAdapter(Context context) {
         this.context = context ;
@@ -33,7 +32,7 @@ public class SliderAdapter extends PagerAdapter {
     private String[] slide_desc = {
             "Fancy quick access to all KCSE past exam papers from 1996 to 2017 at the comfort of your phone? Mtihani revise leverages accessibility to give you what you want when you want it! ",
             "Retrieve, read and store your pdf documents for future access without ever using data again! Sounds like the real deal huh? Enjoy Mtihani Revise on the go!" ,
-            "Enjoy realtime chatting with your fellow students and/or friends and discuss, tackle questions and discover potentials together and to scale the heights of academic excellence"
+            "Enjoy realtime chatting with your fellow students and/or friends and discuss, tackle questions, discover potentials and together scale the heights of academic excellence"
     };
     @Override
     public int getCount() {
@@ -47,7 +46,7 @@ public class SliderAdapter extends PagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService (Context.LAYOUT_INFLATER_SERVICE);
         assert layoutInflater != null;
         View view = layoutInflater.inflate(R.layout.activity_slider, container, false);
 

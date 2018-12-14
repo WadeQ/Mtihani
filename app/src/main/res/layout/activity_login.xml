@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="178dp"
+        android:layout_marginBottom="235dp"
         android:paddingRight="35dp"
         android:paddingLeft="35dp"
         android:orientation="vertical"
@@ -47,7 +47,7 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/edit_text_bg"
             android:hint="@string/password"
             app:passwordToggleEnabled="true"
@@ -70,7 +70,7 @@
         android:layout_centerHorizontal="true"
         android:paddingLeft="35dp"
         android:paddingRight="35dp"
-        android:layout_marginTop="229dp"
+        android:layout_marginTop="190dp"
         android:orientation="vertical"
         tools:ignore="NotSibling">
 
@@ -106,15 +106,15 @@
     <Button
         android:id="@+id/btn_login"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="37dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginBottom="101dp"
+        android:layout_marginBottom="169dp"
         android:background="@drawable/btn_bg"
         android:text="@string/login"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        android:textStyle="bold"
         app:fontFamily="@string/font" />
 
     <TextView
@@ -123,24 +123,42 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
-        android:textStyle="bold"
+        android:layout_marginBottom="137dp"
         android:text="@string/not_yet_registered"
+        android:textColor="@color/colorWhite"
         android:textSize="16sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
         app:fontFamily="@string/font" />
 
     <Button
         android:id="@+id/btn_sign_up"
-        android:textColor="@color/colorPrimaryDark"
-        android:textStyle="bold"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_height="37dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="86dp"
         android:background="@drawable/btn_bg"
         android:text="@string/sign_up"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
         app:fontFamily="@string/font" />
+
+    <Button
+        android:id="@+id/tv_google_login"
+        style="@style/allBlueButtons"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_normal"
+        android:background="@drawable/button_bg"
+        android:drawableStart="@drawable/google_login_bg"
+        android:paddingStart="@dimen/padding_normal"
+        android:text="@string/login_with_google"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:drawableLeft="@drawable/google_login_bg"
+        android:paddingLeft="@dimen/padding_normal"
+        tools:ignore="RtlSymmetry" />
 
 </RelativeLayout>

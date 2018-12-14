@@ -1,5 +1,8 @@
 package com.wadektech.mtihanirevise.auth;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.os.Bundle;
@@ -18,9 +21,10 @@ import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 
 public class LoginActivity extends SignUpActivity {
 
-    Button btnlogin , btnSignUp;
+    Button btnlogin , btnSignUp , googleLogin;
     EditText loginEmail, loginPassword ;
     FirebaseAuth mAuth ;
+    Context context ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,8 @@ public class LoginActivity extends SignUpActivity {
         btnlogin = findViewById(R.id.btn_login);
         loginEmail = findViewById(R.id.et_email);
         loginPassword = findViewById(R.id.et_password);
+        googleLogin = findViewById (R.id.tv_google_login);
+
         mAuth = FirebaseAuth.getInstance() ;
 
         btnlogin.setOnClickListener(new View.OnClickListener() {
@@ -65,5 +71,25 @@ public class LoginActivity extends SignUpActivity {
                 finish();
             }
         });
+        googleLogin.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick(View v) {
+                checkAccountExistence ();
+            }
+        });
+
+    }
+    private void checkAccountExistence() {
+        AccountManager accountManager = (AccountManager) context.getSystemService(Context.ACCOUNT_SERVICE);
+        Account[] accounts;
+        if (accountManager != null) {
+            accounts = accountManager.getAccounts();
+            for (Account account : accounts) {
+                if (account.type.intern().equals("GoogleSignInAccount")) {
+                    Intent intent = new Intent (LoginActivity.this , PastPapersActivity.class);
+                    startActivity (intent);
+                }
+            }
+        }
     }
 }
