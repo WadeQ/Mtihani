@@ -47,7 +47,6 @@
             android:textColor="@color/colorWhite"
             android:textSize="32sp" />
 
-
         <TextView
             android:id="@+id/tv_address"
             android:layout_width="wrap_content"
@@ -151,7 +150,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
+                    android:background="@color/followingBg" />
 
             </LinearLayout>
 
@@ -164,7 +163,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/phone"
+                    android:text="@string/facebook"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
@@ -172,15 +171,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="@string/_254_738_327_378"
+                    android:text="@string/facebook_com_wadektech"
                     android:textColor="#000000"
                     android:textSize="18sp" />
-
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
+                    android:background="@color/followingBg" />
 
             </LinearLayout>
 
@@ -209,7 +207,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
+                    android:background="@color/followingBg" />
 
             </LinearLayout>
 
@@ -219,10 +217,11 @@
                 android:layout_marginTop="15dp"
                 android:orientation="vertical">
 
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/facebook"
+                    android:text="@string/app_version"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
@@ -230,15 +229,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="@string/facebook_com_wadektech"
+                    android:text="@string/_1_2_3_6_1_wadek_technologies"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/copyright_2018_all_rights_reserved"
+                    android:textColor="#000000"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

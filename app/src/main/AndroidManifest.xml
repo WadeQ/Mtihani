@@ -63,7 +63,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.StatusUpdate"></activity>
+        <activity android:name=".ui.StatusUpdate" />
     </application>
 
 </manifest>
