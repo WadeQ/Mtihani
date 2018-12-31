@@ -92,7 +92,7 @@ public class SignUpActivity extends AppCompatActivity {
                 } else if(TextUtils.isEmpty(password)) {
                     etPassword.setError("Please Enter Secure Password!");
                 }
-                    else if (TextUtils.isEmpty(userNmae)) {
+                else if (TextUtils.isEmpty(userNmae)) {
                     etUsername.setError("Please Enter username!");
                 }
                 else {
@@ -238,7 +238,7 @@ public class SignUpActivity extends AppCompatActivity {
                             mConnectionProgressDialog.dismiss();
                             //  updateUI(user);
 
-                      } else {
+                        } else {
                             // If sign in fails, display a message to the user.
                             Log.e("SignupActivity", "Failed Registration" +task.getException());
                             Toast.makeText(getApplicationContext(), "Authentication failed."+task.getException(), LENGTH_SHORT).show();
@@ -254,55 +254,55 @@ public class SignUpActivity extends AppCompatActivity {
         mConnectionProgressDialog.setMessage("Signing user, please be patient.");
         mConnectionProgressDialog.show();
 
-       mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>()
-       {
-           @Override
-           public void onComplete(@NonNull Task<AuthResult> task) {
-               //We have received a response, we need to close/exit the Progress Dialog now
-               mConnectionProgressDialog.dismiss();
-               //checking if task is succesfully implemented
-               if (task.isSuccessful()) {
-                   FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                   String userId = null;
-                   if (firebaseUser != null) {
-                       userId = firebaseUser.getUid();
-                   }
-                   assert userId != null;
-                   reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+        mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                //We have received a response, we need to close/exit the Progress Dialog now
+                mConnectionProgressDialog.dismiss();
+                //checking if task is succesfully implemented
+                if (task.isSuccessful()) {
+                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                    String userId = null;
+                    if (firebaseUser != null) {
+                        userId = firebaseUser.getUid();
+                    }
+                    assert userId != null;
+                    reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
-                   String saveCurrentTime , saveCurrentDate ;
-                   Calendar calendar = Calendar.getInstance ();
-                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-                   saveCurrentDate =currentDate.format (calendar.getTime ());
+                    String saveCurrentTime , saveCurrentDate ;
+                    Calendar calendar = Calendar.getInstance ();
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
+                    saveCurrentDate =currentDate.format (calendar.getTime ());
 
-                   @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
-                   saveCurrentTime =currentTime.format (calendar.getTime ());
-                       HashMap<String , String> hashMap = new HashMap<>();
-                       hashMap.put("id", userId);
-                       hashMap.put("username", etUsername);
-                       hashMap.put("imageURL", "default");
-                       hashMap.put("status" , "offline");
-                       hashMap.put("search" , etUsername.toLowerCase());
-                       hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
-                       hashMap.put ("time" , saveCurrentTime);
-                       hashMap.put ("date" , saveCurrentDate);
-                       reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                           @Override
-                           public void onComplete(@NonNull Task<Void> task) {
-                               if (task.isSuccessful()){
-                                   Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
-                                   startActivity(intent);
-                                   finish();
-                               }
-                           }
-                       });
-                   } else {
-                       Toast.makeText(getApplicationContext(), "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
-                   }
-               }
-           });
-       }
-       private void checkAdminStatus(){
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
+                    saveCurrentTime =currentTime.format (calendar.getTime ());
+                    HashMap<String , String> hashMap = new HashMap<>();
+                    hashMap.put("id", userId);
+                    hashMap.put("username", etUsername);
+                    hashMap.put("imageURL", "default");
+                    hashMap.put("status" , "offline");
+                    hashMap.put("search" , etUsername.toLowerCase());
+                    hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
+                    hashMap.put ("time" , saveCurrentTime);
+                    hashMap.put ("date" , saveCurrentDate);
+                    reference.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+    private void checkAdminStatus(){
         if ( mAuth.getCurrentUser ().getEmail().equals("derrickwadek@gmail.com")
                 || mAuth.getCurrentUser ().getEmail().equals("wadektech@gmail.com")){
             Intent intent = new Intent(getApplicationContext(), AdminPanelActivity.class);
@@ -313,5 +313,5 @@ public class SignUpActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-       }
     }
+}

@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFF8B7"
+    android:background="#26a69a"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:background="#2196F3"
+        android:layout_height="@dimen/_66sdp"
+        android:background="#00695c"
         android:minHeight="?android:attr/actionBarSize">
 
 <RelativeLayout
@@ -22,13 +22,13 @@
         <de.hdodenhof.circleimageview.CircleImageView
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/profileImage"
-            android:layout_width="68dp"
-            android:layout_height="68dp"
-            android:layout_marginTop="4dp"
-            android:elevation="8dp"
+            android:layout_width="@dimen/_58sdp"
+            android:layout_height="@dimen/_58sdp"
+            android:layout_marginTop="@dimen/_4sdp"
+            android:elevation="@dimen/_8sdp"
             android:src="@drawable/profile"
-            app:civ_border_color="#FFF8B7"
-            app:civ_border_width="2dp"
+            app:civ_border_color="#b71c1c"
+            app:civ_border_width="@dimen/_1sdp"
             tools:targetApi="lollipop" />
 </RelativeLayout>
 
@@ -37,14 +37,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="8dp"
-        tools:context=".NoticeBoardActivity">
+        android:padding="@dimen/_8sdp"
+        tools:context=".MainActivity">
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mSwipe">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fadeScrollbars="false"
+            android:scrollbarThumbVertical="@drawable/scrollbar"
             android:scrollbars="vertical" />
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
 

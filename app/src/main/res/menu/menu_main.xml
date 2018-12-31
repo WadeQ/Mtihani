@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".NoticeBoardActivity">
+    tools:context=".MainActivity">
 
     <item
         android:icon="@drawable/menu_item"
@@ -38,6 +38,12 @@
                 android:icon="@drawable/rateapp"
                 android:orderInCategory="400"
                 android:title="@string/rate"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/admin_panel"
+                android:icon="@drawable/key"
+                android:orderInCategory="100"
+                android:title="@string/admin_panel"
                 app:showAsAction="never" />
 
             <item

@@ -1,6 +1,5 @@
 package com.wadektech.mtihanirevise.adapter;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,20 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.pojo.RowModel;
-import com.wadektech.mtihanirevise.ui.PaperPerSubject;
 
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolders> {
 
-    private OnItemClickHandler mHandler ;
+    private OnItemClickHandler mHandler;
     private List<RowModel> itemList;
 
-    public RecyclerViewAdapter( List<RowModel> itemList , OnItemClickHandler mHandler) {
+    public RecyclerViewAdapter(List<RowModel> itemList, OnItemClickHandler mHandler) {
         this.itemList = itemList;
-        this.mHandler = mHandler ;
+        this.mHandler = mHandler;
 
     }
 
@@ -44,10 +43,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         return this.itemList.size();
     }
 
-    public interface OnItemClickHandler{
-        void onGridItemClicked(int position);
+    public interface OnItemClickHandler {
+        void onGridItemClicked(String category);
     }
-    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView examYear;
         public ImageView examPhoto;
@@ -57,13 +57,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             itemView.setOnClickListener(this);
 
             examYear = itemView.findViewById(R.id.tv_kcse);
-            examPhoto= itemView.findViewById(R.id.tv_subject_icon);
+            examPhoto = itemView.findViewById(R.id.tv_subject_icon);
         }
 
         @Override
         public void onClick(View view) {
 
-            mHandler.onGridItemClicked (getAdapterPosition ());
+            mHandler.onGridItemClicked(itemList.get(getAdapterPosition()).getYear());
 
         }
     }

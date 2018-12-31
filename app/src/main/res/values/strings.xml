@@ -95,25 +95,17 @@
     <string name="hint_status">Status</string>
     <string name="_status_update">Update Status</string>
     <string name="status_banner">Am a proud user of Mtihani Revise!</string>
+    <string name="enter_admin_password">Enter admin password</string>
+    <string name="admin_panel">admin panel</string>
+    <string name="pdf_download">PDF Download</string>
+    <string name="cancel">Cancel</string>
+    <string name="open_PDF">OPEN PDF</string>
+    <string name="test_ap_id">ca-app-pub-3940256099942544~3347511713</string>
+    <string name="interstitial_ad_test_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="login_with_google">Login with Google</string>
-    <string name="title_activity_main">MainActivity</string>
-    <string name="blackboard_text">Do you have a question/challenge you want to post? Click the + button to add your question(s)/challenge and let your fellow students help you solve it.</string>
-    <string name="blackboard">BlackBoard</string>
-    <string name="add_question_challenge">Add Question/Challenge</string>
-    <string name="post">POST</string>
-    <string name="question">Question</string>
-    <string name="click_to_view_answers">Click to view answers</string>
-    <string name="your_blackboard">Your Blackboard</string>
-    <string name="_01_01_2019">01/01/2019</string>
-    <string name="derrick_asks">Derrick asks..</string>
-    <string name="what_is_algebra">What is algebra?</string>
-    <string name="enter_date">Enter Date</string>
-    <string name="enter_username">Enter Username</string>
     <string name="app_version">App Version</string>
-    <string name="_1_2_3_6_1_wadek_technologies">1.2.3.6.1 Wadek Technologies</string>
-    <string name="copyright_2018_all_rights_reserved">Copyright@2018, All Rights Reserved.</string>
-    <string name="select_date">Select Date</string>
-    <string name="date_picker">Select Date</string>
+    <string name="registered_symbol">Version 1.0, Mtihani Revise®</string>
+    <string name="hintSearch" >Search</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

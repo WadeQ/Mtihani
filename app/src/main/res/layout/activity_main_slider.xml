@@ -11,7 +11,7 @@
         <android.support.v4.view.ViewPager
             android:id="@+id/slideViewPager"
             android:layout_width="match_parent"
-            android:layout_height="510dp">
+            android:layout_height="@dimen/_510sdp">
 
         </android.support.v4.view.ViewPager>
 
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="41dp"
+            android:layout_marginBottom="@dimen/_41sdp"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -29,17 +29,17 @@
 
     <Button
         android:id="@+id/slideViewButton"
-        android:layout_width="69dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/_69sdp"
+        android:layout_height="@dimen/_30sdp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="12dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginRight="12dp"
+        android:layout_marginBottom="@dimen/_12sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginRight="@dimen/_12sdp"
         android:background="@drawable/btn_main"
         android:text="@string/btn_next"
-        android:textSize="20sp"
+        android:textSize="@dimen/_18ssp"
         android:textColor="@color/colorTransparent"
         android:textStyle="bold" />
 

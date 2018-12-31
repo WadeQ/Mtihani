@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.wadektech.mtihanirevise">
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -19,7 +17,9 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".adapter.MainSliderActivity"
-            tools:ignore="InnerclassSeparator">
+            tools:ignore="InnerclassSeparator"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,23 +28,40 @@
         </activity>
         <activity
             android:name=".auth.SignUpActivity"
-            tools:ignore="InnerclassSeparator" />
+            tools:ignore="InnerclassSeparator"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.PastPapersActivity"
-            tools:ignore="InnerclassSeparator" />
+            tools:ignore="InnerclassSeparator"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".ui.PaperPerSubject"
-            tools:ignore="InnerclassSeparator" />
+            tools:ignore="InnerclassSeparator"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".pdfViewer.ItemDetailActivity"
+            android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".ui.DeveloperProfile"
-            tools:ignore="InnerclassSeparator" />
-        <activity android:name=".ui.ChatActivity" />
-        <activity android:name=".auth.LoginActivity" />
-        <activity android:name=".ui.MessageActivity" />
-        <activity android:name=".ui.AdminPanelActivity" />
+            tools:ignore="InnerclassSeparator"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.ChatActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".auth.LoginActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.MessageActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.AdminPanelActivity"
+            android:screenOrientation="portrait"
+            />
 
         <service
             android:name=".notification.MyFirebaseIdService"
@@ -63,7 +80,15 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.StatusUpdate" />
+        <activity android:name=".ui.StatusUpdate"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.PDFViewerActivity"
+            android:screenOrientation="portrait"
+            />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
     </application>
 
 </manifest>

@@ -1,16 +1,21 @@
-    package com.wadektech.mtihanirevise.ui;
+package com.wadektech.mtihanirevise.ui;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -29,8 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
-        import com.squareup.picasso.MemoryPolicy;
-        import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
@@ -38,6 +43,7 @@ import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.pojo.RowModel;
 import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.viewmodels.AdminPanelViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,17 +51,20 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import hotchemi.android.rate.AppRate;
 
-public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, RecyclerViewAdapter.OnItemClickHandler{
+public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
+        RecyclerViewAdapter.OnItemClickHandler {
     private GridLayoutManager lLayout;
-    FirebaseAuth mAuth ;
-    CircleImageView userProfile ;
-    GoogleApiClient mGoogleApiClient ;
-    private Uri imageUri ;
-    DatabaseReference databaseReference ;
-    FirebaseUser firebaseUser ;
-    StorageReference storageReference ;
+    FirebaseAuth mAuth;
+    CircleImageView userProfile;
+    GoogleApiClient mGoogleApiClient;
+    private Uri imageUri;
+    DatabaseReference databaseReference;
+    FirebaseUser firebaseUser;
+    StorageReference storageReference;
+    private SwipeRefreshLayout mSwipe;
+    private  AlertDialog alertDialogAndroid;
 
-    NiftyDialogBuilder materialDesignAnimatedDialog ;
+    NiftyDialogBuilder materialDesignAnimatedDialog;
 
 
     @Override
@@ -63,13 +72,13 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_papers);
         Toolbar topToolBar = findViewById(R.id.toolbar);
+        mSwipe=findViewById(R.id.mSwipe);
         topToolBar.setTitle(null);
         setSupportActionBar(topToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(this);
 
-        materialDesignAnimatedDialog =  NiftyDialogBuilder.getInstance(this);
-
-        FirebaseDatabase.getInstance ().getReference ("Users").keepSynced (true);
+        FirebaseDatabase.getInstance().getReference("Users").keepSynced(true);
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
@@ -86,17 +95,17 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                 .build();
 
 
-        mAuth = FirebaseAuth.getInstance() ;
+        mAuth = FirebaseAuth.getInstance();
         userProfile = findViewById(R.id.profileImage);
 
-        final FirebaseUser user = mAuth.getCurrentUser() ;
+        final FirebaseUser user = mAuth.getCurrentUser();
         //get user profile details and display on toolbar
         if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
-                    .networkPolicy (NetworkPolicy.OFFLINE)
+                    .networkPolicy(NetworkPolicy.OFFLINE)
                     .placeholder(R.drawable.profile)
-                    .into (userProfile, new Callback () {
+                    .into(userProfile, new Callback() {
                         @Override
                         public void onSuccess() {
 
@@ -104,16 +113,16 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
 
                         @Override
                         public void onError() {
-                            Picasso.with (getApplicationContext ())
-                                    .load (user.getPhotoUrl ())
-                                    .into (userProfile);
+                            Picasso.with(getApplicationContext())
+                                    .load(user.getPhotoUrl())
+                                    .into(userProfile);
                         }
                     });
         }
-        storageReference = FirebaseStorage.getInstance().getReference("uploads") ;
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
+        storageReference = FirebaseStorage.getInstance().getReference("uploads");
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        databaseReference.keepSynced (true);
+        databaseReference.keepSynced(true);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -143,12 +152,13 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                     }
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
 
-        mAuth = FirebaseAuth.getInstance() ;
+        mAuth = FirebaseAuth.getInstance();
         List<RowModel> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(PastPapersActivity.this, 2);
 
@@ -156,9 +166,11 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(rowListItem , this );
+        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(rowListItem, this);
         rView.setAdapter(rcAdapter);
+        mSwipe.setOnRefreshListener(() -> mSwipe.setRefreshing(false));
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -182,12 +194,17 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         if (id == R.id.rate_app) {
             //we will call our rateApp method here
             rateApp();
-            return true ;
+            return true;
+        }
+        //check if user is admin before opening admin panel
+        if (id == R.id.admin_panel) {
+            adminVerifier();
+            return true;
         }
         if (id == R.id.menu_share) {
             //we will call our shareApp method here
             shareApp();
-            return true ;
+            return true;
         }
         if (id == R.id.menuLogout) {
             //we will call our signOut method here
@@ -203,11 +220,68 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         return super.onOptionsItemSelected(item);
     }
 
-    private List<RowModel> getAllItemList(){
+    private void adminVerifier() {
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
+        View mView = layoutInflaterAndroid.inflate(R.layout.custom_dialog_layout, null);
+        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(this);
+        alertDialogBuilderUserInput.setView(mView);
+
+        final EditText userInputDialogEditText = mView.findViewById(R.id.userInputDialog);
+        alertDialogBuilderUserInput
+                .setCancelable(false)
+                .setPositiveButton("Submit", (dialogBox, id) -> {
+                    // ToDo get user input here
+                    if (!userInputDialogEditText.getText().toString().trim().isEmpty()) {
+                        mSwipe.setRefreshing(true);
+                        AdminPanelViewModel viewModel = ViewModelProviders.of(this)
+                                .get(AdminPanelViewModel.class);
+                        viewModel.getAdminPassword();
+                        viewModel.getAdminPasswordResponse().observe(PastPapersActivity.this, pass -> {
+                            if (pass != null) {
+                                alertDialogAndroid.dismiss();
+                                mSwipe.setRefreshing(false);
+                                switch (pass) {
+                                    case "password is empty":
+                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
+                                        break;
+                                    case "Unable to authenticate, please try again":
+                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
+
+                                        break;
+                                    default:
+                                        if (pass.equals(userInputDialogEditText.getText().toString().trim())) {
+                                            startActivity(new Intent(this, AdminPanelActivity.class));
+                                        } else {
+                                            Toast.makeText(this, "wrong password!", Toast.LENGTH_SHORT).show();
+                                        }
+                                        break;
+                                }
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        (dialogBox, id) -> dialogBox.cancel());
+
+        alertDialogAndroid = alertDialogBuilderUserInput.create();
+        alertDialogAndroid.show();
+    }
+
+    private List<RowModel> getAllItemList() {
 
         List<RowModel> allItems = new ArrayList<>();
+        allItems.add(new RowModel("KCSE 2000", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2001", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2002", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2003", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2004", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2005", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2006", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2007", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2008", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2009", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2010", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2011", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2012", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2013", R.drawable.pdf));
@@ -215,35 +289,39 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         allItems.add(new RowModel("KCSE 2015", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2016", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2017", R.drawable.pdf));
-        allItems.add(new RowModel("K.C.S.E ANSWERS", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2018", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE ANSWERS", R.drawable.pdf));
 
         return allItems;
     }
+
     //method to logout
-    private void signOut(){
+    private void signOut() {
         //signOut user from firebase database
         mAuth.signOut();
         //clear user account
         //send intent to the Login activity
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient) ;
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
         Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
     @Override
-    protected void onStart(){
+    protected void onStart() {
         super.onStart();
         /*
         if user is not signed in
         open login activity
         */
-        if (mAuth.getCurrentUser() == null){
+        if (mAuth.getCurrentUser() == null) {
             finish();
             startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
         }
     }
+
     //Implement the rate app functionality from the rateApp library
-    private void rateApp(){
+    private void rateApp() {
         AppRate.with(this)
                 .setInstallDays(1)
                 .setLaunchTimes(3)
@@ -257,8 +335,9 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
     }
+
     //implement a custom dialog for share app functionality
-    public void shareApp(){
+    public void shareApp() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT,
@@ -277,27 +356,15 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                 .withButton2Text("Cancel")
                 .withDuration(700)
                 .withEffect(Effectstype.Fall)
-                .setButton1Click (new View.OnClickListener () {
-                    @Override
-                    public void onClick(View v) {
-                        signOut ();
-                    }
-                })
-                .setButton2Click (new View.OnClickListener () {
-                    @Override
-                    public void onClick(View v) {
-                        materialDesignAnimatedDialog.dismiss ();
-                    }
-                });
+                .setButton1Click (v -> signOut ())
+                .setButton2Click (v -> materialDesignAnimatedDialog.dismiss ());
         materialDesignAnimatedDialog.show() ;
     }
 
     @Override
-    public void onGridItemClicked(int position) {
-
-                Intent intent = new Intent(this, PaperPerSubject.class);
-                intent.putExtra ("AdapterPosition" , position);
-                startActivity(intent);
+    public void onGridItemClicked(String category) {
+        Intent intent = new Intent(this, PaperPerSubject.class);
+        intent.putExtra("category", category);
+        startActivity(intent);
     }
-
 }

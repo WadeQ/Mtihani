@@ -11,7 +11,7 @@
     android:id="@+id/tv_username"
     android:textColor="@color/colorWhite"
     android:hint="@string/username"
-    android:textSize="18sp"
+    android:textSize="@dimen/_18ssp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
 </android.support.v7.widget.Toolbar>

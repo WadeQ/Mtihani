@@ -2,8 +2,8 @@ package com.wadektech.mtihanirevise.auth;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +29,7 @@ import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class LoginActivity extends SignUpActivity  {
+public class LoginActivity extends SignUpActivity {
 
     private static final int RC_SIGN_IN = 1;
     Button btnlogin, btnSignUp, googleLogin;
@@ -39,11 +39,12 @@ public class LoginActivity extends SignUpActivity  {
     private static final String TAG = "wadektech";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_login);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+
         btnSignUp = findViewById (R.id.btn_sign_up);
         btnlogin = findViewById (R.id.btn_login);
         loginEmail = findViewById (R.id.et_email);

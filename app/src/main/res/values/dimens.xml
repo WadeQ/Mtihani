@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_8dp">8dp</dimen>
+    <dimen name="margin_24dp">24dp</dimen>
+    <dimen name="card_corner_radius_4dp">4dp</dimen>
+    <dimen name="margin_0dp">0dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_1dp">1dp</dimen>
+    <dimen name="margin_16dp">16dp</dimen>
+</resources>

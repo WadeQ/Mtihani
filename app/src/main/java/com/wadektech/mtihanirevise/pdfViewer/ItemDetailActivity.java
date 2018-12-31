@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.ScrollBar;
 import com.wadektech.mtihanirevise.R;
 
 public class ItemDetailActivity extends AppCompatActivity {
@@ -15,13 +14,14 @@ public class ItemDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_detail);
-      //display PDF to viewer
+        //display PDF to viewer
         pdfView = findViewById(R.id.pdf_viewer);
         //enable scrolling using scrollbar
-        ScrollBar mScroll = findViewById(R.id.pdf_scrollbar);
-        pdfView.setScrollBar(mScroll);
+        // ScrollBar mScroll = findViewById(R.id.pdf_scrollbar);
+        // pdfView.setScrollBar(mScroll);
         //enable vertical scrolling
-        mScroll.setHorizontal(false);
+        // mScroll.setHorizontal(false);
 
     }
 }
+

@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.DeveloperProfile">
 
     <RelativeLayout
@@ -12,23 +12,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/grad"
-        android:paddingBottom="20dp">
+        android:paddingBottom="@dimen/_20sdp">
 
         <RelativeLayout
             android:id="@+id/imgUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:background="@drawable/circle_border">
 
             <ImageView
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="9dp"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="@dimen/_120sdp"
+                android:layout_margin="@dimen/_9sdp"
                 android:adjustViewBounds="true"
                 android:background="@drawable/circle"
-                android:padding="3dp"
+                android:padding="@dimen/_3sdp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_user"
                 tools:ignore="ContentDescription" />
@@ -41,11 +41,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15sp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="sans-serif-light"
             android:text="@string/derrick_wadek"
             android:textColor="@color/colorWhite"
-            android:textSize="32sp" />
+            android:textSize="@dimen/_32ssp" />
+
 
         <TextView
             android:id="@+id/tv_address"
@@ -57,7 +58,7 @@
             android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
-            android:textSize="14sp" />
+            android:textSize="@dimen/_14ssp" />
 
 
     </RelativeLayout>
@@ -76,10 +77,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:gravity="center"
             android:background="@color/followingBg"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
+            android:gravity="center"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
             tools:ignore="UselessParent">
 
             <LinearLayout
@@ -94,7 +95,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/profile"
                     android:textColor="@color/colorWhite"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/_18ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -103,7 +104,7 @@
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
                     android:textColor="@color/colorWhite"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/_13ssp" />
 
             </LinearLayout>
 
@@ -120,9 +121,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginLeft="@dimen/_30sdp"
+            android:layout_marginRight="@dimen/_30sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
@@ -136,28 +137,28 @@
                     android:layout_height="wrap_content"
                     android:text="@string/email_profile"
                     android:textColor="@color/headings"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/wadektech_gmail_com"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_18ssp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/followingBg" />
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/grey" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <TextView
@@ -165,27 +166,28 @@
                     android:layout_height="wrap_content"
                     android:text="@string/facebook"
                     android:textColor="@color/headings"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/facebook_com_wadektech"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_18ssp" />
+
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/followingBg" />
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/grey" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="vertical">
 
                 <TextView
@@ -193,54 +195,50 @@
                     android:layout_height="wrap_content"
                     android:text="@string/twitter"
                     android:textColor="@color/headings"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
                     android:text="@string/twitterUsername"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/_18ssp" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/followingBg" />
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/grey" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="vertical">
-
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_version"
                     android:textColor="@color/headings"
-                    android:textSize="13sp" />
+                    android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="@string/_1_2_3_6_1_wadek_technologies"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:text="@string/registered_symbol"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="@dimen/_18ssp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@string/copyright_2018_all_rights_reserved"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:background="@color/grey" />
 
             </LinearLayout>
 

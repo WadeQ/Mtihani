@@ -17,11 +17,13 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-    private static final int MSG_TYPE_LEFT = 0 ;
-    private static final int MSG_TYPE_RIGHT = 1 ;
+    public static final int MSG_TYPE_LEFT = 0 ;
+    public static final int MSG_TYPE_RIGHT = 1 ;
     private Context context;
     private List<Chat> chats ;
     private String imageurl ;
+
+    FirebaseUser firebaseUser ;
 
     public MessageAdapter(Context context, List<Chat> chats , String imageurl) {
         this.context = context;
@@ -52,11 +54,11 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
                     .into(holder.chatImage);
         }
         if (position == chats.size()-1){
-               if (chat.isIsseen()){
-                   holder.mSeen.setText("seen");
-               }else {
-                   holder.mSeen.setText("Delivered");
-               }
+            if (chat.isIsseen()){
+                holder.mSeen.setText("seen");
+            }else {
+                holder.mSeen.setText("Delivered");
+            }
         }else {
             holder.mSeen.setVisibility(View.GONE);
         }
@@ -67,9 +69,9 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-           public TextView chatMessage ;
-           public CircleImageView chatImage ;
-           public TextView mSeen ;
+        public TextView chatMessage ;
+        public CircleImageView chatImage ;
+        public TextView mSeen ;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -82,7 +84,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
 
     @Override
     public int getItemViewType(int position) {
-        FirebaseUser firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if (chats.get(position).getSender().equals(firebaseUser.getUid())){
             return MSG_TYPE_RIGHT ;
         } else {
