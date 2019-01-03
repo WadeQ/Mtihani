@@ -80,8 +80,16 @@ public class ProfileFragment extends Fragment {
         databaseReference.addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String status = dataSnapshot.child("update").getValue().toString();
-                statusDisplay.setText(status);
+                if (dataSnapshot.exists ()) {
+                    String val= dataSnapshot.child("update").getValue(String.class);
+                    if(val!=null)
+                    {
+                        statusDisplay.setText (val);
+                    }else
+                    {
+                        Toast.makeText (getContext (), "Null object!", Toast.LENGTH_SHORT).show ();
+                    }
+                }
             }
 
             @Override
@@ -90,12 +98,9 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        btnStatus.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent (getContext (), StatusUpdate.class);
-                startActivity (intent);
-            }
+        btnStatus.setOnClickListener (v -> {
+            Intent intent = new Intent (getContext (), StatusUpdate.class);
+            startActivity (intent);
         });
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads") ;

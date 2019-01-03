@@ -272,7 +272,7 @@ public class SignUpActivity extends AppCompatActivity {
             finish();
         }
     }
-  /**  private void adminVerifier() {
+  /*  private void adminVerifier() {
         FirebaseUser user  = mAuth.getCurrentUser ();
                         AdminPanelViewModel viewModel = ViewModelProviders.of(this)
                                 .get(AdminPanelViewModel.class);
