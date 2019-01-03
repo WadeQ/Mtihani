@@ -105,6 +105,7 @@
     <string name="login_with_google">Login with Google</string>
     <string name="app_version">App Version</string>
     <string name="registered_symbol">Version 1.0, Mtihani Revise®</string>
+    <string name="copyright_symbol">© 2019 - Wadek Technologies, All rights reserved</string>
     <string name="hintSearch" >Search</string>
 
     <!-- TODO: Remove or change this placeholder text -->

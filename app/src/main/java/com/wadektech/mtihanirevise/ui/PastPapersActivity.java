@@ -196,11 +196,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
             rateApp();
             return true;
         }
-        //check if user is admin before opening admin panel
-        if (id == R.id.admin_panel) {
-            adminVerifier();
-            return true;
-        }
         if (id == R.id.menu_share) {
             //we will call our shareApp method here
             shareApp();

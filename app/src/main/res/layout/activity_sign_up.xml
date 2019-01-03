@@ -145,12 +145,13 @@
 
     <Button
         android:id="@+id/btnSignUp"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_165sdp"
         android:textStyle="bold"
+        android:textSize="@dimen/_15ssp"
         android:textColor="@color/colorPrimaryDark"
         android:background="@drawable/btn_bg"
         android:text="@string/sign_up"
@@ -171,11 +172,12 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/_150sdp"
         android:layout_height="@dimen/_40sdp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/_85sdp"
+        android:textSize="@dimen/_15ssp"
         android:background="@drawable/btn_bg"
         android:text="@string/login"
         android:textColor="@color/colorPrimaryDark"

@@ -15,22 +15,22 @@
         android:background="#00695c"
         android:minHeight="?android:attr/actionBarSize">
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/profileImage"
-            android:layout_width="@dimen/_58sdp"
-            android:layout_height="@dimen/_58sdp"
-            android:layout_marginTop="@dimen/_4sdp"
-            android:elevation="@dimen/_8sdp"
-            android:src="@drawable/profile"
-            app:civ_border_color="#b71c1c"
-            app:civ_border_width="@dimen/_1sdp"
-            tools:targetApi="lollipop" />
-</RelativeLayout>
+            <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/profileImage"
+                android:layout_width="@dimen/_58sdp"
+                android:layout_height="@dimen/_58sdp"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:elevation="@dimen/_8sdp"
+                android:src="@drawable/profile"
+                app:civ_border_color="#b71c1c"
+                app:civ_border_width="@dimen/_1sdp"
+                tools:targetApi="lollipop" />
+        </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
@@ -44,13 +44,13 @@
             android:layout_height="match_parent"
             android:id="@+id/mSwipe">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fadeScrollbars="false"
-            android:scrollbarThumbVertical="@drawable/scrollbar"
-            android:scrollbars="vertical" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fadeScrollbars="false"
+                android:scrollbarThumbVertical="@drawable/scrollbar"
+                android:scrollbars="vertical" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
     </RelativeLayout>
