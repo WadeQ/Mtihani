@@ -8,17 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
-
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SinglePDFAdapter extends
-        RecyclerView.Adapter<SinglePDFAdapter.SinglePDFAdapterViewHolder>
-        implements Filterable{
+public class SinglePDFAdapter extends RecyclerView.Adapter<SinglePDFAdapter.SinglePDFAdapterViewHolder> implements Filterable {
     private List<SinglePDF> pdfList;
     private List<SinglePDF>pdfListFiltered;
     private OnSinglePDFClickHandler mHandler;
@@ -87,7 +83,7 @@ public class SinglePDFAdapter extends
 
     public class SinglePDFAdapterViewHolder extends RecyclerView.ViewHolder
             implements View.OnClickListener{
-        private TextView fileName;
+            private TextView fileName;
 
         public SinglePDFAdapterViewHolder(View itemView) {
             super(itemView);
@@ -101,7 +97,7 @@ public class SinglePDFAdapter extends
 
         @Override
         public void onClick(View v) {
-            mHandler.onSinglePDFClicked(pdfList.get(getAdapterPosition()));
+            mHandler.onSinglePDFClicked(pdfListFiltered.get(getAdapterPosition()));
         }
     }
 }

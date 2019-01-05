@@ -3,18 +3,17 @@ package com.wadektech.mtihanirevise.ui;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,11 +21,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
+import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.MessageAdapter;
 import com.wadektech.mtihanirevise.fragments.APIService;
 import com.wadektech.mtihanirevise.notification.Client;
@@ -36,7 +35,6 @@ import com.wadektech.mtihanirevise.notification.Sender;
 import com.wadektech.mtihanirevise.notification.Token;
 import com.wadektech.mtihanirevise.pojo.Chat;
 import com.wadektech.mtihanirevise.pojo.User;
-import com.wadektech.mtihanirevise.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -81,13 +79,8 @@ public class MessageActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-        topToolBar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MessageActivity.this, ChatActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-            }
-        });
+        topToolBar.setNavigationOnClickListener(v -> startActivity(new Intent(MessageActivity.this, ChatActivity.class)
+                .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
 
         apiService = Client.getClient ("https://fcm.googleapis.com/").create (APIService.class);
 
@@ -109,18 +102,15 @@ public class MessageActivity extends AppCompatActivity {
         intent = getIntent() ;
         final String userid = intent.getStringExtra("userid") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        btnSend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notify = true;
-                String message = editSend.getText().toString();
-                if (!message.equals("")){
-                    sendMessage(firebaseUser.getUid(), userid, message);
-                }else {
-                    Toast.makeText(getApplicationContext(),"Blank message!", Toast.LENGTH_SHORT).show();
-                }
-                editSend.setText("");
+        btnSend.setOnClickListener(v -> {
+            notify = true;
+            String message = editSend.getText().toString();
+            if (!message.equals("")){
+                sendMessage(firebaseUser.getUid(), userid, message);
+            }else {
+                Toast.makeText(getApplicationContext(),"Blank message!", Toast.LENGTH_SHORT).show();
             }
+            editSend.setText("");
         });
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
