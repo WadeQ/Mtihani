@@ -74,7 +74,7 @@ public class ProfileFragment extends Fragment {
         statusDisplay = view.findViewById (R.id.status_display);
 
         firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
-        assert firebaseUser != null;
+        assert firebaseUser != null;assert firebaseUser != null;
         String userID = firebaseUser.getUid () ;
         databaseReference = FirebaseDatabase.getInstance ().getReference ("Users").child (userID);
         databaseReference.addValueEventListener (new ValueEventListener () {

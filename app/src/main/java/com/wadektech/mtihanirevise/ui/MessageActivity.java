@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -205,6 +206,7 @@ public class MessageActivity extends AppCompatActivity {
         });
         final String msg = message;
         reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
+        reference.keepSynced (true);
         reference.addValueEventListener (new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -223,6 +225,7 @@ public class MessageActivity extends AppCompatActivity {
     }
     private void sendNotification(String receiver, final String username, final String message){
         DatabaseReference tokens = FirebaseDatabase.getInstance ().getReference ("Tokens");
+        tokens.keepSynced (true);
         Query query = tokens.orderByKey ().equalTo (receiver);
         query.addValueEventListener (new ValueEventListener () {
             @Override
@@ -319,17 +322,9 @@ public class MessageActivity extends AppCompatActivity {
         updateTimeAndDate ();
     }
     private void updateTimeAndDate(){
-        String saveCurrentTime , saveCurrentDate ;
-        Calendar calendar = Calendar.getInstance ();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-        saveCurrentDate =currentDate.format (calendar.getTime ());
-
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
-        saveCurrentTime =currentTime.format (calendar.getTime ());
         reference = FirebaseDatabase.getInstance ().getReference ("Users").child (firebaseUser.getUid ());
         HashMap<String , Object> hashMap = new HashMap<>();
-        hashMap.put ("time" , saveCurrentTime);
-        hashMap.put ("date" , saveCurrentDate);
+        hashMap.put ("time" , String.valueOf (ServerValue.TIMESTAMP));
         reference.updateChildren (hashMap);
     }
 }

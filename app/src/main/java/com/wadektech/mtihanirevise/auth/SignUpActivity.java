@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
@@ -180,21 +181,14 @@ public class SignUpActivity extends AppCompatActivity {
                         if (image != null){
                             imageUrl = image.toString ();
                         }
-                        String saveCurrentTime , saveCurrentDate ;
-                        Calendar calendar = Calendar.getInstance ();
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-                        saveCurrentDate =currentDate.format (calendar.getTime ());
 
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
-                        saveCurrentTime =currentTime.format (calendar.getTime ());
                         HashMap<String , Object> hashMap = new HashMap<> ();
                         hashMap.put("id", userId);
                         hashMap.put("status" , "offline");
                         hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
                         assert name != null;
                         hashMap.put("search" , name.toLowerCase ());
-                        hashMap.put ("time" , saveCurrentTime);
-                        hashMap.put ("date" , saveCurrentDate);
+                        hashMap.put ("time" , String.valueOf (ServerValue.TIMESTAMP));
                         hashMap.put ("username" , name);
                         hashMap.put ("imageURL" , imageUrl);
                         reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
