@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.wadektech.mtihanirevise.adapter.UserAdapter;
 import com.wadektech.mtihanirevise.notification.Token;
-import com.wadektech.mtihanirevise.pojo.Chat;
 import com.wadektech.mtihanirevise.pojo.Chatlist;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.R;

@@ -1,8 +1,10 @@
 package com.wadektech.mtihanirevise.adapter;
 
 import android.annotation.SuppressLint;
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +13,12 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
-import com.wadektech.mtihanirevise.pojo.Chat;
+import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.R;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHolder> {
+public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHolder> {
     public static final int MSG_TYPE_LEFT = 0 ;
     public static final int MSG_TYPE_RIGHT = 1 ;
     private Context context;
@@ -26,6 +28,7 @@ public class MessageAdapter extends  RecyclerView.Adapter<MessageAdapter.ViewHol
     FirebaseUser firebaseUser ;
 
     public MessageAdapter(Context context, List<Chat> chats , String imageurl) {
+        super (Chat.DIFF_CALLBACK);
         this.context = context;
         this.chats = chats;
         this.imageurl = imageurl;

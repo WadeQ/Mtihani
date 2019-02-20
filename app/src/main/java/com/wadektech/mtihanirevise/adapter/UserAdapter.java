@@ -22,7 +22,7 @@ import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.pojo.Chat;
+import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.pojo.User;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
 

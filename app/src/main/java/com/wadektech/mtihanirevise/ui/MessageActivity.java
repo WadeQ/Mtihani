@@ -1,6 +1,9 @@
 package com.wadektech.mtihanirevise.ui;
 
 import android.annotation.SuppressLint;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.paging.PagedList;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -34,12 +37,14 @@ import com.wadektech.mtihanirevise.notification.Data;
 import com.wadektech.mtihanirevise.notification.MyResponse;
 import com.wadektech.mtihanirevise.notification.Sender;
 import com.wadektech.mtihanirevise.notification.Token;
-import com.wadektech.mtihanirevise.pojo.Chat;
+import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
+import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.ChatDao;
+import com.wadektech.mtihanirevise.room.ChatViewModel;
+import com.wadektech.mtihanirevise.room.MtihaniDatabase;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -59,6 +64,8 @@ public class MessageActivity extends AppCompatActivity {
       MessageAdapter mAdapter ;
       List<Chat> chats ;
       RecyclerView mRecycler ;
+      MtihaniDatabase mtihaniDatabase ;
+      private ChatViewModel chatViewModel;
 
       Intent intent ;
       private String myid;
@@ -66,6 +73,8 @@ public class MessageActivity extends AppCompatActivity {
       boolean notify = false;
 
     APIService apiService ;
+
+    private ChatDao chatDao;
 
     private ValueEventListener seenListener ;
 
@@ -99,13 +108,16 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(linearLayoutManager);
 
+        ChatViewModel chatViewModel = ViewModelProviders.of (this).get (ChatViewModel.class);
+        chatViewModel.chats.observe (this, mAdapter :: submitList);
+        mRecycler.setAdapter (mAdapter);
 
         intent = getIntent() ;
         final String userid = intent.getStringExtra("userid") ;
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
         btnSend.setOnClickListener(v -> {
             notify = true;
-            String message = editSend.getText().toString();
+            String message = editSend.getText().toString().trim();
             if (!message.equals("")){
                 sendMessage(firebaseUser.getUid(), userid, message);
             }else {
@@ -256,7 +268,6 @@ public class MessageActivity extends AppCompatActivity {
                           });
               }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -264,6 +275,7 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
     private void readMessages(final String myid , final String userid, final String imageurl) {
+        chatViewModel.saveChatsToRoom (chats);
         this.myid = myid;
         this.userid = userid;
         chats = new ArrayList<>() ;
@@ -283,6 +295,7 @@ public class MessageActivity extends AppCompatActivity {
                  mRecycler.setAdapter(mAdapter);
                  mRecycler.scrollToPosition (chats.size () -1);
              }
+
              }
              @Override
              public void onCancelled(@NonNull DatabaseError databaseError) {

@@ -6,9 +6,12 @@ import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
 public class MtihaniRevise extends Application {
+    private static MtihaniRevise mRevise;
     @Override
     public void onCreate() {
         super.onCreate ();
+
+        mRevise = this ;
 
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
@@ -18,5 +21,9 @@ public class MtihaniRevise extends Application {
         built.setIndicatorsEnabled (true);
         built.setLoggingEnabled (true);
         Picasso.setSingletonInstance (built);
+    }
+
+    public static MtihaniRevise getApp() {
+        return mRevise;
     }
 }
