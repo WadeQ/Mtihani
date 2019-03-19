@@ -23,7 +23,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.room.Chat;
-import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
 
 import java.util.List;
@@ -52,7 +52,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
         final User user = users.get(position) ;
+
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
         holder.mTime.setText (user.getTime ());

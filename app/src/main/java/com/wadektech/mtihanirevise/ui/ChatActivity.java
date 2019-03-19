@@ -22,7 +22,7 @@ import com.wadektech.mtihanirevise.fragments.ChatsFragment;
 import com.wadektech.mtihanirevise.fragments.ProfileFragment;
 import com.wadektech.mtihanirevise.fragments.UsersFragment;
 import com.wadektech.mtihanirevise.room.Chat;
-import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.R;
 
 import java.util.ArrayList;

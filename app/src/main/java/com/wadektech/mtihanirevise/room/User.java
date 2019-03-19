@@ -1,4 +1,4 @@
-package com.wadektech.mtihanirevise.pojo;
+package com.wadektech.mtihanirevise.room;
 
 public class User {
     private String id ;

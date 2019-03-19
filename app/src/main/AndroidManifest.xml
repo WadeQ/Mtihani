@@ -7,6 +7,12 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
+
     <application
         android:name=".persistence.MtihaniRevise"
         android:icon="@mipmap/logoicon"
@@ -18,7 +24,6 @@
         <activity
             android:name=".adapter.MainSliderActivity"
             tools:ignore="InnerclassSeparator"
-            android:screenOrientation="portrait"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,17 +34,17 @@
         <activity
             android:name=".auth.SignUpActivity"
             tools:ignore="InnerclassSeparator"
-            android:screenOrientation="portrait"
+
             />
         <activity
             android:name=".ui.PastPapersActivity"
             tools:ignore="InnerclassSeparator"
-            android:screenOrientation="portrait"
+
             />
         <activity
             android:name=".ui.PaperPerSubject"
             tools:ignore="InnerclassSeparator"
-            android:screenOrientation="portrait"
+
             />
         <activity
             android:name=".pdfViewer.ItemDetailActivity"
@@ -48,19 +53,19 @@
         <activity
             android:name=".ui.DeveloperProfile"
             tools:ignore="InnerclassSeparator"
-            android:screenOrientation="portrait"
+
             />
         <activity android:name=".ui.ChatActivity"
-            android:screenOrientation="portrait"
+
             />
         <activity android:name=".auth.LoginActivity"
             android:screenOrientation="portrait"
             />
         <activity android:name=".ui.MessageActivity"
-            android:screenOrientation="portrait"
+
             />
         <activity android:name=".ui.AdminPanelActivity"
-            android:screenOrientation="portrait"
+
             />
 
         <service

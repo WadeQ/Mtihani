@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModel;
 import android.net.Uri;
 
 import com.wadektech.mtihanirevise.pojo.PDFObject;
-import com.wadektech.mtihanirevise.utils.MtihaniRepository;
+import com.wadektech.mtihanirevise.repository.MtihaniRepository;
 
 import java.util.List;
 

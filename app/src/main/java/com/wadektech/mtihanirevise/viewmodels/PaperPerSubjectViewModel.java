@@ -4,7 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
-import com.wadektech.mtihanirevise.utils.MtihaniRepository;
+import com.wadektech.mtihanirevise.repository.MtihaniRepository;
 
 import java.util.List;
 

@@ -15,6 +15,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.R;
+
+import java.util.ArrayList;
 import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -25,7 +27,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
     private List<Chat> chats ;
     private String imageurl ;
 
-    FirebaseUser firebaseUser ;
+    private FirebaseUser firebaseUser ;
 
     public MessageAdapter(Context context, List<Chat> chats , String imageurl) {
         super (Chat.DIFF_CALLBACK);

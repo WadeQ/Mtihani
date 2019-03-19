@@ -23,7 +23,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.UserAdapter;
-import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,6 @@ public class UsersFragment extends Fragment {
      private RecyclerView recyclerView;
      private UserAdapter userAdapter ;
      private List<User> users ;
-
      private EditText mSearch ;
 
     public UsersFragment() {

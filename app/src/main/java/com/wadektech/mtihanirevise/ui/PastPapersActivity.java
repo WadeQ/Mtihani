@@ -42,7 +42,7 @@ import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.pojo.RowModel;
-import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.viewmodels.AdminPanelViewModel;
 
 import java.util.ArrayList;

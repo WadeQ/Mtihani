@@ -1,9 +1,7 @@
 package com.wadektech.mtihanirevise.ui;
 
 import android.annotation.SuppressLint;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModelProviders;
-import android.arch.paging.PagedList;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -37,9 +35,8 @@ import com.wadektech.mtihanirevise.notification.Data;
 import com.wadektech.mtihanirevise.notification.MyResponse;
 import com.wadektech.mtihanirevise.notification.Sender;
 import com.wadektech.mtihanirevise.notification.Token;
-import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
 import com.wadektech.mtihanirevise.room.Chat;
-import com.wadektech.mtihanirevise.pojo.User;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.room.ChatDao;
 import com.wadektech.mtihanirevise.room.ChatViewModel;
 import com.wadektech.mtihanirevise.room.MtihaniDatabase;
@@ -66,6 +63,7 @@ public class MessageActivity extends AppCompatActivity {
       RecyclerView mRecycler ;
       MtihaniDatabase mtihaniDatabase ;
       private ChatViewModel chatViewModel;
+      private String imageurl ;
 
       Intent intent ;
       private String myid;
@@ -103,14 +101,21 @@ public class MessageActivity extends AppCompatActivity {
         btnSend = findViewById(R.id.btn_send_message);
         mRecycler = findViewById(R.id.rv_message);
         mTime = findViewById (R.id.tv_time);
+
+        //setting up recyclerview
         mRecycler.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         linearLayoutManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(linearLayoutManager);
 
-        ChatViewModel chatViewModel = ViewModelProviders.of (this).get (ChatViewModel.class);
+        //creating the adapter
+        mAdapter = new MessageAdapter(MessageActivity.this, chats , imageurl);
+
+        //getting viewmodel
+        chatViewModel = ViewModelProviders.of (this).get (ChatViewModel.class);
+
+        //observing the pagelist from viewmodel
         chatViewModel.chats.observe (this, mAdapter :: submitList);
-        mRecycler.setAdapter (mAdapter);
 
         intent = getIntent() ;
         final String userid = intent.getStringExtra("userid") ;
@@ -275,7 +280,6 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
     private void readMessages(final String myid , final String userid, final String imageurl) {
-        chatViewModel.saveChatsToRoom (chats);
         this.myid = myid;
         this.userid = userid;
         chats = new ArrayList<>() ;
@@ -291,6 +295,7 @@ public class MessageActivity extends AppCompatActivity {
                     chat.getSender() != null && chat.getReceiver().equals(userid) && chat.getSender().equals(myid)){
                      chats.add(chat) ;
                  }
+
                  mAdapter = new MessageAdapter(MessageActivity.this, chats , imageurl);
                  mRecycler.setAdapter(mAdapter);
                  mRecycler.scrollToPosition (chats.size () -1);

@@ -4,12 +4,14 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+
 import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
 
 import java.util.List;
 
 
 public class ChatViewModel extends ViewModel{
+
     private MtihaniDatabase mtihaniDatabase;
 
     public final LiveData<PagedList<Chat>> chats ;

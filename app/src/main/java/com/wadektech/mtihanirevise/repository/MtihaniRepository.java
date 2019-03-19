@@ -1,4 +1,4 @@
-package com.wadektech.mtihanirevise.utils;
+package com.wadektech.mtihanirevise.repository;
 
 import android.net.Uri;
 import android.os.Environment;
@@ -10,6 +10,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.wadektech.mtihanirevise.pojo.PDFObject;
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
+import com.wadektech.mtihanirevise.utils.InjectorUtils;
+import com.wadektech.mtihanirevise.utils.SingleLiveEvent;
 
 import java.io.File;
 import java.util.List;
