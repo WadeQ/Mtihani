@@ -10,7 +10,7 @@ import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
 import java.util.List;
 
 
-public class ChatViewModel extends ViewModel{
+public class ChatViewModel extends ViewModel {
 
     private MtihaniDatabase mtihaniDatabase;
 

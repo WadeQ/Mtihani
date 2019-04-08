@@ -89,6 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/chat_user_profile"
         android:layout_alignStart="@+id/username"
+        android:maxLength="38"
         android:maxLines="1"
         android:paddingTop="@dimen/_5sdp"
         android:textColor="@color/colorPrimaryDark"

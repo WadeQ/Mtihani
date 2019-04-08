@@ -222,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_version"
-                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_1sdp"
                     android:textColor="@color/headings"
                     android:textSize="@dimen/_13ssp" />
 
@@ -232,7 +232,7 @@
                     android:fontFamily="sans-serif-light"
                     android:text="@string/registered_symbol"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_15ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"

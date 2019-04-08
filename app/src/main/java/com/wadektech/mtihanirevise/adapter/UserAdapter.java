@@ -1,6 +1,7 @@
 package com.wadektech.mtihanirevise.adapter;
 
 import android.annotation.SuppressLint;
+import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -11,34 +12,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.MemoryPolicy;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.room.Chat;
+import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
+public class UserAdapter extends PagedListAdapter<User,UserAdapter.ViewHolder> {
     private Context context;
-    private List<User> users ;
+   // private List<User> users ;
     private boolean isChatting ;
-    private String theLastMessage ;
-
-    public UserAdapter(Context context, List<User> users, boolean isChatting) {
+    //private String theLastMessage ;
+private final String TAG = "UserAdapter";
+    public UserAdapter(Context context, /*List<User> users,*/ boolean isChatting) {
+        super(User.DIFF_CALLBACK);
         this.context = context;
-        this.users = users;
+       // this.users = users;
         this.isChatting = isChatting ;
     }
 
@@ -53,7 +57,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        final User user = users.get(position) ;
+        final User user = getItem(position);
 
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
@@ -74,17 +78,16 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
                         public void onError() {
                             Picasso.with (context)
                                     .load (user.getImageURL ())
-                                    .networkPolicy (NetworkPolicy.NO_CACHE)
-                                    .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
+                                    .error(defaultImageResId)
                                     .into (holder.mProfileImage);
                         }
                     });
         }
-        if (isChatting){
-            lastMessage(user.getId() , holder.mLastMessage);
-        }else {
+       /* if (isChatting){
+            lastMessage(user.getUserId() , holder.mLastMessage);
+        }else {*/
             holder.mLastMessage.setVisibility(View.GONE);
-        }
+       // }
 
         if (isChatting){
             if (user.getStatus().equals("online")){
@@ -99,20 +102,27 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             holder.mStatusOff.setVisibility(View.GONE);
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("TAG","Message");
-                Intent intent = new Intent(context, MessageActivity.class);
-                intent.putExtra("userid", user.getId());
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            Log.e("TAG","Message");
+            //just send all the data required to set up MessageActivity.class
+            //we alredy have the user here so why fetch him up from firestore again?
+            ChatItem item = new ChatItem(user.getUserId(),user.getUsername(),user.getImageURL(),
+                    user.getStatus(),user.getSearch(),user.getUpdate(),user.getTime(),
+            user.getDate());
+
+            Intent intent = new Intent(context, MessageActivity.class);
+            intent.putExtra("userid", user.getUserId());
+            intent.putExtra("imageURL",user.getImageURL());
+            intent.putExtra("userName",user.getUsername());
+            intent.putExtra("time",user.getTime());
+            intent.putExtra("mChatItem",item);
+            context.startActivity(intent);
         });
     }
 
     @Override
     public int getItemCount() {
-        return users.size();
+        return super.getItemCount();
     }
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mUsername , mLastMessage, mStatus;
@@ -132,7 +142,8 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
     }
     private void lastMessage(final String userid , final TextView mLastMessage){
-        theLastMessage = "default" ;
+        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+       /* theLastMessage = "default" ;
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.addValueEventListener(new ValueEventListener() {
@@ -165,6 +176,66 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        });*/
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        CollectionReference messages = firestore.collection("messages");
+
+        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
+
+        queryArrayList.add(messages.
+                whereEqualTo("sender", userid)
+                .whereEqualTo("receiver", firebaseUser.getUid())
+                .whereLessThan("date", System.currentTimeMillis())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(1)
+                .get());
+
+        queryArrayList.add(messages.
+                whereEqualTo("sender", firebaseUser.getUid())
+                .whereEqualTo("receiver", userid)
+                .whereLessThan("date", System.currentTimeMillis())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(1)
+                .get());
+        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
+                .toArray(new Task[2]));
+        combinedTask.addOnCompleteListener(
+                tasks -> {
+                    if (tasks.getResult() != null) {
+                        List<Chat> lastMessageList = new ArrayList<>();
+                        for (Task task : tasks.getResult()) {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
+                                assert snapshot != null;
+                                if (!snapshot.isEmpty()) {
+                                    List<Chat> chatList = snapshot.toObjects(Chat.class);
+                                    lastMessageList.addAll(chatList);
+                                    Log.d(TAG, "lastMessage chats received are: %s" + chatList.size());
+
+                                } else {
+                                    Log.d(TAG, "lastMessage snapshot is empty");
+                                }
+                            } else {
+                                if (task.getException() != null)
+                                    Log.d(TAG, task.getException().toString());
+                            }
+
+                        }
+                        if (lastMessageList.size() != 0) {
+                            if(lastMessageList.size()>1) {
+                                if (lastMessageList.get(0).getDate() > lastMessageList.get(1).getDate()) {
+                                    mLastMessage.setText(lastMessageList.get(0).getMessage());
+                                } else {
+                                    mLastMessage.setText(lastMessageList.get(1).getMessage());
+                                }
+                            }else {
+                                mLastMessage.setText(lastMessageList.get(0).getMessage());
+                            }
+                        } else {
+                            mLastMessage.setText("No saved messages yet!");
+                        }
+                    }
+
+                });
     }
 }

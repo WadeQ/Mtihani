@@ -16,7 +16,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.wadektech.mtihanirevise.ui.MessageActivity;
+import com.wadektech.mtihanirevise.ui.ChatActivity;
+import com.wadektech.mtihanirevise.utils.Constants;
+
+/*import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;*/
+
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
 
@@ -31,7 +36,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
         if (!currentUser.equals(user)) {
-            if (firebaseUser != null && sented.equals (firebaseUser.getUid ())) {
+            if (firebaseUser != null && sented.equals (Constants.getUserId())) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     sendOreoNotification(remoteMessage);
                 }else {
@@ -40,7 +45,11 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             }
         }
     }
-
+/*
+NOTE to open MessageActivity you need to pass the following items to it
+userName,userId,time,imageURL
+make necessary code changes to get these items before opening MessageActivity directly
+ */
     private void sendOreoNotification(RemoteMessage remoteMessage){
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
@@ -49,7 +58,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         RemoteMessage.Notification notification = remoteMessage.getNotification ();
         int j = Integer.parseInt (user.replaceAll("[\\D]" , ""));
-        Intent intent = new Intent (this, MessageActivity.class);
+        Intent intent = new Intent (this,ChatActivity.class/* MessageActivity.class*/);
         Bundle bundle = new Bundle ();
         bundle.putString ("userid" , user);
         intent.putExtras (bundle);
@@ -77,7 +86,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
 
         RemoteMessage.Notification notification = remoteMessage.getNotification ();
         int j = Integer.parseInt (user.replaceAll("[\\D]" , ""));
-        Intent intent = new Intent (this, MessageActivity.class);
+        Intent intent = new Intent (this, ChatActivity.class);
         Bundle bundle = new Bundle ();
         bundle.putString ("userid" , user);
         intent.putExtras (bundle);

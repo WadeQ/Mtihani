@@ -1,8 +1,10 @@
 package com.wadektech.mtihanirevise.auth;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
@@ -21,10 +23,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
+import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
-public class LoginActivity extends SignUpActivity {
+public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1;
     Button btnlogin, btnSignUp, googleLogin;
@@ -34,6 +37,7 @@ public class LoginActivity extends SignUpActivity {
     private static final String TAG = "wadektech";
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
+    ChatActivityViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,21 @@ public class LoginActivity extends SignUpActivity {
         googleLogin = findViewById (R.id.tv_google_login);
 
         mAuth = FirebaseAuth.getInstance ();
+         viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
+        viewModel.getReturningUser().observe(this,response->{
+            if(response != null){
+                if(response.equals("success")){
+                   // Toast.makeText(this, "response is successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent (LoginActivity.this, PastPapersActivity.class);
+                    finish ();
+                    startActivity (intent);
+                }else if(response.equals("fail")){
+                    Toast.makeText(this, "record not found, please sign up again", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //initialize the firebase object
         mAuth = FirebaseAuth.getInstance ();
@@ -61,9 +80,7 @@ public class LoginActivity extends SignUpActivity {
             } else {
                 mAuth.signInWithEmailAndPassword (email, password).addOnCompleteListener (task -> {
                     if (task.isSuccessful ()) {
-                        Intent intent = new Intent (getApplicationContext (), PastPapersActivity.class);
-                        startActivity (intent);
-                        finish ();
+                       viewModel.signInReturningUser(email);
                     } else {
                         Toast.makeText (getApplicationContext (), "Authentication Failed! Please check your network and try again" + task.getException (), Toast.LENGTH_SHORT).show ();
                     }
@@ -71,20 +88,23 @@ public class LoginActivity extends SignUpActivity {
             }
         });
         btnSignUp.setOnClickListener (v -> {
-            Intent intent = new Intent (getApplicationContext (), SignUpActivity.class);
+            Intent intent = new Intent (this, SignUpActivity.class);
+            finish();
             startActivity (intent);
-            finish ();
+
         });
 
         googleLogin.setOnClickListener (v -> signIn ());
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = firebaseAuth -> {
-            if (firebaseAuth.getCurrentUser() != null) {
-                Intent intent = new Intent (getApplicationContext (), PastPapersActivity.class);
-                startActivity (intent);
-                finish ();
-            }
-        };
+//        mAuthListener = firebaseAuth -> {
+//            if (firebaseAuth.getCurrentUser() != null) {
+//               String email = firebaseAuth.getCurrentUser().getEmail();
+//               if(email != null){
+//                   viewModel.signInReturningUser(email);
+//               }
+//
+//            }
+//        };
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -99,9 +119,11 @@ public class LoginActivity extends SignUpActivity {
         super.onStart ();
         // Check for existing Google Sign In account, if the user is already signed in
         // the GoogleSignInAccount will be non-null.
-        mAuth.addAuthStateListener(mAuthListener);
+       // mAuth.addAuthStateListener(mAuthListener);
+
     }
     private void signIn() {
+        Toast.makeText(this, "signIn()", Toast.LENGTH_SHORT).show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -121,6 +143,7 @@ public class LoginActivity extends SignUpActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount ();
                 if (account != null) {
+                    Toast.makeText(this, "onActivityResult account is NOT NULL", Toast.LENGTH_SHORT).show();
                     firebaseAuthWithGoogle (account);
                 }
             }else {
@@ -144,14 +167,19 @@ public class LoginActivity extends SignUpActivity {
                         String userId = "";
                         if (user != null) {
                             userId = user.getUid ();
+                            if(user.getEmail() != null){
+                                Toast.makeText(this, "off to firestore, email is not null", Toast.LENGTH_SHORT).show();
+                                viewModel.signInReturningUser(user.getEmail());
+                            }
                         }
                         mConnectionProgressDialog.dismiss ();
                         //  updateUI(user);
 
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.e ("SignupActivity", "Failed Registration" + task.getException ());
-                        Toast.makeText (getApplicationContext (), "Authentication failed." + task.getException (), LENGTH_SHORT).show ();
+                        Toast.makeText (LoginActivity.this, "Authentication failed." + task.getException (), LENGTH_SHORT).show ();
                         // updateUI(null);
                     }// ...
                 });

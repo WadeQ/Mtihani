@@ -34,8 +34,6 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -55,10 +53,13 @@ import java.util.List;
 import static android.support.v4.view.MenuItemCompat.expandActionView;
 import static android.support.v4.view.MenuItemCompat.getActionView;
 
+//import com.google.firebase.auth.FirebaseAuth;
+//import com.google.firebase.auth.FirebaseUser;
+
 
 public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener, SinglePDFAdapter.OnSinglePDFClickHandler {
     public PdfAdapter mAdapter;
-    private FirebaseUser firebaseUser;
+    //private FirebaseUser firebaseUser;
     public TextView mStatus;
     private String category;
     private SinglePDFAdapter mSinglePDFAdapter;
@@ -194,9 +195,9 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private List<PdfModel> getAllItemList() {
         final List<PdfModel> allItems = new ArrayList<>();
 
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+       // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pdf");
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener () {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allItems.clear();
@@ -261,7 +262,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private void preCheck() {
         //check permissions first!
         int gallery_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-        if (android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (gallery_permission != PackageManager.PERMISSION_GRANTED) {
                 //check if permission has ever been denied
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

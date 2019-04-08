@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.wadektech.mtihanirevise.database.Downloader;
-import com.wadektech.mtihanirevise.pojo.PdfModel;
-import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
+
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.database.Downloader;
+import com.wadektech.mtihanirevise.pdfViewer.ItemDetailActivity;
+import com.wadektech.mtihanirevise.pojo.PdfModel;
 import com.wadektech.mtihanirevise.viewHolders.PdfViewHolder;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,7 +40,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
     @Override
     public PdfViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View pdfView = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_list_item , parent , false);
-        return new PdfViewHolder(pdfView);
+        return new PdfViewHolder (pdfView);
     }
 
     @Override
@@ -61,7 +63,7 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfViewHolder>{
     ////open activity
     private void openDetailActivity(String...details)
     {
-        Intent i=new Intent(context,ItemDetailActivity.class);
+        Intent i=new Intent(context, ItemDetailActivity.class);
         i.putExtra("NAME_KEY",details[0]);
         i.putExtra("PDF_KEY",details[1]);
 

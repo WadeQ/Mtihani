@@ -6,8 +6,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.wadektech.mtihanirevise.utils.Constants;
 
-public class MyFirebaseIdService extends FirebaseInstanceIdService{
+public class MyFirebaseIdService extends FirebaseInstanceIdService {
     @Override
     public void onTokenRefresh() {
         super.onTokenRefresh ();
@@ -24,6 +25,10 @@ public class MyFirebaseIdService extends FirebaseInstanceIdService{
         DatabaseReference databaseReference = FirebaseDatabase.getInstance ().getReference ("Tokens");
         Token token = new Token (refreshToken);
         assert firebaseUser != null;
-        databaseReference.child (firebaseUser.getUid ()).setValue (token);
+        if(Constants.getUserId().equals("")) {
+            databaseReference.child(firebaseUser.getUid()).setValue(token);
+        }else{
+            databaseReference.child(Constants.getUserId()).setValue(token);
+        }
     }
 }

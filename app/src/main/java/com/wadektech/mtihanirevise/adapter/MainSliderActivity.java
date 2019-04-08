@@ -1,19 +1,20 @@
 package com.wadektech.mtihanirevise.adapter;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Html;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
-import com.wadektech.mtihanirevise.auth.LoginActivity;
-import com.wadektech.mtihanirevise.auth.SignUpActivity;
+import com.google.firebase.auth.FirebaseAuth;
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.auth.LoginActivity;
+import com.wadektech.mtihanirevise.ui.PastPapersActivity;
+import com.wadektech.mtihanirevise.utils.Constants;
 
 public class MainSliderActivity extends AppCompatActivity {
 
@@ -22,6 +23,8 @@ public class MainSliderActivity extends AppCompatActivity {
     public TextView[] mDot ;
     public SliderAdapter sliderAdapter;
     public Button slideViewButton;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
 
@@ -31,20 +34,42 @@ public class MainSliderActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_slider);
 
 
-
+        mAuth = FirebaseAuth.getInstance ();
+//        mAuthListener = firebaseAuth -> {
+//
+//        };
         slideViewButton = findViewById(R.id.slideViewButton);
-        slideViewButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
+        slideViewButton.setOnClickListener(v -> {
+            //Avoid using the applicationContext to open activities
+            /*Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(intent);*/
+            //mAuth.addAuthStateListener(mAuthListener);
+            if (mAuth.getCurrentUser() != null) {
+                if(!Constants.getUserName().equals("")
+                        &&!Constants.getUserId().equals("" )
+                        && !Constants.getEmail().equals("")
+                        && !Constants.getImageURL().equals("")){
+                    Intent intent = new Intent(MainSliderActivity.this, PastPapersActivity.class);
+                    finish();
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(this, "slider is the culprit!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent (MainSliderActivity.this, LoginActivity.class);
+                    finish ();
+                    startActivity (intent);
+                }
+
+            }else{
+                Intent intent = new Intent (MainSliderActivity.this, LoginActivity.class);
+                finish ();
+                startActivity (intent);
             }
         });
 
         mSlideViewPager = findViewById(R.id.slideViewPager);
         mDotLayout = findViewById(R.id.dotsLinearLayout);
 
-        sliderAdapter = new SliderAdapter(this);
+        sliderAdapter = new SliderAdapter (this);
         mSlideViewPager.setAdapter(sliderAdapter);
 
         addDotsIndicator(0);
@@ -82,6 +107,7 @@ public class MainSliderActivity extends AppCompatActivity {
 
         }
     };
+
 
 }
 

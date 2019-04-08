@@ -3,11 +3,13 @@ package com.wadektech.mtihanirevise.auth;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,32 +26,33 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ServerValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.ui.AdminPanelActivity;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
+import com.wadektech.mtihanirevise.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class SignUpActivity extends AppCompatActivity {
 
-    Button mLogin , btnSignUp;
-    EditText etPassword, etUsername , etEmail ;
+    Button mLogin, btnSignUp;
+    EditText etPassword, etUsername, etEmail;
     private static final int RC_SIGN_IN = 1;
-    DatabaseReference reference ;
+    DatabaseReference reference;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private static final String TAG = "wadektech";
-    private FirebaseAuth.AuthStateListener mAuthListener;
+    // private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
     private FirebaseUser firebaseUser;
-    private  AlertDialog alertDialogAndroid;
-    String user ;
+    private AlertDialog alertDialogAndroid;
+    String user;
+    private String imageURL;
 
 
     @Override
@@ -65,11 +68,12 @@ public class SignUpActivity extends AppCompatActivity {
 
         mLogin.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-            startActivity(intent);
             finish();
+            startActivity(intent);
+
         });
 
-        mAuth = FirebaseAuth.getInstance() ;
+        // mAuth = FirebaseAuth.getInstance() ;
         mConnectionProgressDialog = new ProgressDialog(this);
 
         btnSignUp.setOnClickListener(v -> {
@@ -80,24 +84,22 @@ public class SignUpActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(email)) {
                 etEmail.setError("Please Enter Your Email Address!");
 
-            } else if(TextUtils.isEmpty(password)) {
+            } else if (TextUtils.isEmpty(password)) {
                 etPassword.setError("Please Enter Secure Password!");
-            }
-            else if (TextUtils.isEmpty(userNmae)) {
+            } else if (TextUtils.isEmpty(userNmae)) {
                 etUsername.setError("Please Enter username!");
-            }
-            else {
-                registerUser(password , userNmae , email);
+            } else {
+                registerUser(password, userNmae, email);
             }
         });
 
         //initialize the firebase object
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = firebaseAuth -> {
+       /* mAuthListener = firebaseAuth -> {
             if (firebaseAuth.getCurrentUser() != null) {
                 checkAdminStatus ();
             }
-        };
+        };*/
         mLogin = findViewById(R.id.loginButton);
 
         // Configure the ProgressDialog that will be shown if there is a
@@ -108,7 +110,7 @@ public class SignUpActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
-                .requestProfile ()
+                .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this, connectionResult -> Toast.makeText(getApplicationContext(), "You got an error", LENGTH_SHORT).show())
@@ -121,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+        //mAuth.addAuthStateListener(mAuthListener);
 
     }
 
@@ -129,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -137,9 +140,9 @@ public class SignUpActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
             mConnectionProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mConnectionProgressDialog.setTitle ("Signing in...");
-            mConnectionProgressDialog.setMessage ("Please be patient");
-            mConnectionProgressDialog.show ();
+            mConnectionProgressDialog.setTitle("Signing in...");
+            mConnectionProgressDialog.setMessage("Please be patient");
+            mConnectionProgressDialog.show();
 
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
@@ -151,7 +154,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else {
                 // Google Sign In failed, update UI appropriately
 
-                Toast.makeText(getApplicationContext(), "Something went wrong.",
+                Toast.makeText(this, "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
                 // ...
@@ -167,53 +170,90 @@ public class SignUpActivity extends AppCompatActivity {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
+
+                        Calendar calendar = Calendar.getInstance();
+                        // @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
+                        // saveCurrentDate =currentDate.format (calendar.getTime ());
+                        String delegate = "hh:mm aaa";
+                        String time = (String) DateFormat.format(delegate, calendar.getTime());
+
                         String userId = "";
                         if (user != null) {
-                            userId = user.getUid ();
+                            userId = user.getUid();
                         }
                         assert user != null;
-                        reference = FirebaseDatabase.getInstance ().getReference ("Users").child (user.getUid ());
-                        reference.keepSynced (true);
+                        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                        reference.keepSynced(true);
 
-                        String name = user.getDisplayName ();
-                        Uri image = user.getPhotoUrl ();
+                        String name = user.getDisplayName();
+                        Uri image = user.getPhotoUrl();
                         String imageUrl = "";
-                        if (image != null){
-                            imageUrl = image.toString ();
+                        imageURL = "";
+                        if (image != null) {
+                            imageUrl = image.toString();
+                            imageURL = image.toString();
+                        } else {
+                            imageURL = "default";
                         }
-
-                        HashMap<String , Object> hashMap = new HashMap<> ();
+                      /*  HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("id", userId);
-                        hashMap.put("status" , "offline");
-                        hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
+                        hashMap.put("status", "offline");
+                        hashMap.put("update", "Hello there! I use Mtihani Revise.");
                         assert name != null;
-                        hashMap.put("search" , name.toLowerCase ());
-                        hashMap.put ("time" , String.valueOf (ServerValue.TIMESTAMP));
-                        hashMap.put ("username" , name);
-                        hashMap.put ("imageURL" , imageUrl);
-                        reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
+                        hashMap.put("search", name.toLowerCase());
+                        hashMap.put("time", String.valueOf(ServerValue.TIMESTAMP));
+                        hashMap.put("username", name);
+                        hashMap.put("imageURL", imageUrl);*/
+                        /*reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
 
-                        }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (), "Error saving data " + e.toString () , LENGTH_SHORT).show ());
+                        }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (), "Error saving data " + e.toString () , LENGTH_SHORT).show ());*/
+                        User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(), "Hello there! I use Mtihani Revise.",
+                                time, System.currentTimeMillis(), user.getEmail());
+                        FirebaseFirestore
+                                .getInstance()
+                                .collection("Users")
+                                .document(userId)
+                                .set(mUser)
+                                .addOnCompleteListener(this, task12 -> {
+                                    if (task12.isSuccessful()) {
+                                        //storing user details for quick access later
+                                        SharedPreferences pfs = getSharedPreferences(Constants.myPreferences, MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = pfs.edit();
+                                        editor.putString(Constants.userId, user.getUid());
+                                        editor.putString(Constants.userName, name);
+                                        editor.putString(Constants.imageURL, imageURL);
+                                        editor.putString(Constants.email, user.getEmail());
+                                        editor.apply();
 
+                                        Intent intent = new Intent(SignUpActivity.this, PastPapersActivity.class);
+                                        finish();
+                                        startActivity(intent);
+                                    } else {
+                                        if (task12.getException() != null)
+                                            Log.d(TAG, "error:" + task12.getException().toString());
+                                        Toast.makeText(this, "Error saving data " + task12.getException().toString(), LENGTH_SHORT).show();
+                                    }
+                                });
                         mConnectionProgressDialog.dismiss();
                         //  updateUI(user);
 
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.e("SignupActivity", "Failed Registration" +task.getException());
-                        Toast.makeText(getApplicationContext(), "Authentication failed."+task.getException(), LENGTH_SHORT).show();
+                        Log.e("SignupActivity", "Failed Registration" + task.getException());
+                        Toast.makeText(getApplicationContext(), "Authentication failed." + task.getException(), LENGTH_SHORT).show();
                         // updateUI(null);
                     }// ...
                 });
     }
-    private void registerUser(final String etUsername, String etPassword , String etEmail){
+
+    private void registerUser(final String etUsername, String etPassword, String etEmail) {
         //showing progress dialog when registering user
         mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
         mConnectionProgressDialog.setTitle("Signing In");
         mConnectionProgressDialog.setMessage("Signing user, please be patient.");
         mConnectionProgressDialog.show();
 
-        mAuth.createUserWithEmailAndPassword(etEmail,etPassword).addOnCompleteListener(task -> {
+        mAuth.createUserWithEmailAndPassword(etEmail, etPassword).addOnCompleteListener(task -> {
             //We have received a response, we need to close/exit the Progress Dialog now
             mConnectionProgressDialog.dismiss();
             //checking if task is succesfully implemented
@@ -226,73 +266,43 @@ public class SignUpActivity extends AppCompatActivity {
                 assert userId != null;
                 reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
-                String saveCurrentTime , saveCurrentDate ;
-                Calendar calendar = Calendar.getInstance ();
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-                saveCurrentDate =currentDate.format (calendar.getTime ());
+                Calendar calendar = Calendar.getInstance();
+                // @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
+                // saveCurrentDate =currentDate.format (calendar.getTime ());
 
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat currentTime = new SimpleDateFormat ("hh:mm a");
-                saveCurrentTime =currentTime.format (calendar.getTime ());
-                HashMap<String , String> hashMap = new HashMap<>();
-                hashMap.put("id", userId);
-                hashMap.put("username", etUsername);
-                hashMap.put("imageURL", "default");
-                hashMap.put("status" , "offline");
-                hashMap.put("search" , etUsername.toLowerCase());
-                hashMap.put ("update" , "Hello there! I use Mtihani Revise.");
-                hashMap.put ("time" , saveCurrentTime);
-                hashMap.put ("date" , saveCurrentDate);
-                reference.setValue(hashMap).addOnCompleteListener(task1 -> {
-                    if (task1.isSuccessful()){
-                        Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+                String delegate = "hh:mm aaa";
+                String time = (String) DateFormat.format(delegate, calendar.getTime());
+
+                User user = new User(userId, etUsername, "default", "offline", etUsername.toLowerCase(),
+                        "Hello there! I use Mtihani Revise.", time, System.currentTimeMillis(), etEmail);
+                SharedPreferences pfs = getSharedPreferences(Constants.myPreferences, MODE_PRIVATE);
+                SharedPreferences.Editor editor = pfs.edit();
+                editor.putString(Constants.userId, userId);
+                editor.putString(Constants.userName, etUsername);
+                editor.putString(Constants.imageURL, "default");
+                editor.putString(Constants.email, etEmail);
+                editor.apply();
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("Users")
+                        .document(userId)
+                        .set(user)
+                        .addOnCompleteListener(this, task12 -> {
+                            if (task12.isSuccessful()) {
+                                Intent intent = new Intent(SignUpActivity.this, PastPapersActivity.class);
+                                finish();
+                                startActivity(intent);
+
+                            } else {
+                                if (task12.getException() != null)
+                                    Log.d(TAG, "error:" + task12.getException().toString());
+                            }
+                        });
             } else {
-                Toast.makeText(getApplicationContext(), "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
             }
         });
     }
-    private void checkAdminStatus(){
-        if ( mAuth.getCurrentUser ().getEmail().equals("derrickwadek@gmail.com")
-                || mAuth.getCurrentUser ().getEmail().equals("wadektech@gmail.com")){
-            Intent intent = new Intent(getApplicationContext(), AdminPanelActivity.class);
-            startActivity(intent);
-            finish();
-        }else {
-            Intent intent = new Intent(getApplicationContext(), PastPapersActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
-  /*  private void adminVerifier() {
-        FirebaseUser user  = mAuth.getCurrentUser ();
-                        AdminPanelViewModel viewModel = ViewModelProviders.of(this)
-                                .get(AdminPanelViewModel.class);
-                        viewModel.getAdminPassword();
-                        viewModel.getAdminPasswordResponse().observe(SignUpActivity.this, pass -> {
-                            if (pass != null) {
-                                switch (pass) {
-                                    case "password is empty":
-                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case "Unable to authenticate, please try again":
-                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
-                                        break;
-                                    default:
-                                        assert user != null;
-                                        if (pass.equals(user.getEmail ())) {
-                                            startActivity(new Intent(this, AdminPanelActivity.class));
-                                        } else {
-                                            Toast.makeText(this, "wrong password!", Toast.LENGTH_SHORT).show();
-                                        }
-                                        break;
-                                }
-                            }
-                        });
 
-                    }
-   **/
-    }
+}
 

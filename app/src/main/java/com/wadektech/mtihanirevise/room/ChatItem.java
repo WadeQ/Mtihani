@@ -4,11 +4,14 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 
-@Entity(tableName = "users", indices = {@Index(value = {"userId"}, unique = true)})
-public class User {
+
+@Entity(tableName = "chatList", indices = {@Index(value = {"userId"}, unique = true)})
+public class ChatItem implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     private long id;
     private String userId;
@@ -17,13 +20,12 @@ public class User {
     private String status ;
     private String search ;
     private String update ;
-    private String email;
     private String time ;
     private long date ;
 
     @Ignore
-    public User(String userId, String username, String imageURL, String status, String search,
-                String update, String time , long date, String email) {
+    public ChatItem(String userId, String username, String imageURL, String status, String search,
+                String update, String time , long date) {
         this.userId = userId;
         this.username = username;
         this.imageURL = imageURL;
@@ -32,11 +34,10 @@ public class User {
         this.update = update ;
         this.time = time ;
         this.date = date;
-        this.email=email;
     }
 
-    public User(long id, String userId, String username, String imageURL, String status,
-                String search, String update, String time, long date,String email) {
+    public ChatItem(long id, String userId, String username, String imageURL, String status,
+                String search, String update, String time, long date) {
         this.id = id;
         this.userId = userId;
         this.username = username;
@@ -46,24 +47,15 @@ public class User {
         this.update = update;
         this.time = time;
         this.date = date;
-        this.email = email;
     }
 
     @Ignore
-    public User() {
+    public ChatItem() {
         //Don't delete. empty constructor is a must for firestore to work!
     }
 
     public long getId() {
         return id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public void setId(long id) {
@@ -133,9 +125,9 @@ public class User {
     public void setDate(long date) {
         this.date = date;
     }
-    public static DiffUtil.ItemCallback<User> DIFF_CALLBACK = new DiffUtil.ItemCallback<User>() {
+    public static DiffUtil.ItemCallback<ChatItem> DIFF_CALLBACK = new DiffUtil.ItemCallback<ChatItem>() {
         @Override
-        public boolean areItemsTheSame(User oldItem, User newItem) {
+        public boolean areItemsTheSame(ChatItem oldItem, ChatItem newItem) {
             return oldItem.userId.equals(newItem.userId)
                     && oldItem.date == newItem.getDate()
                     && oldItem.imageURL.equals(newItem.getImageURL());
@@ -143,7 +135,7 @@ public class User {
         }
 
         @Override
-        public boolean areContentsTheSame(User oldItem, @NonNull User newItem) {
+        public boolean areContentsTheSame(ChatItem oldItem, @NonNull ChatItem newItem) {
             return oldItem.equals(newItem);
         }
 
@@ -154,9 +146,51 @@ public class User {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        User mUser = (User) obj;
+        ChatItem mUser = (ChatItem) obj;
         return userId.equals(mUser.userId) &&
                 date== mUser.date && username.equals(mUser.username);
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.userId);
+        dest.writeString(this.username);
+        dest.writeString(this.imageURL);
+        dest.writeString(this.status);
+        dest.writeString(this.search);
+        dest.writeString(this.update);
+        dest.writeString(this.time);
+        dest.writeLong(this.date);
+    }
+
+    protected ChatItem(Parcel in) {
+        this.id = in.readLong();
+        this.userId = in.readString();
+        this.username = in.readString();
+        this.imageURL = in.readString();
+        this.status = in.readString();
+        this.search = in.readString();
+        this.update = in.readString();
+        this.time = in.readString();
+        this.date = in.readLong();
+    }
+
+    public static final Creator<ChatItem> CREATOR = new Creator<ChatItem>() {
+        @Override
+        public ChatItem createFromParcel(Parcel source) {
+            return new ChatItem (source);
+        }
+
+        @Override
+        public ChatItem[] newArray(int size) {
+            return new ChatItem[size];
+        }
+    };
 }

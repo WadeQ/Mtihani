@@ -5,6 +5,7 @@ import android.widget.ArrayAdapter;
 
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
+import com.wadektech.mtihanirevise.viewmodelfactories.MessagesActivityViewModelFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,6 @@ public class InjectorUtils {
     public static SingleLiveEvent<String> provideSingleLiveEvent() {
         return new SingleLiveEvent<>();
     }
-    public static ArrayAdapter<String> provideCategoryAdapter(Context context, String[] input) {
-        return new ArrayAdapter<>(context, R.layout.spinner_item, R.id.txt, input);
-    }
-
     public static Map<String,Object> provideStringHashMap() {
         return new HashMap<>();
     }
@@ -28,5 +25,8 @@ public class InjectorUtils {
 
     public static SingleLiveEvent<Integer> provideIntSingleLiveEvent() {
         return new SingleLiveEvent<>();
+    }
+    public static MessagesActivityViewModelFactory provideMessagesViewModelFactory(String myId, String userId){
+        return new MessagesActivityViewModelFactory (myId,userId);
     }
 }

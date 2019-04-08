@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
@@ -25,31 +26,30 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Callback;
-import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
+import com.wadektech.mtihanirevise.database.MtihaniDatabase;
 import com.wadektech.mtihanirevise.pojo.RowModel;
-import com.wadektech.mtihanirevise.room.User;
+import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.AdminPanelViewModel;
+import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hotchemi.android.rate.AppRate;
+
+//import com.google.firebase.auth.FirebaseUser;
 
 public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         RecyclerViewAdapter.OnItemClickHandler {
@@ -59,12 +59,13 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     GoogleApiClient mGoogleApiClient;
     private Uri imageUri;
     DatabaseReference databaseReference;
-    FirebaseUser firebaseUser;
+    // FirebaseUser firebaseUser;
     StorageReference storageReference;
     private SwipeRefreshLayout mSwipe;
-    private  AlertDialog alertDialogAndroid;
+    private AlertDialog alertDialogAndroid;
 
     NiftyDialogBuilder materialDesignAnimatedDialog;
+    private Handler mHandler;
 
 
     @Override
@@ -72,11 +73,15 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_past_papers);
         Toolbar topToolBar = findViewById(R.id.toolbar);
-        mSwipe=findViewById(R.id.mSwipe);
+        mSwipe = findViewById(R.id.mSwipe);
         topToolBar.setTitle(null);
         setSupportActionBar(topToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(this);
+
+        ChatActivityViewModel viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
+        viewModel.loadUserUnreadChats(Constants.getUserId());
+        mHandler = new Handler();
 
         FirebaseDatabase.getInstance().getReference("Users").keepSynced(true);
 
@@ -90,7 +95,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         // Build a GoogleApiClient with access to the Google Sign-In Api and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
+                .enableAutoManage(this /* FragmentActivity */,
+                        this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -98,9 +104,10 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         mAuth = FirebaseAuth.getInstance();
         userProfile = findViewById(R.id.profileImage);
 
-        final FirebaseUser user = mAuth.getCurrentUser();
+
+        //final FirebaseUser user = mAuth.getCurrentUser();
         //get user profile details and display on toolbar
-        if (user != null) {
+      /*  if (user != null) {
             Picasso.with(this)
                     .load(user.getPhotoUrl())
                     .networkPolicy(NetworkPolicy.OFFLINE)
@@ -113,15 +120,15 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
 
                         @Override
                         public void onError() {
-                            Picasso.with(getApplicationContext())
+                            Picasso.with(PastPapersActivity.this)
                                     .load(user.getPhotoUrl())
                                     .into(userProfile);
                         }
                     });
-        }
+        }*/
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
+        // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+      /*  databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
         databaseReference.keepSynced(true);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -156,9 +163,56 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
-        });
+        });*/
 
-        mAuth = FirebaseAuth.getInstance();
+
+/*
+FirebaseFirestore
+        .getInstance()
+        .collection("Users")
+        .document(Constants.getUserId())
+        .get()
+        .addOnSuccessListener(this, snapshot -> {
+            if(snapshot != null){
+                if(snapshot.exists()){
+                    User user1 = snapshot.toObject(User.class);
+                    if (user1 != null && user1.getImageURL () != null) {
+                        if (user1.getImageURL().equals("default")){
+                            userProfile.setImageResource(R.drawable.profile);
+                        }else  {
+                            final int defaultImageResId = R.drawable.profile;
+                            Picasso.with(getApplicationContext ())
+                                    .load(user1.getImageURL())
+                                    .networkPolicy (NetworkPolicy.OFFLINE)
+                                    .into (userProfile, new Callback () {
+                                        @Override
+                                        public void onSuccess() {
+
+                                        }
+                                        @Override
+                                        public void onError() {
+                                            Picasso.with (getApplicationContext ())
+                                                    .load (user1.getImageURL ())
+                                                    .error(defaultImageResId)
+                                                   // .networkPolicy (NetworkPolicy.NO_CACHE)
+                                                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
+                                                    .into (userProfile);
+                                        }
+                                    });
+                        }
+                    }
+                }
+            }
+
+        })
+        .addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("PastPapersActivity","error is:"+e.toString());
+            }
+        });
+*/
+        // mAuth = FirebaseAuth.getInstance();
         List<RowModel> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(PastPapersActivity.this, 2);
 
@@ -166,7 +220,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         rView.setHasFixedSize(true);
         rView.setLayoutManager(lLayout);
 
-        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter(rowListItem, this);
+        RecyclerViewAdapter rcAdapter = new RecyclerViewAdapter (rowListItem, this);
         rView.setAdapter(rcAdapter);
         mSwipe.setOnRefreshListener(() -> mSwipe.setRefreshing(false));
     }
@@ -203,64 +257,15 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         }
         if (id == R.id.menuLogout) {
             //we will call our signOut method here
-            animatedDialog ();
+            animatedDialog();
             return true;
         }
         if (id == R.id.menu_chat) {
             //send intent to chat activity
             startActivity(new Intent(getApplicationContext(), ChatActivity.class));
             return true;
-
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void adminVerifier() {
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(this);
-        View mView = layoutInflaterAndroid.inflate(R.layout.custom_dialog_layout, null);
-        AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(this);
-        alertDialogBuilderUserInput.setView(mView);
-
-        final EditText userInputDialogEditText = mView.findViewById(R.id.userInputDialog);
-        alertDialogBuilderUserInput
-                .setCancelable(false)
-                .setPositiveButton("Submit", (dialogBox, id) -> {
-                    // ToDo get user input here
-                    if (!userInputDialogEditText.getText().toString().trim().isEmpty()) {
-                        mSwipe.setRefreshing(true);
-                        AdminPanelViewModel viewModel = ViewModelProviders.of(this)
-                                .get(AdminPanelViewModel.class);
-                        viewModel.getAdminPassword();
-                        viewModel.getAdminPasswordResponse().observe(PastPapersActivity.this, pass -> {
-                            if (pass != null) {
-                                alertDialogAndroid.dismiss();
-                                mSwipe.setRefreshing(false);
-                                switch (pass) {
-                                    case "password is empty":
-                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
-                                        break;
-                                    case "Unable to authenticate, please try again":
-                                        Toast.makeText(this, pass, Toast.LENGTH_SHORT).show();
-
-                                        break;
-                                    default:
-                                        if (pass.equals(userInputDialogEditText.getText().toString().trim())) {
-                                            startActivity(new Intent(this, AdminPanelActivity.class));
-                                        } else {
-                                            Toast.makeText(this, "wrong password!", Toast.LENGTH_SHORT).show();
-                                        }
-                                        break;
-                                }
-                            }
-                        });
-
-                    }
-                })
-                .setNegativeButton("Cancel",
-                        (dialogBox, id) -> dialogBox.cancel());
-
-        alertDialogAndroid = alertDialogBuilderUserInput.create();
-        alertDialogAndroid.show();
     }
 
     private List<RowModel> getAllItemList() {
@@ -296,10 +301,36 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         mAuth.signOut();
         //clear user account
         //send intent to the Login activity
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-        Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        startActivity(intent);
+        /*
+        We are clearing all local room tables here.
+        please ensure you have initialized mHandler correctly in the
+        onCreate method like this mHandler = new Handler()
+        and ensure you have added the import statement
+        import android.os.Handler;
+         */
+        /*
+        Background thread to delete all tables
+        since mtoto amelilia wembe by deciding to sign out
+         */
+        new Thread(() -> {
+            MtihaniDatabase db = MtihaniDatabase
+                    .getInstance(PastPapersActivity.this);
+            //Delete chats
+            db.chatDao().deleteChatList();
+            //delete all users
+            db.usersDao().deleteUsersTable();
+            //delete all messages
+            db.singleMessageDao().deleteMessages();
+            //now inform the main thread that we are done
+            mHandler.post(() -> {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            });
+
+        }).start();
+
     }
 
     @Override
@@ -311,7 +342,31 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         */
         if (mAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(getApplicationContext(), SignUpActivity.class));
+            startActivity(new Intent(this, SignUpActivity.class));
+        }
+        if (Constants.getImageURL().equals("default")) {
+            userProfile.setImageResource(R.drawable.profile);
+        } else {
+            final int defaultImageResId = R.drawable.profile;
+            Picasso.with(this)
+                    .load(Constants.getImageURL())
+                    .networkPolicy(NetworkPolicy.OFFLINE)
+                    .into(userProfile, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            Picasso.with(PastPapersActivity.this)
+                                    .load(Constants.getImageURL())
+                                    .error(defaultImageResId)
+                                    // .networkPolicy (NetworkPolicy.NO_CACHE)
+                                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
+                                    .into(userProfile);
+                        }
+                    });
         }
     }
 
@@ -340,20 +395,21 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
+
     //implement a custom dialog for our logout functionality
-    private void animatedDialog(){
+    private void animatedDialog() {
         materialDesignAnimatedDialog
                 .withTitle("Logout")
                 .withMessage("Are you sure you want to log out of Mtihani Revise? Your session will be deleted.")
                 .withDialogColor("#1c90ec")
                 .withButton1Text("OK")
-                .isCancelableOnTouchOutside (true)
+                .isCancelableOnTouchOutside(true)
                 .withButton2Text("Cancel")
                 .withDuration(700)
                 .withEffect(Effectstype.Fall)
-                .setButton1Click (v -> signOut ())
-                .setButton2Click (v -> materialDesignAnimatedDialog.dismiss ());
-        materialDesignAnimatedDialog.show() ;
+                .setButton1Click(v -> signOut())
+                .setButton2Click(v -> materialDesignAnimatedDialog.dismiss());
+        materialDesignAnimatedDialog.show();
     }
 
     @Override

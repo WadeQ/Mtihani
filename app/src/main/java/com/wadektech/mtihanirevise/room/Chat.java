@@ -2,39 +2,54 @@ package com.wadektech.mtihanirevise.room;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.support.v7.util.DiffUtil;
 
-@Entity(tableName ="chat_messages" )
+@Entity(tableName = "messages", indices = {@Index(value = {"date"}, unique = true)})
 public class Chat {
     @PrimaryKey(autoGenerate = true)
-    private int id ;
+    private long id ;
     private String sender ;
     private String receiver ;
     private String message ;
-    private boolean isseen ;
+    private boolean seen ;
     private long date ;
+    private String documentId;
 
     @Ignore
     public Chat() {
         //Empty constructor required by firebase and will be ignored by room
     }
     @Ignore
-    public Chat(String sender, String receiver, String message, boolean isseen, long date) {
+    public Chat(String sender, String receiver, String message, boolean seen, long date
+    ,String documentId) {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.isseen = isseen;
+        this.seen = seen;
         this.date = date;
+        this.documentId=documentId;
     }
 
-    public Chat(int id, String sender, String receiver, String message , boolean isseen, long date) {
+    public Chat(long id, String sender, String receiver, String message , boolean seen, long date
+    ,String documentId) {
         this.id = id ;
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
-        this.isseen = isseen ;
+        this.seen = seen ;
         this.date = date ;
+        this.documentId= documentId;
+    }
+
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 
     public String getSender() {
@@ -61,10 +76,6 @@ public class Chat {
         this.message = message;
     }
 
-    public boolean isIsseen() {
-        return isseen;
-    }
-
     public long getDate() {
         return date;
     }
@@ -73,30 +84,52 @@ public class Chat {
         this.date = date;
     }
 
-    public void setIsseen(boolean isseen) {
-        this.isseen = isseen;
+    public boolean getSeen() {
+        return seen;
     }
 
-    public int getId() {
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
-    public static DiffUtil.ItemCallback<Chat> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<Chat> (){
-                // Concert details may have changed if reloaded from the database,
-                // but ID is fixed.
-                @Override
-                public boolean areItemsTheSame(Chat oldChats, Chat newChats) {
-                    return oldChats.message.equals (newChats.message)  ;
-                }
+    public static DiffUtil.ItemCallback<Chat> DIFF_CALLBACK = new DiffUtil.ItemCallback<Chat>() {
+        @Override
+        public boolean areItemsTheSame(Chat oldItem, Chat newItem) {
+            return oldItem.getMessage().equals(newItem.getMessage())
+                    && oldItem.getDate()== newItem.getDate()
+                    && oldItem.documentId.equals(newItem.documentId);
 
-                @Override
-                public boolean areContentsTheSame(Chat oldChats, Chat newChats) {
-                    return oldChats.equals(newChats);
-                }
-            };
+        }
+
+        @Override
+        public boolean areContentsTheSame(Chat oldItem, Chat newItem) {
+            return oldItem.equals(newItem);
+        }
+
+
+    };
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Chat chat = (Chat) obj;
+        return message.equals(chat.message) &&
+                date== chat.date
+                && sender.equals(chat.sender);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        return hash*String.valueOf(date).hashCode()*message.hashCode()*sender.hashCode();
+    }
 }

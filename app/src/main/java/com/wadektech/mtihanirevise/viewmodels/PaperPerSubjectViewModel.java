@@ -12,7 +12,7 @@ public class PaperPerSubjectViewModel extends ViewModel {
     private MtihaniRepository mRepository;
 
     public PaperPerSubjectViewModel() {
-        mRepository=MtihaniRepository.getInstance();
+        mRepository= MtihaniRepository.getInstance();
     }
     public LiveData<String> getPdfsDownloadResponse(){
         return mRepository.getPdfsDownloadResponse();

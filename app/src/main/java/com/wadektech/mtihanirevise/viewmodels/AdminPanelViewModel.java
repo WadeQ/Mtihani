@@ -27,7 +27,7 @@ public class AdminPanelViewModel extends ViewModel {
     public void uploadPDF(Uri pdfUri, String category,String fileName) {
         mRepository.uploadPDFFile(pdfUri,category,fileName);
     }
-    public void uploadMultiplePDFs(List<PDFObject> pdfObjects,String category){
+    public void uploadMultiplePDFs(List<PDFObject> pdfObjects, String category){
         mRepository.uploadPDFs(pdfObjects,category);
     }
     public LiveData<String> getUploadProgress(){

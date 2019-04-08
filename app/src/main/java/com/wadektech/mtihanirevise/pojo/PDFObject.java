@@ -49,7 +49,7 @@ public class PDFObject implements Parcelable {
     public static final Creator<PDFObject> CREATOR = new Creator<PDFObject>() {
         @Override
         public PDFObject createFromParcel(Parcel source) {
-            return new PDFObject(source);
+            return new PDFObject (source);
         }
 
         @Override

@@ -64,9 +64,6 @@
         <activity android:name=".ui.MessageActivity"
 
             />
-        <activity android:name=".ui.AdminPanelActivity"
-
-            />
 
         <service
             android:name=".notification.MyFirebaseIdService"
