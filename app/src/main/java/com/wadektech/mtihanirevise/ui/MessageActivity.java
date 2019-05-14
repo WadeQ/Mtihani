@@ -161,13 +161,6 @@ public class MessageActivity extends AppCompatActivity {
             editSend.setText("");
         });
 
-           /*
-                This was where the call to load messages was so i'm implementing the new
-                method to load messages from Room here
-                 */
-        //readMessages(firebaseUser.getUid(), userid,user.getImageURL());
-
-
         newIncomingMessageListener(Constants.getUserId(), userid);//listen for new messages
         MessagesActivityViewModelFactory factory = InjectorUtils
                 .provideMessagesViewModelFactory(myid, userid);
@@ -192,72 +185,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
         mViewModel.getMessagesList().observe(this, mAdapter::submitList);
-/**
- * Replaced code
- */
-       /* reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
-        reference.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    userName.setText(user.getUsername());
-                    mTime.setText("Last seen " + user.getTime());
-                }
-                if (user != null) {
-                    if (user.getImageURL().equals("default")) {
-                        imageView.setImageResource(R.drawable.profile);
-                    } else {
-                        final int defaultImageResId = R.drawable.profile;
-                        Picasso.with(getApplicationContext())
-                                .load(user.getImageURL())
-                                .networkPolicy(NetworkPolicy.OFFLINE)
-                                .into(imageView, new com.squareup.picasso.Callback() {
-                                    @Override
-                                    public void onSuccess() {
 
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Picasso.with(getApplicationContext())
-                                                .load(user.getImageURL())
-                                                .networkPolicy(NetworkPolicy.NO_CACHE)
-                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error(defaultImageResId)
-                                                .into(imageView);
-                                    }
-                                });
-                    }
-
-
-                    *//*
-                    This was where the call to load messages was so i'm implementing the new
-                    method to load messages from Room here
-                     *//*
-                    //readMessages(firebaseUser.getUid(), userid,user.getImageURL());
-                    MessageActivity.this.userid = userid;
-                    MessageActivity.this.myid = firebaseUser.getUid();
-                    newIncomingMessageListener(firebaseUser.getUid(), userid);//listen for new messages
-                    MessagesActivityViewModelFactory factory = InjectorUtils
-                            .provideMessagesViewModelFactory(firebaseUser.getUid(), userid);
-                    mViewModel = ViewModelProviders.of(MessageActivity.this, factory)
-                            .get(MessagesActivityViewModel.class);
-                    mViewModel.getMessagesList().observe(MessageActivity.this, chatList -> {
-                        //chatList has been receive so let us wire our adapter
-                        //by the way why do you create the adapter before you have the imageUrl?
-                        //if you scroll upwards you will see adapter being assigned
-                        mAdapter = new MessageAdapter(MessageActivity.this, user.getImageURL());
-                        mRecycler.setAdapter(mAdapter);
-                        mAdapter.submitList(chatList);
-                    });
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
         userName.setText(userNameString);
         mTime.setText("Last seen " + time);
         if (imageURL.equals("default")) {
@@ -282,75 +210,7 @@ public class MessageActivity extends AppCompatActivity {
                         }
                     });
         }
-        /**
-         * This other network call has been avoided
-         */
-           /* FirebaseFirestore
-                    .getInstance()
-                    .collection("Users")
-                    .document(userid)
-                    .get()
-                    .addOnSuccessListener(MessageActivity.this, snapshot -> {
-                        if (snapshot != null) {
-                            if (snapshot.exists()) {
-                                User user = snapshot.toObject(User.class);
-                                if (user != null) {
-                                    userName.setText(user.getUsername());
-                                    mTime.setText("Last seen " + user.getTime());
-                                    if (user.getImageURL().equals("default")) {
-                                        imageView.setImageResource(R.drawable.profile);
-                                    } else {
-                                        final int defaultImageResId = R.drawable.profile;
-                                        Picasso.with(getApplicationContext())
-                                                .load(user.getImageURL())
-                                                .networkPolicy(NetworkPolicy.OFFLINE)
-                                                .into(imageView, new com.squareup.picasso.Callback() {
-                                                    @Override
-                                                    public void onSuccess() {
 
-                                                    }
-
-                                                    @Override
-                                                    public void onError() {
-                                                        Picasso.with(getApplicationContext())
-                                                                .load(user.getImageURL())
-                                                                .networkPolicy(NetworkPolicy.NO_CACHE)
-                                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error(defaultImageResId)
-                                                                .into(imageView);
-                                                    }
-                                                });
-                                    }
-
-
-                *//*
-                This was where the call to load messages was so i'm implementing the new
-                method to load messages from Room here
-                 *//*
-                                    //readMessages(firebaseUser.getUid(), userid,user.getImageURL());
-                               *//* MessageActivity.this.userid = userid;
-                                MessageActivity.this.myid = firebaseUser.getUid();
-                                newIncomingMessageListener(firebaseUser.getUid(), userid);//listen for new messages
-                                MessagesActivityViewModelFactory factory = InjectorUtils
-                                        .provideMessagesViewModelFactory(firebaseUser.getUid(), userid);
-                                mViewModel = ViewModelProviders.of(MessageActivity.this, factory)
-                                        .get(MessagesActivityViewModel.class);
-                                mViewModel.getMessagesList().observe(MessageActivity.this, chatList -> {
-                                    //chatList has been receive so let us wire our adapter
-                                    //by the way why do you create the adapter before you have the imageUrl?
-                                    //if you scroll upwards you will see adapter being assigned
-                                    mAdapter = new MessageAdapter(MessageActivity.this, user.getImageURL());
-                                    mRecycler.setAdapter(mAdapter);
-                                    mAdapter.submitList(chatList);
-                                });*//*
-                                }
-                            }
-                        }
-                    })
-                    .addOnFailureListener(MessageActivity.this, e -> {
-
-                    });*/
-        //seenMessage(userid);
-        //  });
     }
 
     private void onMessagesReceived(PagedList<Chat> chats) {
@@ -385,11 +245,6 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * what are you trying to achieve here?
-     *
-     * @param userid
-     */
     private void seenMessage(final String userid) {
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.keepSynced(true);
@@ -415,18 +270,8 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String sender, final String receiver, String message) {
-        // DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
-       /* HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("sender" , sender) ;
-        hashMap.put("receiver" , receiver) ;
-        hashMap.put("message" , message) ;
-        hashMap.put("isseen" , false);*/
-        //Please use a Chat object to represent a message like this
+
         Chat chat = new Chat(sender, receiver, message, false, System.currentTimeMillis(), "");
-        // reference.child("Chats").push().setValue(chat);
-        /*
-        At the same let us save this new chat message in room
-         */
 
         if (mViewModel != null) {
             if(shouldAddChatUser){
@@ -436,70 +281,9 @@ public class MessageActivity extends AppCompatActivity {
             mViewModel.saveMessage(chat);
             mViewModel.sendMessageToFirebase(chat);
         }
-       /* final DatabaseReference chatReference = FirebaseDatabase.getInstance().getReference("Chatlist")
-                .child(firebaseUser.getUid())
-                .child(userid);
-        chatReference.keepSynced(true);
-        chatReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()) {
-                    chatReference.child("id").setValue(userid);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-       /*
-       i don't what is happening here so i have left this part below untouched
-        */
         final String msg = message;
-       /* reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        reference.keepSynced(true);
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if (notify) {
-                    sendNotification(receiver, user.getUsername(), msg);
-                }
-                notify = false;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         sendNotification(receiver, userNameString, msg);
-        /**
-         * Another network call avoided
-         */
-      /* notify=false;
-            FirebaseFirestore
-                    .getInstance()
-                    .collection("Users")
-                    .document(firebaseUser.getUid())
-                    .get()
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            if (task.getResult() != null) {
-                                if (task.getResult().exists()) {
-                                    User user = task.getResult().toObject(User.class);
-                                    if (user != null) {
-                                        //give derrick his user for notifications implementations
-                                        if (notify) {
-                                            sendNotification(receiver, user.getUsername(), msg);
-                                        }
-                                        notify = false;
-                                    }
-                                }
-                            }
-                        }
-                    });*/
+
     }
 
     private void sendNotification(String receiver, final String username, final String message) {
@@ -543,35 +327,6 @@ public class MessageActivity extends AppCompatActivity {
         });
     }
 
-      /*  private void readMessages ( final String myid, final String userid, final String imageurl){
-            this.myid = myid;
-            this.userid = userid;
-            chats = new ArrayList<>();
-            reference = FirebaseDatabase.getInstance().getReference("Chats");
-            reference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    chats.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        Chat chat = snapshot.getValue(Chat.class);
-                        assert chat != null;
-                        if (chat.getReceiver() != null && chat.getReceiver().equals(myid) && chat.getSender().equals(userid) ||
-                                chat.getSender() != null && chat.getReceiver().equals(userid) && chat.getSender().equals(myid)) {
-                            chats.add(chat);
-                        }
-
-                        mAdapter = new MessageAdapter(MessageActivity.this, *//*chats ,*//* imageurl);
-                        mRecycler.setAdapter(mAdapter);
-                        mRecycler.scrollToPosition(chats.size() - 1);
-                    }
-
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-                }
-            });
-        }*/
 
     private void currentUser(String userid) {
         SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();
@@ -586,22 +341,11 @@ public class MessageActivity extends AppCompatActivity {
         updateTimeAndDate();
     }
 
-    /**
-     * Replace this code with firestore code on your own
-     * you can do it!
-     *
-     * @param status
-     */
     private void status(String status) {
-        // reference = FirebaseDatabase.getInstance().getReference("Users").child(myid);
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(myid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("status", status);
-        //reference.updateChildren(hashMap);
-        FirebaseFirestore
-                .getInstance()
-                .collection("statuses")
-                .document(myid)
-                .set(hashMap);
+        reference.updateChildren(hashMap);
     }
 
     @Override
@@ -629,9 +373,6 @@ public class MessageActivity extends AppCompatActivity {
         updateTimeAndDate();
     }
 
-    /**
-     * Replace this code with firestore version
-     */
     private void updateTimeAndDate() {
         //reference = FirebaseDatabase.getInstance().getReference("Users").child(myid);
         String delegate = "hh:mm aaa";
@@ -651,7 +392,7 @@ public class MessageActivity extends AppCompatActivity {
     /**
      * This is the listener that listens for new messages.
      * By the way the new messages we are interested in are only the messages
-     * coming from the sender. certainly we don't want to our listen for our own messages
+     * coming from the sender. certainly we don't want to listen for our own messages
      *
      * @param myId
      * @param userId

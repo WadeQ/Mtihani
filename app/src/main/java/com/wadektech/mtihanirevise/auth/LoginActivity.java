@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         btnSignUp = findViewById (R.id.btn_sign_up);
         btnlogin = findViewById (R.id.btn_login);
         loginEmail = findViewById (R.id.et_email);
@@ -82,7 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                     if (task.isSuccessful ()) {
                        viewModel.signInReturningUser(email);
                     } else {
-                        Toast.makeText (getApplicationContext (), "Authentication Failed! Please check your network and try again" + task.getException (), Toast.LENGTH_SHORT).show ();
+                        Toast.makeText (getApplicationContext (),
+                                "Authentication Failed! Please check your network and try again" + task.getException (), Toast.LENGTH_SHORT).show ();
                     }
                 });
             }
@@ -96,15 +96,6 @@ public class LoginActivity extends AppCompatActivity {
 
         googleLogin.setOnClickListener (v -> signIn ());
         mAuth = FirebaseAuth.getInstance();
-//        mAuthListener = firebaseAuth -> {
-//            if (firebaseAuth.getCurrentUser() != null) {
-//               String email = firebaseAuth.getCurrentUser().getEmail();
-//               if(email != null){
-//                   viewModel.signInReturningUser(email);
-//               }
-//
-//            }
-//        };
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -123,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void signIn() {
-        Toast.makeText(this, "signIn()", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(this, "signIn()", Toast.LENGTH_SHORT).show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
@@ -143,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount ();
                 if (account != null) {
-                    Toast.makeText(this, "onActivityResult account is NOT NULL", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "onActivityResult account is NOT NULL", Toast.LENGTH_SHORT).show();
                     firebaseAuthWithGoogle (account);
                 }
             }else {
@@ -152,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
+                Log.e(TAG, "Error type is" );
                 // ...
             }
         }
@@ -168,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (user != null) {
                             userId = user.getUid ();
                             if(user.getEmail() != null){
-                                Toast.makeText(this, "off to firestore, email is not null", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(this, "off to firestore, email is not null", Toast.LENGTH_SHORT).show();
                                 viewModel.signInReturningUser(user.getEmail());
                             }
                         }

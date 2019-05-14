@@ -34,6 +34,7 @@ import com.wadektech.mtihanirevise.utils.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -83,7 +84,6 @@ public class SignUpActivity extends AppCompatActivity {
 
             if (TextUtils.isEmpty(email)) {
                 etEmail.setError("Please Enter Your Email Address!");
-
             } else if (TextUtils.isEmpty(password)) {
                 etPassword.setError("Please Enter Secure Password!");
             } else if (TextUtils.isEmpty(userNmae)) {
@@ -92,7 +92,6 @@ public class SignUpActivity extends AppCompatActivity {
                 registerUser(password, userNmae, email);
             }
         });
-
         //initialize the firebase object
         mAuth = FirebaseAuth.getInstance();
        /* mAuthListener = firebaseAuth -> {
@@ -113,7 +112,8 @@ public class SignUpActivity extends AppCompatActivity {
                 .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(this, connectionResult -> Toast.makeText(getApplicationContext(), "You got an error", LENGTH_SHORT).show())
+                .enableAutoManage(this, connectionResult -> Toast.makeText(getApplicationContext(),
+                        "You got an error", LENGTH_SHORT).show())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -172,8 +172,7 @@ public class SignUpActivity extends AppCompatActivity {
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         Calendar calendar = Calendar.getInstance();
-                        // @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-                        // saveCurrentDate =currentDate.format (calendar.getTime ());
+
                         String delegate = "hh:mm aaa";
                         String time = (String) DateFormat.format(delegate, calendar.getTime());
 
@@ -195,19 +194,16 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             imageURL = "default";
                         }
-                      /*  HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("id", userId);
+                       HashMap<String, Object> hashMap = new HashMap<>();
                         hashMap.put("status", "offline");
-                        hashMap.put("update", "Hello there! I use Mtihani Revise.");
-                        assert name != null;
-                        hashMap.put("search", name.toLowerCase());
-                        hashMap.put("time", String.valueOf(ServerValue.TIMESTAMP));
-                        hashMap.put("username", name);
-                        hashMap.put("imageURL", imageUrl);*/
-                        /*reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
+                        reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
 
-                        }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (), "Error saving data " + e.toString () , LENGTH_SHORT).show ());*/
-                        User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(), "Hello there! I use Mtihani Revise.",
+                        }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (),
+                                "Error saving data " + e.toString () , LENGTH_SHORT).show ());
+
+
+                        User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(),
+                                "Hello there! I use Mtihani Revise.",
                                 time, System.currentTimeMillis(), user.getEmail());
                         FirebaseFirestore
                                 .getInstance()
@@ -231,7 +227,8 @@ public class SignUpActivity extends AppCompatActivity {
                                     } else {
                                         if (task12.getException() != null)
                                             Log.d(TAG, "error:" + task12.getException().toString());
-                                        Toast.makeText(this, "Error saving data " + task12.getException().toString(), LENGTH_SHORT).show();
+                                        Toast.makeText(this, "Error saving data " +
+                                                task12.getException().toString(), LENGTH_SHORT).show();
                                     }
                                 });
                         mConnectionProgressDialog.dismiss();
@@ -240,7 +237,8 @@ public class SignUpActivity extends AppCompatActivity {
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.e("SignupActivity", "Failed Registration" + task.getException());
-                        Toast.makeText(getApplicationContext(), "Authentication failed." + task.getException(), LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Authentication failed." +
+                                task.getException(), LENGTH_SHORT).show();
                         // updateUI(null);
                     }// ...
                 });
@@ -266,9 +264,14 @@ public class SignUpActivity extends AppCompatActivity {
                 assert userId != null;
                 reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
 
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("status", "offline");
+                reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
+
+                }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (),
+                        "Error saving data " + e.toString () , LENGTH_SHORT).show ());
+
                 Calendar calendar = Calendar.getInstance();
-                // @SuppressLint("SimpleDateFormat") SimpleDateFormat currentDate = new SimpleDateFormat ("MMM dd,yyyy");
-                // saveCurrentDate =currentDate.format (calendar.getTime ());
 
                 String delegate = "hh:mm aaa";
                 String time = (String) DateFormat.format(delegate, calendar.getTime());
@@ -299,10 +302,10 @@ public class SignUpActivity extends AppCompatActivity {
                             }
                         });
             } else {
-                Toast.makeText(this, "Oops! Something went wrong, try again." + task.getException(), Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Oops! Something went wrong, try again." +
+                        task.getException(), Toast.LENGTH_LONG).show();
             }
         });
     }
-
 }
 

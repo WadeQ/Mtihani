@@ -45,11 +45,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
             }
         }
     }
-/*
-NOTE to open MessageActivity you need to pass the following items to it
-userName,userId,time,imageURL
-make necessary code changes to get these items before opening MessageActivity directly
- */
+
     private void sendOreoNotification(RemoteMessage remoteMessage){
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");

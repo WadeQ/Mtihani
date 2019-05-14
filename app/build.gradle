@@ -63,11 +63,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     //persistence for picasso
-    implementation 'com.squareup.okhttp:okhttp:2.7.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.squareup.okhttp3:okhttp:3.11.0'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
+    implementation 'com.squareup.okhttp:okhttp:2.4.0'
     // ViewModel and LiveData
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"

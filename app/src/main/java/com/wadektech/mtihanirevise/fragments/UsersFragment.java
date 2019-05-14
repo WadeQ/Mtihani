@@ -88,31 +88,6 @@ public class UsersFragment extends Fragment {
     }
 
     private void searchUsers(String s) {
-       /* final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        Query query = FirebaseDatabase.getInstance().getReference("Users").orderByChild("search")
-                .startAt(s)
-                .endAt(s + "\uf8ff");
-        query.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               users.clear();
-               for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                   User user = snapshot.getValue(User.class);
-                   assert user != null;
-                   assert firebaseUser != null;
-                   if (!user.getId().equals(firebaseUser.getUid())){
-                       users.add(user);
-                   }
-               }
-               userAdapter = new UserAdapter(getContext(), users , false);
-               recyclerView.setAdapter(userAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         // viewModel = ViewModelProviders.of(getActivity()).get(UsersViewModel.class);
         if (s.equals("")) {
             userAdapter = null;

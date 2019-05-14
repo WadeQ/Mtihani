@@ -44,27 +44,7 @@ public class ChatsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         chatList() ;
-       // usersList  = new ArrayList<>() ;
-       // firebaseUser = FirebaseAuth.getInstance().getCurrentUser() ;
-        /**
-         * what did you want to achieve with this?
-         */
-       /* databaseReference = FirebaseDatabase.getInstance().getReference("Chatlist").child(firebaseUser.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                usersList.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chatlist chatlist = snapshot.getValue(Chatlist.class);
-                    usersList.add(chatlist);
-                }
-                chatList() ;
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
         updateToken (FirebaseInstanceId.getInstance ().getToken ());
 
         return v ;
@@ -76,31 +56,7 @@ public class ChatsFragment extends Fragment {
     }
 
     private void chatList() {
-       /* users = new ArrayList<>();
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users");
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                users.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    User user = snapshot.getValue(User.class);
-                    for (Chatlist chatlist : usersList){
-                        assert user != null;
-                        if (user.getId() != null && user.getId().equals(chatlist.getId())){
-                            users.add(user) ;
-                        }
-                    }
-                }
-                userAdapter = new UserAdapter(getContext(), *//*users ,*//* true);
-                recyclerView.setAdapter(userAdapter);
 
-                //recyclerView.scrollToPosition (users.size () -1);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         UsersViewModel viewModel = ViewModelProviders.of(getActivity())
                 .get(UsersViewModel.class);
         viewModel.getChatList().observe(this,usersList->{

@@ -57,7 +57,8 @@ import static android.support.v4.view.MenuItemCompat.getActionView;
 //import com.google.firebase.auth.FirebaseUser;
 
 
-public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener, SinglePDFAdapter.OnSinglePDFClickHandler {
+public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener,
+        SinglePDFAdapter.OnSinglePDFClickHandler {
     public PdfAdapter mAdapter;
     //private FirebaseUser firebaseUser;
     public TextView mStatus;
@@ -195,7 +196,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private List<PdfModel> getAllItemList() {
         final List<PdfModel> allItems = new ArrayList<>();
 
-       // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("pdf");
         mDatabase.addValueEventListener(new ValueEventListener () {
             @Override
@@ -214,19 +214,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             }
         });
 
-       /* allItems.add(new PdfModel ("KCSE 2008", "2008"));
-        allItems.add(new PdfModel ("KCSE 2009", "2008"));
-        allItems.add(new PdfModel ("KCSE 2010", "2010"));
-        allItems.add(new PdfModel ("KCSE 2011", "2011"));
-        allItems.add(new PdfModel ("KCSE 2012", "2012"));
-        allItems.add(new PdfModel ("KCSE 2013", "2013"));
-        allItems.add(new PdfModel ("KCSE 2014", "2014"));
-        allItems.add(new PdfModel ("KCSE 2015", "2015"));
-        allItems.add(new PdfModel ("KCSE 2016", "2016"));
-        allItems.add(new PdfModel ("KCSE 2017", "2017"));
-        allItems.add(new PdfModel ("KCSE ANSWERS", "2018"));
-
-        **/
         return allItems;
     }
 
@@ -308,7 +295,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     }
 
     public void ask_Gallery_Permission() {
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, GALLERY_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                GALLERY_REQUEST_CODE);
     }
 
     @Override

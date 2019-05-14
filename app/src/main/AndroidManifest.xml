@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".adapter.MainSliderActivity"
+            android:name=".ui.MainSliderActivity"
             tools:ignore="InnerclassSeparator"
             >
             <intent-filter>

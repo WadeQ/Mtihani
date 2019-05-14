@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout5"
@@ -10,13 +11,13 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="130dp"
-        android:layout_marginBottom="323dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="147dp"
         android:background="@color/colorPrimaryDark"
         android:minHeight="?android:attr/actionBarSize"
-        app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
+        app:layout_constraintBottom_toTopOf="@+id/etStatus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@color/colorWhite">
@@ -35,15 +36,20 @@
         android:id="@+id/etStatus"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="57dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="347dp"
         android:paddingLeft="@dimen/_10sdp"
         android:paddingRight="@dimen/_10sdp"
-        app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="0.738">
 
         <android.support.design.widget.TextInputEditText
             android:layout_width="380dp"
@@ -59,9 +65,12 @@
         android:id="@+id/btnUpdate"
         android:layout_width="183dp"
         android:layout_height="51dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="182dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="208dp"
         android:background="@drawable/btn_bg"
         android:text="@string/_status_update"
         android:textAllCaps="false"
@@ -71,9 +80,10 @@
         app:fontFamily="@string/font"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.962"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="0.866" />
 
 
 </android.support.constraint.ConstraintLayout>

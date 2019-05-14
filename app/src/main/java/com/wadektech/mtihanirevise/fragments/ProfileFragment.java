@@ -68,28 +68,7 @@ public class ProfileFragment extends Fragment {
 
         statusDisplay = view.findViewById(R.id.status_display);
         userName.setText(Constants.getUserName());
-        //firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        //assert firebaseUser != null;
-       // String userID = firebaseUser.getUid();
-       /* databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userID);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    String val = dataSnapshot.child("update").getValue(String.class);
-                    if (val != null) {
-                        statusDisplay.setText(val);
-                    } else {
-                        Toast.makeText(getContext(), "Null object!", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
 FirebaseFirestore
         .getInstance()
         .collection("Users")
@@ -111,48 +90,7 @@ FirebaseFirestore
         });
 
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        //firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        /**
-         * Replaced code with Firestore code
-         */
-        /* databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final User user = dataSnapshot.getValue(User.class);
-                if (user != null) {
-                    userName.setText(user.getUsername());
-                }
-                if (user != null) {
-                    if (user.getImageURL().equals("default")) {
-                        profileImage.setImageResource(R.drawable.profile);
-                    } else {
-                        final int defaultImageResId = R.drawable.profile;
-                        Picasso.with(getContext())
-                                .load(user.getImageURL())
-                                .networkPolicy(NetworkPolicy.OFFLINE)
-                                .into(profileImage, new Callback() {
-                                    @Override
-                                    public void onSuccess() {
 
-                                    }
-
-                                    @Override
-                                    public void onError() {
-                                        Picasso.with(getContext())
-                                                .load(user.getImageURL())
-                                                .error(defaultImageResId)
-                                                .into(profileImage);
-                                    }
-                                });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
         SharedPreferences pfs = getActivity().getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
         String imageURL = pfs.getString(Constants.imageURL,"");
         if(imageURL.equals("")|| imageURL.equals("default")) {
@@ -246,13 +184,6 @@ FirebaseFirestore
                         SharedPreferences.Editor editor = pfs.edit();
                         editor.putString(Constants.imageURL, mUri);
                         editor.apply();
-                    /**
-                     * Replaced code with Firestore
-                     */
-                    /*databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-                    HashMap<String , Object> map = new HashMap<>();
-                    map.put("imageURL" , mUri);
-                    databaseReference.updateChildren(map);*/
 
                     FirebaseFirestore
                             .getInstance()

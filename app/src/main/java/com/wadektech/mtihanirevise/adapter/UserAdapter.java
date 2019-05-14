@@ -83,11 +83,8 @@ private final String TAG = "UserAdapter";
                         }
                     });
         }
-       /* if (isChatting){
-            lastMessage(user.getUserId() , holder.mLastMessage);
-        }else {*/
+
             holder.mLastMessage.setVisibility(View.GONE);
-       // }
 
         if (isChatting){
             if (user.getStatus().equals("online")){
@@ -143,40 +140,7 @@ private final String TAG = "UserAdapter";
     }
     private void lastMessage(final String userid , final TextView mLastMessage){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-       /* theLastMessage = "default" ;
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    assert chat != null;
-                    assert firebaseUser != null;
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())){
-                        theLastMessage = chat.getMessage() ;
-                    }
-                }
-                switch (theLastMessage){
-                    case "default" :
-                        mLastMessage.setText("No saved messages yet!");
-                        break;
 
-                    default:
-                        mLastMessage.setText(theLastMessage);
-                        break;
-                }
-
-                theLastMessage = "default" ;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 

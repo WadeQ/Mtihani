@@ -39,8 +39,6 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         // this.users = users;
         this.isChatting = isChatting;
         mHandler = new Handler();
-
-
     }
 
     @NonNull
@@ -83,9 +81,6 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         }
         // if (isChatting){
         holder.lastMessage(user.getUserId());
-       /* }else {
-            holder.mLastMessage.setVisibility(View.GONE);
-        }*/
 
         if (isChatting) {
             if (user.getStatus().equals("online")) {
@@ -136,68 +131,12 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         }
 
         private void lastMessage(String userid) {
-            //final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-       /* theLastMessage = "default" ;
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Chat chat = snapshot.getValue(Chat.class);
-                    assert chat != null;
-                    assert firebaseUser != null;
-                    if (chat.getReceiver().equals(firebaseUser.getUid()) && chat.getSender().equals(userid) ||
-                            chat.getReceiver().equals(userid) && chat.getSender().equals(firebaseUser.getUid())){
-                        theLastMessage = chat.getMessage() ;
-                    }
-                }
-                switch (theLastMessage){
-                    case "default" :
-                        mLastMessage.setText("No saved messages yet!");
-                        break;
-
-                    default:
-                        mLastMessage.setText(theLastMessage);
-                        break;
-                }
-
-                theLastMessage = "default" ;
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });*/
-
-          /*  disposables.add(MtihaniDatabase
-                    .getInstance(context
-                            .getApplicationContext())
-                    .singleMessageDao()
-                    .getLastMessage(*//*firebaseUser.getUid()*//*Constants.getUserId(), userid)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(lastMessage -> {
-
-                        if (lastMessage != null) {
-                            mStatus.setText(lastMessage);
-                        }else{
-                            mStatus.setText("");
-                        }
-
-                    }, error ->
-                    {Log.d(TAG, "database error in ChatsAdapter");
-                        mStatus.setText("");
-                    }));*/
             new Thread(() -> {
 
                 final String lastMessage = MtihaniDatabase
                         .getInstance(context)
                         .singleMessageDao()
                         .getLastMessage(Constants.getUserId(), userid);
-
 
 //                  Update the value background thread to UI thread
                 mHandler.post(() -> {
@@ -206,12 +145,9 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
                     } else {
                         mStatus.setText("");
                     }
-
-
                 });
 
             }).start();
-
         }
     }
 

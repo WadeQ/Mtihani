@@ -198,26 +198,12 @@ public class MtihaniRepository {
     }
 
     public static void sendMessageToFirebase(Chat chat) {
-        //See how saving data in Firestore is easy
-        //No listeners are required because there is a rather high guarantee
-        //that this message will be delivered to the server
-//Log.d(TAG,"sending message to firestore...");
+
         FirebaseFirestore.getInstance()
                 .collection("messages")
                 .document()
                 .set(chat);
-                /*.addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG,"message sent successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG,"sending message to firestore failed: "+e.toString());
-                    }
-                });*/
+
     }
 
     public static void onZeroUsersLoaded() {
@@ -674,66 +660,6 @@ public class MtihaniRepository {
      */
     public static void onItemAtFrontLoaded(Chat itemAtFront, String myId, String userId) {
         MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
-
-       /* MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
-        List<Chat> chats = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.equalTo("receiver", myId)
-                .endAt(itemAtFront.getDate())
-                .orderByChild("date")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Chat chat = snapshot.getValue(Chat.class);
-                                assert chat != null;
-                                if (chat.getSender().equals(userId))
-                                    chats.add(chat);
-                            }
-                            MtihaniAppExecutors
-                                    .getInstance()
-                                    .getDiskIO()
-                                    .execute(() -> db
-                                            .singleMessageDao()
-                                            .saveChatsList(chats));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.toString());
-                    }
-                });
-        List<Chat> chatList = new ArrayList<>();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
-        ref.equalTo("receiver", userId)
-                .orderByChild("date")
-                .endAt(itemAtFront.getDate())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Chat chat = snapshot.getValue(Chat.class);
-                                assert chat != null;
-                                if (chat.getSender().equals(myId))
-                                    chatList.add(chat);
-                            }
-                            MtihaniAppExecutors
-                                    .getInstance()
-                                    .getDiskIO()
-                                    .execute(() -> db
-                                            .singleMessageDao()
-                                            .saveChatsList(chatList));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.toString());
-                    }
-                });*/
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 
@@ -799,64 +725,6 @@ public class MtihaniRepository {
 
     public static void onItemAtEndLoaded(Chat itemAtEnd, String myId, String userId) {
         MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
-       /* List<Chat> chats = new ArrayList<>();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.equalTo("sender", itemAtEnd.getReceiver());
-        reference.equalTo("receiver", itemAtEnd.getSender())
-                .startAt(itemAtEnd.getDate())
-                .orderByChild("date")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Chat chat = snapshot.getValue(Chat.class);
-                                assert chat != null;
-                                chats.add(chat);
-                            }
-                            MtihaniAppExecutors
-                                    .getInstance()
-                                    .getDiskIO()
-                                    .execute(() -> db
-                                            .singleMessageDao()
-                                            .saveChatsList(chats));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.toString());
-                    }
-                });
-        List<Chat> chatList = new ArrayList<>();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Chats");
-        ref.equalTo("sender", itemAtEnd.getSender());
-        ref.equalTo("receiver", itemAtEnd.getReceiver())
-                .orderByChild("date")
-                .startAt(itemAtEnd.getDate())
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.exists()) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                Chat chat = snapshot.getValue(Chat.class);
-                                assert chat != null;
-                                chatList.add(chat);
-                            }
-                            MtihaniAppExecutors
-                                    .getInstance()
-                                    .getDiskIO()
-                                    .execute(() -> db
-                                            .singleMessageDao()
-                                            .saveChatsList(chatList));
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                        Log.d(TAG, databaseError.toString());
-                    }
-                });*/
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 

@@ -22,8 +22,6 @@ public class MessagesBoundaryCallback extends PagedList.BoundaryCallback<Chat> {
 
     @Override
     public void onZeroItemsLoaded() {
-
-
         //database has no items. load items from server
         helper.runIfNotRunning(PagingRequestHelper.RequestType.BEFORE, helperCallback ->
                 MtihaniRepository.onZeroItemsLoaded(myId,userId));

@@ -28,22 +28,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHolder> {
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
-    /*
-    You do not to need to pass context from the activity
-    as it is possible to get context within the adapter or
-    viewHolder
-     */
+
     private Context context;
-    //chats below is unnecessary & has been commented out
     //private List<Chat> chats ;
-    /*
-    Consider naming your variables using the camelcase way. its the Java way
-    For instance imageurl should be mImageUrl where m shows that it's a member variable
-     */
     private String imageurl;
-
     // private FirebaseUser firebaseUser;
-
     public MessageAdapter(Context context,/* List<Chat> chats ,*/ String imageurl) {
         super(Chat.DIFF_CALLBACK);
         this.context = context;
@@ -76,19 +65,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
                         .load(imageurl)
                         .into(holder.chatImage);
             }
-            /**
-             * What are you trying to achieve here?
-             */
-       /* if (position == chats.size()-1){
-            if (chat.isIsseen()){
-                holder.mSeen.setText("seen");
-            }else {
-                holder.mSeen.setText("Delivered");
-            }
-        }else {
-            holder.mSeen.setVisibility(View.GONE);
-        }
-    }*/
+
             String strDateFormat = "hh:mm a";
             DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
             String formattedDate = dateFormat.format(new Date(chat.getDate()));

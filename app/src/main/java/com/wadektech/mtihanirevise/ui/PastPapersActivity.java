@@ -12,11 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype;
@@ -34,13 +31,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.adapter.MainSliderActivity;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
+import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
 import com.wadektech.mtihanirevise.pojo.RowModel;
 import com.wadektech.mtihanirevise.utils.Constants;
-import com.wadektech.mtihanirevise.viewmodels.AdminPanelViewModel;
 import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 
 import java.util.ArrayList;
@@ -63,7 +59,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     StorageReference storageReference;
     private SwipeRefreshLayout mSwipe;
     private AlertDialog alertDialogAndroid;
-
     NiftyDialogBuilder materialDesignAnimatedDialog;
     private Handler mHandler;
 
@@ -104,115 +99,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         mAuth = FirebaseAuth.getInstance();
         userProfile = findViewById(R.id.profileImage);
 
-
-        //final FirebaseUser user = mAuth.getCurrentUser();
-        //get user profile details and display on toolbar
-      /*  if (user != null) {
-            Picasso.with(this)
-                    .load(user.getPhotoUrl())
-                    .networkPolicy(NetworkPolicy.OFFLINE)
-                    .placeholder(R.drawable.profile)
-                    .into(userProfile, new Callback() {
-                        @Override
-                        public void onSuccess() {
-
-                        }
-
-                        @Override
-                        public void onError() {
-                            Picasso.with(PastPapersActivity.this)
-                                    .load(user.getPhotoUrl())
-                                    .into(userProfile);
-                        }
-                    });
-        }*/
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
-        // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-      /*  databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        databaseReference.keepSynced(true);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final User user = dataSnapshot.getValue(User.class);
-                if (user != null && user.getImageURL () != null) {
-                    if (user.getImageURL().equals("default")){
-                        userProfile.setImageResource(R.drawable.profile);
-                    }else  {
-                        final int defaultImageResId = R.drawable.profile;
-                        Picasso.with(getApplicationContext ())
-                                .load(user.getImageURL())
-                                .networkPolicy (NetworkPolicy.OFFLINE)
-                                .into (userProfile, new Callback () {
-                                    @Override
-                                    public void onSuccess() {
 
-                                    }
-                                    @Override
-                                    public void onError() {
-                                        Picasso.with (getApplicationContext ())
-                                                .load (user.getImageURL ())
-                                                .networkPolicy (NetworkPolicy.NO_CACHE)
-                                                .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
-                                                .into (userProfile);
-                                    }
-                                });
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });*/
-
-
-/*
-FirebaseFirestore
-        .getInstance()
-        .collection("Users")
-        .document(Constants.getUserId())
-        .get()
-        .addOnSuccessListener(this, snapshot -> {
-            if(snapshot != null){
-                if(snapshot.exists()){
-                    User user1 = snapshot.toObject(User.class);
-                    if (user1 != null && user1.getImageURL () != null) {
-                        if (user1.getImageURL().equals("default")){
-                            userProfile.setImageResource(R.drawable.profile);
-                        }else  {
-                            final int defaultImageResId = R.drawable.profile;
-                            Picasso.with(getApplicationContext ())
-                                    .load(user1.getImageURL())
-                                    .networkPolicy (NetworkPolicy.OFFLINE)
-                                    .into (userProfile, new Callback () {
-                                        @Override
-                                        public void onSuccess() {
-
-                                        }
-                                        @Override
-                                        public void onError() {
-                                            Picasso.with (getApplicationContext ())
-                                                    .load (user1.getImageURL ())
-                                                    .error(defaultImageResId)
-                                                   // .networkPolicy (NetworkPolicy.NO_CACHE)
-                                                    //.memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE).error (defaultImageResId)
-                                                    .into (userProfile);
-                                        }
-                                    });
-                        }
-                    }
-                }
-            }
-
-        })
-        .addOnFailureListener(this, new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("PastPapersActivity","error is:"+e.toString());
-            }
-        });
-*/
-        // mAuth = FirebaseAuth.getInstance();
         List<RowModel> rowListItem = getAllItemList();
         lLayout = new GridLayoutManager(PastPapersActivity.this, 2);
 
@@ -301,17 +189,6 @@ FirebaseFirestore
         mAuth.signOut();
         //clear user account
         //send intent to the Login activity
-        /*
-        We are clearing all local room tables here.
-        please ensure you have initialized mHandler correctly in the
-        onCreate method like this mHandler = new Handler()
-        and ensure you have added the import statement
-        import android.os.Handler;
-         */
-        /*
-        Background thread to delete all tables
-        since mtoto amelilia wembe by deciding to sign out
-         */
         new Thread(() -> {
             MtihaniDatabase db = MtihaniDatabase
                     .getInstance(PastPapersActivity.this);
@@ -348,7 +225,7 @@ FirebaseFirestore
             userProfile.setImageResource(R.drawable.profile);
         } else {
             final int defaultImageResId = R.drawable.profile;
-            Picasso.with(this)
+            Picasso.with(MtihaniRevise.getApp ())
                     .load(Constants.getImageURL())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(userProfile, new Callback() {
