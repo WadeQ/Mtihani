@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,29 +45,35 @@ public class StatusUpdate extends AppCompatActivity {
         mCoordinate = findViewById(R.id.coordinator);
 
         statusBtnUpdate.setOnClickListener (view -> {
-            pDialog = new ProgressDialog (StatusUpdate.this);
-            pDialog.setMessage ("Please be patient as we update your status");
-            pDialog.show ();
-
             String updatestatus = statusUpdate.getEditText ().getText ().toString ();
+            if (TextUtils.isEmpty(updatestatus)){
+                statusUpdate.setError("Cannot be blank!");
+                statusUpdate.requestFocus();
+                return;
+            } else {
+                pDialog = new ProgressDialog (StatusUpdate.this);
+                pDialog.setMessage ("Please be patient as we update your status");
+                pDialog.show ();
 
-            FirebaseFirestore
-                    .getInstance()
-                    .collection("Users")
-                    .document(Constants.getUserId())
-                    .update("update" , updatestatus)
-                    .addOnCompleteListener(task -> {
-                        Snackbar snackbar = Snackbar.make(mCoordinate, "Successfully updated your status..." , Snackbar.LENGTH_SHORT);
-                        snackbar.show();
-                        //clear edit text
-                        statusUpdate.getEditText().setText("");
-                    }).addOnFailureListener(e -> {
+                FirebaseFirestore
+                        .getInstance()
+                        .collection("Users")
+                        .document(Constants.getUserId())
+                        .update("update" , updatestatus)
+                        .addOnCompleteListener(task -> {
+                            pDialog.dismiss();
+                            Snackbar snackbar = Snackbar.make(mCoordinate, "Successfully updated your status..." , Snackbar.LENGTH_SHORT);
+                            snackbar.show();
+                            //clear edit text
+                            statusUpdate.getEditText().setText("");
+                        }).addOnFailureListener(e -> {
+                    pDialog.dismiss();
+                    Log.d(TAG, "error updating status " +e.getMessage());
 
-                Log.d(TAG, "error updating status " +e.getMessage());
+                });
+            }
 
-                    });
         });
-
     }
 
 }
