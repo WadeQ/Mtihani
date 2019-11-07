@@ -23,8 +23,7 @@ import com.wadektech.mtihanirevise.utils.Constants;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
+
 
 public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHolder> {
     private Context context;
@@ -44,7 +43,7 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.chats_users_item, parent, false);
         return new ChatsAdapter.ViewHolder(view);
     }
 
@@ -82,6 +81,8 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         // if (isChatting){
         holder.lastMessage(user.getUserId());
 
+        /**
+
         if (isChatting) {
             if (user.getStatus().equals("online")) {
                 holder.mStatusOn.setVisibility(View.VISIBLE);
@@ -95,10 +96,11 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
             holder.mStatusOff.setVisibility(View.GONE);
         }
 
+         **/
+
         holder.itemView.setOnClickListener(v -> {
             Log.e("TAG", "Message");
-            //just send all the data required to set up MessageActivity.class
-            //we alredy have the user here so why fetch him up from firestore again?
+
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("userid", user.getUserId());
             intent.putExtra("imageURL", user.getImageURL());

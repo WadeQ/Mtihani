@@ -42,6 +42,7 @@ import com.wadektech.mtihanirevise.room.ChatDao;
 import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.ChatViewModel;
 import com.wadektech.mtihanirevise.room.MtihaniDatabase;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.utils.InjectorUtils;
 import com.wadektech.mtihanirevise.viewmodelfactories.MessagesActivityViewModelFactory;
@@ -76,21 +77,18 @@ public class MessageActivity extends AppCompatActivity {
     private RecyclerView.SmoothScroller smoothScroller;
     // private String imageurl;
     private static int monitor = 0;
-
     Intent intent;
     private String myid;
     private String userid;
     private String userNameString;
     private String time;
     boolean notify = false;
-
     APIService apiService;
-
     private ChatDao chatDao;
     private String imageURL;
-
     private ValueEventListener seenListener;
     private MessagesActivityViewModel mViewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +105,6 @@ public class MessageActivity extends AppCompatActivity {
                 .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)));
 
         apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService.class);
-
         reference = FirebaseDatabase.getInstance().getReference("Chats");
         reference.keepSynced(true);
 
@@ -136,18 +133,13 @@ public class MessageActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         linearLayoutManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(linearLayoutManager);
-
         //creating the adapter
         mAdapter = new MessageAdapter (MessageActivity.this,/* chats ,*/ imageURL);//is this necessary at this point?
-
         //getting viewmodel
         mRecycler.setAdapter(mAdapter);
         chatViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
-
         //observing the pagelist from viewmodel
         chatViewModel.chats.observe(this, mAdapter::submitList);
-
-
         // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         btnSend.setOnClickListener(v -> {
             notify = true;
@@ -187,7 +179,9 @@ public class MessageActivity extends AppCompatActivity {
         mViewModel.getMessagesList().observe(this, mAdapter::submitList);
 
         userName.setText(userNameString);
+
         mTime.setText("Last seen " + time);
+
         if (imageURL.equals("default")) {
             imageView.setImageResource(R.drawable.profile);
         } else {
@@ -200,7 +194,7 @@ public class MessageActivity extends AppCompatActivity {
                         public void onSuccess() {
 
                         }
-
+                        
                         @Override
                         public void onError() {
                             Picasso.with(MessageActivity.this)
@@ -241,7 +235,6 @@ public class MessageActivity extends AppCompatActivity {
             });
             mAdapter.submitList(chats);
             mRecycler.setAdapter(mAdapter);
-
         }
     }
 
@@ -339,13 +332,15 @@ public class MessageActivity extends AppCompatActivity {
         super.onStart();
         Log.d("MessageActivity", "ONSTART");
         updateTimeAndDate();
+        status("status");
     }
 
     private void status(String status) {
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(myid);
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("status", status);
-        reference.updateChildren(hashMap);
+        FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .document(Constants.getUserId())
+                .update("status" , status) ;
     }
 
     @Override
@@ -361,6 +356,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         updateTimeAndDate();
+        status("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
     }
 
@@ -371,6 +367,12 @@ public class MessageActivity extends AppCompatActivity {
         status("offline");
         currentUser("none");
         updateTimeAndDate();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        status("offline");
     }
 
     private void updateTimeAndDate() {
@@ -385,8 +387,6 @@ public class MessageActivity extends AppCompatActivity {
                 .collection("Users")
                 .document(myid)
                 .update(hashMap);
-                   /* .addOnSuccessListener(this, aVoid -> Toast.makeText(MessageActivity.this, "successfully updated time", Toast.LENGTH_SHORT).show())
-                    .addOnFailureListener(this, e -> Toast.makeText(MessageActivity.this, "failed to update time "+e.toString(), Toast.LENGTH_SHORT).show());*/
     }
 
     /**

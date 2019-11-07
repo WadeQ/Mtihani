@@ -12,9 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
@@ -25,13 +23,9 @@ import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-/*import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;*/
 
 public class ChatActivity extends AppCompatActivity {
     TextView mUsername, mStatus;
@@ -63,39 +57,15 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+        status("online");
         getUnreadCountFromRoom();
-    }
-
-    private void onEmptyUnreadListReceived(String s) {
-        if (s != null) {
-        }
     }
 
     /**
      * List of chats has been received
      * make necessary changes to the titles
-     * @param chats
+     * @param
      */
-    private void onUnreadListReceived(List<Chat> chats) {
-       // ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        if (chats.size() == 0) {
-           // viewPagerAdapter.addFragment(new ChatsFragment(), "Chats");
-        } else {
-           //update your code here to reflect changes
-            //viewPagerAdapter.addFragment(new ChatsFragment(), "(" + chats.size() + ") Chats");
-        }
-
-        //viewPagerAdapter.addFragment(new UsersFragment(), "Classroom");
-        //viewPagerAdapter.addFragment(new ProfileFragment(), "Profile");
-       // mViewPager.setAdapter(viewPagerAdapter);
-       // mTabLayout.setupWithViewPager(mViewPager);
-    }
-
-    private void onUserReceived(User user) {
-        if (user != null) {
-           // mUsername.setText(user.getUsername());
-        }
-    }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
@@ -130,12 +100,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void status(String status) {
-        reference = FirebaseDatabase.getInstance().getReference("Users").child(Constants.getUserId ());
-        reference.keepSynced (true);
-
-        HashMap<String , Object> hashMap = new HashMap<>();
-        hashMap.put("status" , status) ;
-        reference.updateChildren(hashMap);
+        FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .document(Constants.getUserId())
+                .update("status" , status) ;
     }
 
     @Override
@@ -149,6 +118,19 @@ public class ChatActivity extends AppCompatActivity {
         super.onPause();
         status("offline");
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        status("offline");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        status("offline");
+    }
+
     private void getUnreadCountFromRoom() {
 //      New thread to perform background operation
         new Thread(() -> {

@@ -49,7 +49,7 @@ private final String TAG = "UserAdapter";
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.classroom_user_item, parent, false);
         return new UserAdapter.ViewHolder(view);
     }
 
@@ -84,7 +84,9 @@ private final String TAG = "UserAdapter";
                     });
         }
 
-            holder.mLastMessage.setVisibility(View.GONE);
+           // holder.mLastMessage.setVisibility(View.GONE);
+
+        /**
 
         if (isChatting){
             if (user.getStatus().equals("online")){
@@ -99,10 +101,11 @@ private final String TAG = "UserAdapter";
             holder.mStatusOff.setVisibility(View.GONE);
         }
 
+         **/
+
         holder.itemView.setOnClickListener(v -> {
             Log.e("TAG","Message");
-            //just send all the data required to set up MessageActivity.class
-            //we alredy have the user here so why fetch him up from firestore again?
+
             ChatItem item = new ChatItem(user.getUserId(),user.getUsername(),user.getImageURL(),
                     user.getStatus(),user.getSearch(),user.getUpdate(),user.getTime(),
             user.getDate());
