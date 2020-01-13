@@ -1,11 +1,8 @@
 <component name="ProjectCodeStyleConfiguration">
   <code_scheme name="Project" version="173">
-<<<<<<< HEAD
     <AndroidXmlCodeStyleSettings>
       <option name="ARRANGEMENT_SETTINGS_MIGRATED_TO_191" value="true" />
     </AndroidXmlCodeStyleSettings>
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
     <codeStyleSettings language="JAVA">
       <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true" />
       <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true" />
@@ -25,10 +22,7 @@
               <match>
                 <AND>
                   <NAME>xmlns:android</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>^$</XML_NAMESPACE>
                 </AND>
               </match>
@@ -39,10 +33,7 @@
               <match>
                 <AND>
                   <NAME>xmlns:.*</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>^$</XML_NAMESPACE>
                 </AND>
               </match>
@@ -54,10 +45,7 @@
               <match>
                 <AND>
                   <NAME>.*:id</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
                 </AND>
               </match>
@@ -68,10 +56,7 @@
               <match>
                 <AND>
                   <NAME>.*:name</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
                 </AND>
               </match>
@@ -82,10 +67,7 @@
               <match>
                 <AND>
                   <NAME>name</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>^$</XML_NAMESPACE>
                 </AND>
               </match>
@@ -96,10 +78,7 @@
               <match>
                 <AND>
                   <NAME>style</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>^$</XML_NAMESPACE>
                 </AND>
               </match>
@@ -110,10 +89,7 @@
               <match>
                 <AND>
                   <NAME>.*</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>^$</XML_NAMESPACE>
                 </AND>
               </match>
@@ -125,10 +101,7 @@
               <match>
                 <AND>
                   <NAME>.*</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>http://schemas.android.com/apk/res/android</XML_NAMESPACE>
                 </AND>
               </match>
@@ -140,10 +113,7 @@
               <match>
                 <AND>
                   <NAME>.*</NAME>
-<<<<<<< HEAD
                   <XML_ATTRIBUTE />
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                   <XML_NAMESPACE>.*</XML_NAMESPACE>
                 </AND>
               </match>

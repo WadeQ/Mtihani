@@ -28,22 +28,13 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-<<<<<<< HEAD
         android:layout_marginBottom="62dp"
-=======
-        android:layout_marginBottom="8dp"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/slideViewPager"
         app:layout_constraintEnd_toEndOf="parent"
-<<<<<<< HEAD
         app:layout_constraintStart_toStartOf="parent">
-=======
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/slideViewPager"
-        app:layout_constraintVertical_bias="0.883">
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
+
 
     </LinearLayout>
 
@@ -59,10 +50,7 @@
         android:layout_marginBottom="8dp"
         android:background="@drawable/btn_main"
         android:text="@string/btn_next"
-<<<<<<< HEAD
         android:fontFamily="@font/proximanovaregular"
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:textColor="@color/colorTransparent"
         android:textSize="@dimen/_18ssp"
         android:textStyle="bold"

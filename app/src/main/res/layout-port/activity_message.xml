@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/_4sdp"
     android:background="@drawable/chatwallpaper"
     tools:context=".ui.MessageActivity">
 
@@ -43,10 +42,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/username"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14ssp"
                     android:layout_alignParentLeft="true"
@@ -59,10 +54,6 @@
                     android:layout_alignBottom="@+id/chat_user_profile"
                     android:layout_alignStart="@+id/username"
                     android:text="Last seen 00:00"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_centerVertical="true"
                     android:textColor="@color/colorWhite"
@@ -92,62 +83,53 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-    <android.support.constraint.ConstraintLayout
+    <RelativeLayout
         android:id="@+id/message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="@dimen/_8sdp"
-        android:layout_marginRight="@dimen/_8sdp"
-        android:background="@drawable/bg_rounded_input_field"
         android:padding="@dimen/_5sdp"
-        android:paddingLeft="@dimen/_8sdp"
-        android:paddingEnd="@dimen/_8sdp"
-        android:paddingRight="@dimen/_8sdp"
-        tools:layout_editor_absoluteX="10dp">
+        android:layout_margin="@dimen/_8sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_rounded_input_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/et_send_message"
-            android:layout_width="match_parent"
+            android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginBottom="8dp"
-            android:layout_toStartOf="@+id/btn_send_message"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:layout_marginRight="@dimen/_7sdp"
             android:layout_toLeftOf="@+id/btn_send_message"
+            android:layout_toStartOf="@+id/btn_send_message"
             android:background="@android:color/transparent"
             android:hint="@string/type_message"
             android:inputType="textMultiLine"
+            android:paddingLeft="@dimen/_15sdp"
             android:paddingStart="@dimen/_10sdp"
-            android:paddingLeft="@dimen/_5sdp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry" />
 
+        <ImageButton
+            android:id="@+id/btn_send_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/et_send_message"
+            android:background="@drawable/ic_photo_camera_black_24dp"
+            tools:ignore="ContentDescription"
+            android:layout_toLeftOf="@+id/et_send_message" />
 
         <ImageButton
             android:id="@+id/btn_send_message"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_30sdp"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="5dp"
+            android:layout_marginEnd="@dimen/_12sdp"
             android:background="@drawable/ic_action_name"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/et_send_message"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.538"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_12sdp" />
 
-    </android.support.constraint.ConstraintLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

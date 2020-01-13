@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".ui.DeveloperProfile">
 
     <RelativeLayout
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/grad"
-        android:paddingBottom="@dimen/_10sdp">
+        android:paddingBottom="@dimen/_20sdp">
 
         <RelativeLayout
             android:id="@+id/imgUser"
@@ -41,12 +41,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/_10ssp"
-<<<<<<< HEAD
-            android:fontFamily="@font/proximanovaregular"
-=======
+            android:layout_marginTop="@dimen/_5sdp"
             android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:text="@string/derrick_wadek"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_32ssp" />
@@ -58,11 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
-<<<<<<< HEAD
-            android:fontFamily="@font/proximanovaregular"
-=======
             android:fontFamily="sans-serif"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
@@ -81,7 +73,7 @@
 
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
@@ -100,23 +92,15 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/profile"
                     android:textColor="@color/colorWhite"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_18ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
                     android:textColor="@color/colorWhite"
@@ -157,11 +141,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/wadektech_gmail_com"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_18ssp" />
@@ -190,14 +170,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/facebook_com_wadektech"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_18ssp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -223,14 +199,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/twitterUsername"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/_16ssp" />
+                    android:textSize="@dimen/_18ssp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -242,7 +214,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_88sdp"
+                android:layout_height="88dp"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:orientation="vertical">
 
@@ -250,34 +222,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/app_version"
-                    android:layout_marginBottom="@dimen/_1sdp"
                     android:textColor="@color/headings"
                     android:textSize="@dimen/_13ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
                     android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/registered_symbol"
                     android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_15ssp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-<<<<<<< HEAD
-                    android:fontFamily="@font/proximanovaregular"
-=======
-                    android:fontFamily="sans-serif-light"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
-                    android:text="@string/copyright_symbol"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="@dimen/_10ssp" />
-
+                    android:textSize="@dimen/_18ssp" />
 
                 <View
                     android:layout_width="match_parent"

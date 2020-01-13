@@ -30,11 +30,7 @@
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/_14ssp"
         android:background="@drawable/background_left"
-<<<<<<< HEAD
         android:fontFamily="@font/proximanovaregular"
-=======
-        android:fontFamily="sans-serif"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:layout_toEndOf="@+id/chat_profile"
         android:layout_marginStart="@dimen/_5sdp"
         tools:ignore="HardcodedText" />

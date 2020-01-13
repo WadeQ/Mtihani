@@ -33,10 +33,7 @@
         android:textStyle="bold"
         android:maxLines="2"
         android:ellipsize="end"
-<<<<<<< HEAD
         android:fontFamily="@font/proximanovaregular"
-=======
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         tools:text="This is a rather long file name for a single PDF. In fact it shouldn't ever occur but still app should handle it"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/pdf_iv"

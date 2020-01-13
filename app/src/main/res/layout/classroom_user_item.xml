@@ -55,11 +55,8 @@
         android:id="@+id/tv_timestamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-<<<<<<< HEAD
-=======
         android:layout_marginStart="@dimen/_170sdp"
         android:layout_marginLeft="@dimen/_170sdp"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:layout_marginTop="@dimen/_8sdp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
@@ -70,11 +67,8 @@
         android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toTopOf="@+id/tv_status"
         app:layout_constraintEnd_toEndOf="parent"
-<<<<<<< HEAD
-=======
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/username"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         tools:ignore="HardcodedText" />
@@ -82,11 +76,7 @@
     <View
         android:layout_width="@dimen/_250sdp"
         android:layout_height="@dimen/_1sdp"
-<<<<<<< HEAD
         android:layout_marginTop="16dp"
-=======
-        android:layout_marginTop="8dp"
->>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="#ECEFF1"
