@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/chatwallpaper"
+    tools:context=".ui.MessageActivity">
+
+
+        <android.support.v7.widget.Toolbar
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/main_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_50sdp"
+            android:background="@color/colorPrimaryDark"
+            app:navigationIcon="@drawable/back"
+            android:theme="@android:style/Theme.Holo.Light"
+            app:popupTheme="@style/MenuStyle">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/chat_user_profile"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/profile"
+                app:civ_border_color="#FF7500"
+                app:civ_border_width="@dimen/_2sdp" />
+
+                <TextView
+                    android:id="@+id/username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="@dimen/_50sdp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:text="@string/username"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_14ssp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/_71sdp" />
+
+                <TextView
+                    android:id="@+id/tv_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/chat_user_profile"
+                    android:layout_alignStart="@+id/username"
+                    android:text="Last seen 00:00"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/colorWhite"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_alignLeft="@+id/username"
+                    tools:ignore="HardcodedText" />
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.Toolbar>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_message"
+        android:layout_below="@+id/main_app_bar"
+        android:layout_above="@+id/message"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_message"
+        android:layout_below="@+id/main_app_bar"
+        android:layout_above="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v7.widget.RecyclerView>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/message"
+        android:padding="@dimen/_5sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_rounded_input_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_send_message"
+            android:layout_width="242dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_7sdp"
+            android:layout_marginRight="@dimen/_7sdp"
+            android:layout_toLeftOf="@+id/btn_send_message"
+            android:layout_toStartOf="@+id/btn_send_message"
+            android:background="@android:color/transparent"
+            android:hint="@string/type_message"
+            android:inputType="textMultiLine"
+            android:paddingLeft="@dimen/_15sdp"
+            android:paddingStart="@dimen/_10sdp"
+            tools:ignore="RtlSymmetry" />
+
+        <ImageButton
+            android:id="@+id/btn_send_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/et_send_message"
+            android:background="@drawable/ic_photo_camera_black_24dp"
+            tools:ignore="ContentDescription"
+            android:layout_toLeftOf="@+id/et_send_message" />
+
+        <ImageButton
+            android:id="@+id/btn_send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:background="@drawable/ic_action_name"
+            tools:ignore="ContentDescription"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/_12sdp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,160 @@
+{
+  "project_info": {
+    "project_number": "345858231004",
+    "firebase_url": "https://my-database-1536866633275.firebaseio.com",
+    "project_id": "my-database-1536866633275",
+    "storage_bucket": "my-database-1536866633275.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345858231004:android:ebcf1a31daa8d9f4",
+        "android_client_info": {
+          "package_name": "com.wadektech.mreviseadmin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345858231004-8lld41fano5rioa5clfj9ns29gispc2f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.mreviseadmin",
+            "certificate_hash": "d85dd4c8e4eb3b00ad39546441a6f8f32c277ffb"
+          }
+        },
+        {
+          "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS03HtwUOrNm_y96bOpxVQPF-lFX0zPAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345858231004:android:e31ea2c9c7fce307",
+        "android_client_info": {
+          "package_name": "com.wadektech.mtihaniadminpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345858231004-4949iqrq400v2mkauff7h981ltjntquh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.mtihaniadminpanel",
+            "certificate_hash": "fb00a524a98eb182f16237a09b3351e935b94f75"
+          }
+        },
+        {
+          "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS03HtwUOrNm_y96bOpxVQPF-lFX0zPAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345858231004:android:0356c6c4d6601013",
+        "android_client_info": {
+          "package_name": "com.wadektech.mtihanirevise"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345858231004-ln3pn0lmo7osrg25ei6mjgdq3fa32jn3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.mtihanirevise",
+            "certificate_hash": "7a5cd85211d829608aef9a9e32e03805a14d6fbc"
+          }
+        },
+        {
+          "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS03HtwUOrNm_y96bOpxVQPF-lFX0zPAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7833667602532832~5266609408"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345858231004:android:b449d2e3edb6c1bd",
+        "android_client_info": {
+          "package_name": "com.wadektech.testrecyclerview"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345858231004-51m487n8vksjfht5u3ao877g3m1fhia2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wadektech.testrecyclerview",
+            "certificate_hash": "fb00a524a98eb182f16237a09b3351e935b94f75"
+          }
+        },
+        {
+          "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDS03HtwUOrNm_y96bOpxVQPF-lFX0zPAg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345858231004-2f9cqk5assn5tmqk3p0qdaufbna34tnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

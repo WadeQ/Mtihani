@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.wadektech.mtihanirevise">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name=".persistence.MtihaniRevise"
+        android:icon="@mipmap/logoicon"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/logoicon"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity
+            android:name=".ui.MainSliderActivity"
+            tools:ignore="InnerclassSeparator"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".auth.SignUpActivity"
+            tools:ignore="InnerclassSeparator"
+
+            />
+        <activity
+            android:name=".ui.PastPapersActivity"
+            tools:ignore="InnerclassSeparator"
+
+            />
+        <activity
+            android:name=".ui.PaperPerSubject"
+            tools:ignore="InnerclassSeparator"
+
+            />
+        <activity
+            android:name=".pdfViewer.ItemDetailActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="InnerclassSeparator" />
+        <activity
+            android:name=".ui.DeveloperProfile"
+            tools:ignore="InnerclassSeparator"
+
+            />
+        <activity android:name=".ui.ChatActivity"
+
+            />
+        <activity android:name=".auth.LoginActivity"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.MessageActivity"
+
+            />
+
+        <service
+            android:name=".notification.MyFirebaseIdService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name=".notification.MyFirebaseMessaging"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".ui.StatusUpdate"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ui.PDFViewerActivity"
+            android:screenOrientation="portrait"
+            />
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+    </application>
+
+</manifest>

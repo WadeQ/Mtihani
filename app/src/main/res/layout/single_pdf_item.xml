@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/pdf_iv"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:contentDescription="@string/kcse_1996"
+        android:scaleType="centerCrop"
+        android:src="@drawable/pdf"
+        app:civ_border_color="#c2110e"
+        app:civ_border_width="@dimen/_1sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/_8sdp" />
+
+    <TextView
+        android:id="@+id/filename_tv"
+        android:layout_width="@dimen/margin_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginStart="@dimen/_16sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_8sdp"
+        android:paddingTop="@dimen/_8sdp"
+        android:textColor="@color/colorWhite"
+        android:textStyle="bold"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:fontFamily="@font/proximanovaregular"
+        tools:text="This is a rather long file name for a single PDF. In fact it shouldn't ever occur but still app should handle it"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/pdf_iv"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/_16sdp"
+        android:layout_marginRight="@dimen/_8sdp" />
+    <View
+        android:layout_width="@dimen/_250sdp"
+        android:layout_height="@dimen/_2sdp"
+        android:background="#00695c"
+        android:layout_marginTop="@dimen/_8sdp"
+        app:layout_constraintTop_toBottomOf="@id/pdf_iv"
+        app:layout_constraintStart_toStartOf="@id/pdf_iv"
+        app:layout_constraintEnd_toEndOf="@id/filename_tv"
+        />
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/_8sdp"
+    android:paddingTop="@dimen/_8sdp"
+    android:paddingBottom="@dimen/_8sdp"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/circleView"
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        app:civ_border_color="#c2110e"
+        app:civ_border_width="@dimen/_1sdp"
+        android:src="@drawable/pdf"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/tv_subject_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subject_paper"
+        android:layout_alignTop="@+id/circleView"
+        android:layout_toRightOf="@+id/circleView"
+        android:layout_marginTop="@dimen/_1sdp"
+        android:layout_marginLeft="@dimen/_18sdp"
+        android:textSize="@dimen/_16ssp"
+        android:textStyle="bold"
+        android:textColor="#2196F3"
+        android:layout_toEndOf="@+id/circleView"
+        android:layout_marginStart="@dimen/_18sdp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/year"
+        android:id="@+id/tv_year"
+        android:textSize="@dimen/_13ssp"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:layout_below="@+id/tv_subject_name"
+        android:layout_alignLeft="@+id/tv_subject_name"
+        android:layout_alignStart="@+id/tv_subject_name" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="#2196F3"
+        android:layout_below="@+id/circleView"
+        android:layout_alignLeft="@+id/circleView"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_alignStart="@+id/circleView" />
+
+</RelativeLayout>

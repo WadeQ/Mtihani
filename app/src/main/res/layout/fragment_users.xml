@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.UsersFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:id="@+id/message"
+        android:padding="@dimen/_1sdp"
+        android:layout_margin="@dimen/_8sdp"
+        android:background="@drawable/bg_rounded_input_field"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/tv_search_users"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:hint="@string/search_users"
+        android:layout_margin="@dimen/_5sdp"
+        android:imeOptions="actionSearch"
+        android:padding="@dimen/_5sdp"
+        android:singleLine="true" />
+        </RelativeLayout>
+
+<android.support.v7.widget.RecyclerView
+    android:id="@+id/rv_classroom"
+    android:layout_below="@+id/message"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="NotSibling">
+
+</android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
