@@ -31,7 +31,10 @@
             android:text="@string/year"
             android:textColor="#ffffff"
             android:gravity="center"
+<<<<<<< HEAD
             android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:textStyle="bold"
             android:layout_below="@+id/tv_subject_icon"
             android:paddingBottom="@dimen/_8sdp"

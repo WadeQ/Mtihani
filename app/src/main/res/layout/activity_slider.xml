@@ -24,27 +24,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
     <TextView
         android:id="@+id/slide_heading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+<<<<<<< HEAD
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+=======
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:gravity="center"
         android:shadowColor="#B71C1C"
         android:shadowDx="2"
         android:shadowDy="2"
         android:shadowRadius="4"
+<<<<<<< HEAD
         android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:text="@string/slide_header_1"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_20ssp"
         android:textStyle="bold"
         app:fontFamily="sans-serif"
+<<<<<<< HEAD
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.432"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,20 +73,47 @@
         android:layout_marginTop="60dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/slide_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/slide_image"
+        app:layout_constraintVertical_bias="0.577" />
+
+
+    <TextView
+        android:id="@+id/slide_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="140dp"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:gravity="center_horizontal"
         android:padding="@dimen/_7sdp"
         android:shadowColor="#B71C1C"
         android:shadowDx="1"
         android:shadowDy="1"
+<<<<<<< HEAD
         android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
         android:shadowRadius="2"
         android:text="@string/desc_1"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_18ssp"
         android:textStyle="bold"
         app:fontFamily="sans-serif"
+<<<<<<< HEAD
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/slide_heading" />
+=======
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
 
 </android.support.constraint.ConstraintLayout>

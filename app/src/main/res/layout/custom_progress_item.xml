@@ -30,7 +30,10 @@
             android:layout_marginStart="@dimen/margin_8dp"
             android:layout_marginTop="@dimen/margin_8dp"
             android:text="@string/pdf_download"
+<<<<<<< HEAD
             android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:textColor="@color/colorPrimaryDark"
             android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -73,6 +76,7 @@
             android:id="@+id/cancelBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="@dimen/margin_8dp"
@@ -82,6 +86,18 @@
             android:text="@string/cancel"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
+=======
+            android:layout_marginStart="@dimen/margin_8dp"
+            android:layout_marginLeft="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/btn_bg"
+            android:text="@string/cancel"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toStartOf="@+id/openBtn"
+            app:layout_constraintHorizontal_bias="0.041"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/progress_tv" />
 
@@ -89,6 +105,7 @@
             android:id="@+id/openBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+<<<<<<< HEAD
             android:layout_marginTop="@dimen/margin_8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
@@ -98,6 +115,15 @@
             android:text="@string/open_PDF"
             android:textColor="@color/colorPrimaryDark"
             app:layout_constraintBottom_toBottomOf="parent"
+=======
+            android:layout_marginEnd="@dimen/margin_8dp"
+            android:layout_marginRight="@dimen/margin_8dp"
+            android:layout_marginTop="@dimen/margin_8dp"
+            android:layout_marginBottom="@dimen/_8sdp"
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/colorPrimaryDark"
+            android:text="@string/open_PDF"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/progress_tv" />
     </android.support.constraint.ConstraintLayout>

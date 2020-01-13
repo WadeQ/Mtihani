@@ -42,7 +42,11 @@
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_10ssp"
+<<<<<<< HEAD
             android:fontFamily="@font/proximanovaregular"
+=======
+            android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:text="@string/derrick_wadek"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_32ssp" />
@@ -54,7 +58,11 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
+<<<<<<< HEAD
             android:fontFamily="@font/proximanovaregular"
+=======
+            android:fontFamily="sans-serif"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
@@ -92,7 +100,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/profile"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_16ssp" />
@@ -100,7 +112,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
                     android:textColor="@color/colorWhite"
@@ -141,7 +157,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/wadektech_gmail_com"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_18ssp" />
@@ -170,7 +190,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/facebook_com_wadektech"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_16ssp" />
@@ -199,7 +223,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/twitterUsername"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_16ssp" />
@@ -229,7 +257,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/registered_symbol"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_15ssp" />
@@ -237,7 +269,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+                    android:fontFamily="sans-serif-light"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:text="@string/copyright_symbol"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_10ssp" />

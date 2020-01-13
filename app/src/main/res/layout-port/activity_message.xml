@@ -43,7 +43,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="@string/username"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_14ssp"
                     android:layout_alignParentLeft="true"
@@ -56,7 +59,10 @@
                     android:layout_alignBottom="@+id/chat_user_profile"
                     android:layout_alignStart="@+id/username"
                     android:text="Last seen 00:00"
+<<<<<<< HEAD
                     android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                     android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_centerVertical="true"
                     android:textColor="@color/colorWhite"

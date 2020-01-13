@@ -24,7 +24,11 @@
               android:background="@drawable/background_right"
               android:layout_alignParentEnd="true"
               android:textSize="@dimen/_14ssp"
+<<<<<<< HEAD
               android:fontFamily="@font/proximanovaregular"
+=======
+              android:fontFamily="sans-serif"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
               android:padding="@dimen/_8sdp"
               android:textColor="#fff"
               android:layout_alignParentRight="true" />

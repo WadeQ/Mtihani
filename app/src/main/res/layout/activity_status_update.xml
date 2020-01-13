@@ -29,7 +29,11 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold"
+<<<<<<< HEAD
             app:fontFamily="@font/proximanovaregular"
+=======
+            app:fontFamily="@string/font"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -64,13 +68,21 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="411dp"
+<<<<<<< HEAD
             android:layout_height="84dp"
+=======
+            android:layout_height="154dp"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             android:layout_marginBottom="147dp"
             android:background="@color/colorPrimaryDark"
             android:minHeight="?android:attr/actionBarSize"
             app:layout_constraintBottom_toTopOf="@+id/etStatus"
             app:layout_constraintEnd_toEndOf="parent"
+<<<<<<< HEAD
             app:layout_constraintHorizontal_bias="1.0"
+=======
+            app:layout_constraintHorizontal_bias="0.0"
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="@color/colorWhite">
@@ -78,7 +90,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+<<<<<<< HEAD
                 android:fontFamily="@font/proximanovaregular"
+=======
+>>>>>>> d7926e70589a6aa25158751c8f08a964fe8ec90a
                 android:text="@string/status_update"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_18ssp"
