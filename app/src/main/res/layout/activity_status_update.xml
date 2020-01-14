@@ -63,7 +63,7 @@
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="84dp"
             android:layout_marginBottom="147dp"
             android:background="@color/colorPrimaryDark"

@@ -170,7 +170,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         searchView.setLayoutParams(params);
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setIconified(false);
-        searchView.setPadding(0, 32, 0, 0);
+        searchView.setPadding(0, 33, 0, 0);
         searchView.setQueryHint("Search");
         searchView.setQueryHint(Html.fromHtml("<font color = #b71c1c>" + getResources().getString(R.string.hintSearch) + "</font>"));
         ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
