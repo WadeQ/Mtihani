@@ -55,7 +55,7 @@
             android:maxLines="2"
             android:paddingTop="@dimen/_8sdp"
             android:paddingBottom="@dimen/_8sdp"
-            android:textColor="@color/colorWhite"
+            android:textColor="@color/text"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
