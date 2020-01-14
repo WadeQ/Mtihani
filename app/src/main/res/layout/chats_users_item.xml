@@ -67,6 +67,7 @@
         android:text="00:00"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="@dimen/_12ssp"
+        android:fontFamily="@font/proximanovaregular"
         app:layout_constraintBottom_toTopOf="@+id/tv_status"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
