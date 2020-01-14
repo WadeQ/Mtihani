@@ -42,7 +42,7 @@
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="@font/proximanovaregular"
             android:text="@string/derrick_wadek"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_32ssp" />
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/proximanovaregular"
             android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
@@ -92,7 +92,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile"
                     android:textColor="@color/colorWhite"
                     android:textSize="@dimen/_18ssp" />
@@ -100,7 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
                     android:textColor="@color/colorWhite"
@@ -141,7 +141,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/wadektech_gmail_com"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_18ssp" />
@@ -170,7 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/facebook_com_wadektech"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_18ssp" />
@@ -199,7 +199,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/twitterUsername"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/_18ssp" />
@@ -228,7 +228,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/registered_symbol"
                     android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_18ssp" />
