@@ -40,7 +40,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.wadektech.mtihanirevise.R;
-import com.wadektech.mtihanirevise.adapter.PdfAdapter;
 import com.wadektech.mtihanirevise.adapter.SinglePDFAdapter;
 import com.wadektech.mtihanirevise.pojo.PdfModel;
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
@@ -59,7 +58,7 @@ import static android.support.v4.view.MenuItemCompat.getActionView;
 
 public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener,
         SinglePDFAdapter.OnSinglePDFClickHandler {
-    public PdfAdapter mAdapter;
+    //public PdfAdapter mAdapter;
     //private FirebaseUser firebaseUser;
     public TextView mStatus;
     private String category;
@@ -98,8 +97,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
 
         List<PdfModel> pdfListItems = getAllItemList();
 
-        PdfAdapter mAdapter = new PdfAdapter(pdfListItems, PaperPerSubject.this);
-        mRecycler.setAdapter(mAdapter);
 
         mStatus = findViewById(R.id.tv_status);
         //loading pdfs based on selected year

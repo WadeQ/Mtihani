@@ -28,7 +28,7 @@ public class SliderAdapter extends PagerAdapter {
     };
     private String[] slide_headings = {
             "Timely Revision",
-            "Offline Accessibility",
+            "Offline Access",
             "Live Chat"
     };
     private String[] slide_desc = {

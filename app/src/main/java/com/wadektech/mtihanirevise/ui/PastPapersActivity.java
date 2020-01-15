@@ -295,4 +295,11 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         intent.putExtra("category", category);
         startActivity(intent);
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, MainSliderActivity.class);
+        startActivity(intent);
+    }
 }

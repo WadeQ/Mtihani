@@ -41,7 +41,7 @@
         android:shadowRadius="4"
         android:text="@string/slide_header_1"
         android:textColor="@color/text"
-        android:textSize="@dimen/_20ssp"
+        android:textSize="@dimen/_22ssp"
         android:textStyle="bold"
         app:fontFamily="sans-serif"
         app:layout_constraintEnd_toEndOf="parent"
