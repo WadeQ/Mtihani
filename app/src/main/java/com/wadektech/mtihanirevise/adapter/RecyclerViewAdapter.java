@@ -14,7 +14,6 @@ import com.wadektech.mtihanirevise.pojo.RowModel;
 import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolders> {
-
     private OnItemClickHandler mHandler;
     private List<RowModel> itemList;
 
@@ -27,7 +26,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_past_papers, null);
         return new RecyclerViewHolders(view);
     }
@@ -48,21 +46,18 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
-
         public TextView examYear;
         public ImageView examPhoto;
 
         public RecyclerViewHolders(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
-
             examYear = itemView.findViewById(R.id.tv_kcse);
             examPhoto = itemView.findViewById(R.id.tv_subject_icon);
         }
 
         @Override
         public void onClick(View view) {
-
             mHandler.onGridItemClicked(itemList.get(getAdapterPosition()).getYear());
 
         }

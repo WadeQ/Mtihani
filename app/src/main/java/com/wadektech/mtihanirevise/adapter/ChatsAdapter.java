@@ -27,15 +27,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHolder> {
     private Context context;
-    // private List<User> users ;
     private boolean isChatting;
-    //private String theLastMessage ;
     private Handler mHandler;
 
-    public ChatsAdapter(Context context, /*List<User> users,*/ boolean isChatting) {
+    public ChatsAdapter(Context context, boolean isChatting) {
         super(ChatItem.DIFF_CALLBACK);
         this.context = context;
-        // this.users = users;
         this.isChatting = isChatting;
         mHandler = new Handler();
     }
@@ -53,7 +50,6 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
 
         final ChatItem user = getItem(position);
 
-        //holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
         holder.mTime.setText(user.getTime());
         if (user.getImageURL().equals("default")) {
@@ -78,25 +74,8 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
                         }
                     });
         }
-        // if (isChatting){
+
         holder.lastMessage(user.getUserId());
-
-        /**
-
-        if (isChatting) {
-            if (user.getStatus().equals("online")) {
-                holder.mStatusOn.setVisibility(View.VISIBLE);
-                holder.mStatusOff.setVisibility(View.GONE);
-            } else if (user.getStatus().equals("offline")) {
-                holder.mStatusOn.setVisibility(View.GONE);
-                holder.mStatusOff.setVisibility(View.VISIBLE);
-            }
-        } else {
-            holder.mStatusOn.setVisibility(View.GONE);
-            holder.mStatusOff.setVisibility(View.GONE);
-        }
-
-         **/
 
         holder.itemView.setOnClickListener(v -> {
             Log.e("TAG", "Message");
@@ -130,6 +109,7 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
             mLastMessage = itemView.findViewById(R.id.tv_last_msg);
             mStatus = itemView.findViewById(R.id.tv_status);
             mTime = itemView.findViewById(R.id.tv_timestamp);
+
         }
 
         private void lastMessage(String userid) {
@@ -152,5 +132,4 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
             }).start();
         }
     }
-
 }

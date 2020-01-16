@@ -47,7 +47,6 @@ public class ProfileFragment extends Fragment {
     CircleImageView profileImage;
     TextView userName, statusDisplay;
     DatabaseReference databaseReference;
-    //FirebaseUser firebaseUser;
     StorageReference storageReference;
     public static final int IMAGE_REQUEST = 1;
     private Uri imageUri;

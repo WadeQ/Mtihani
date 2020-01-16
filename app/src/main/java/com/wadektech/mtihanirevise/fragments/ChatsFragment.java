@@ -27,11 +27,9 @@ import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
  */
 public class ChatsFragment extends Fragment {
     private RecyclerView recyclerView ;
-  private ChatsAdapter mAdapter;
-    //FirebaseUser firebaseUser ;
+    private ChatsAdapter mAdapter;
     DatabaseReference databaseReference ;
 
-    //private List<Chatlist> usersList ;
 
     public ChatsFragment() {
         // Required empty public constructor

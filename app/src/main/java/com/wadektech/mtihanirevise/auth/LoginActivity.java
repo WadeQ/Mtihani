@@ -28,7 +28,6 @@ import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
-
     private static final int RC_SIGN_IN = 1;
     Button btnlogin, btnSignUp, googleLogin;
     EditText loginEmail, loginPassword;
@@ -54,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
         viewModel.getReturningUser().observe(this,response->{
             if(response != null){
                 if(response.equals("success")){
-                   // Toast.makeText(this, "response is successful", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent (LoginActivity.this, PastPapersActivity.class);
                     finish ();
                     startActivity (intent);
@@ -66,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        //initialize the firebase object
         mAuth = FirebaseAuth.getInstance ();
 
         btnlogin.setOnClickListener (v -> {
@@ -96,13 +93,10 @@ public class LoginActivity extends AppCompatActivity {
 
         googleLogin.setOnClickListener (v -> signIn ());
         mAuth = FirebaseAuth.getInstance();
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
     @Override
@@ -114,14 +108,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
     private void signIn() {
-       // Toast.makeText(this, "signIn()", Toast.LENGTH_SHORT).show();
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult (requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent (data);
             mConnectionProgressDialog = new ProgressDialog (LoginActivity.this);
@@ -131,20 +123,15 @@ public class LoginActivity extends AppCompatActivity {
             mConnectionProgressDialog.show ();
 
             if (result.isSuccess ()) {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount ();
                 if (account != null) {
-                    //Toast.makeText(this, "onActivityResult account is NOT NULL", Toast.LENGTH_SHORT).show();
                     firebaseAuthWithGoogle (account);
                 }
             }else {
-                // Google Sign In failed, update UI appropriately
-
                 Toast.makeText(getApplicationContext(), "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
                 Log.e(TAG, "Error type is" );
-                // ...
             }
         }
     }
@@ -153,27 +140,21 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential (credential)
                 .addOnCompleteListener (this, task -> {
                     if (task.isSuccessful ()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d (TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser ();
                         String userId = "";
                         if (user != null) {
                             userId = user.getUid ();
                             if(user.getEmail() != null){
-                                //Toast.makeText(this, "off to firestore, email is not null", Toast.LENGTH_SHORT).show();
                                 viewModel.signInReturningUser(user.getEmail());
                             }
                         }
                         mConnectionProgressDialog.dismiss ();
-                        //  updateUI(user);
-
 
                     } else {
-                        // If sign in fails, display a message to the user.
                         Log.e ("SignupActivity", "Failed Registration" + task.getException ());
                         Toast.makeText (LoginActivity.this, "Authentication failed." + task.getException (), LENGTH_SHORT).show ();
-                        // updateUI(null);
-                    }// ...
+                    }
                 });
     }
 }

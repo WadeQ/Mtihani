@@ -16,12 +16,6 @@ public class ItemDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_item_detail);
         //display PDF to viewer
         pdfView = findViewById(R.id.pdf_viewer);
-        //enable scrolling using scrollbar
-        // ScrollBar mScroll = findViewById(R.id.pdf_scrollbar);
-        // pdfView.setScrollBar(mScroll);
-        //enable vertical scrolling
-        // mScroll.setHorizontal(false);
-
     }
 }
 

@@ -154,7 +154,6 @@ public class MtihaniRepository {
 
     public static LiveData<PagedList<User>> searchUsersFromRoom(String filter) {
         UsersBoundaryCallback boundaryCallback = new UsersBoundaryCallback();
-
         PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
                 .setPrefetchDistance(5)
                 .setEnablePlaceholders(true)
@@ -198,7 +197,6 @@ public class MtihaniRepository {
     }
 
     public static void sendMessageToFirebase(Chat chat) {
-
         FirebaseFirestore.getInstance()
                 .collection("messages")
                 .document()
@@ -487,7 +485,6 @@ public class MtihaniRepository {
 
     private void savePDFDownloadUrlInDb(String pdfUrl, String category, String fileName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
         Map<String, Object> map = InjectorUtils.provideStringHashMap();
         map.put("pdfUrl", pdfUrl);
         map.put("category", category);
@@ -537,7 +534,6 @@ public class MtihaniRepository {
                     progressUpdate.setValue(count);
                 })
                 .addOnSuccessListener(taskSnapshot -> {
-                    // Log.e("firebase ", ";local tem file created  created " + localFile.toString());
                     //  updateDb(timestamp,localFile.toString(),position);
                     singlePDFDownloadResponse.setValue("success");
                 }).addOnFailureListener(exception -> {

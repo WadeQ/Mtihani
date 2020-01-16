@@ -11,14 +11,12 @@ import android.net.Uri;
 import android.os.Build;
 
 public class OreoNotification extends ContextWrapper {
-    
     private static final String CHANNEL_ID = "com.wadektech.mtihanirevise" ;
     private static final String CHANNEL_NAME = "mtihanirevise" ;
     private NotificationManager notificationManager;
 
     public OreoNotification(Context base) {
         super (base);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             createChannel();
         }

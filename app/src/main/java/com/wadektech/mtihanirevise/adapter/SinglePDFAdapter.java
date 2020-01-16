@@ -56,8 +56,6 @@ public class SinglePDFAdapter extends RecyclerView.Adapter<SinglePDFAdapter.Sing
                 } else {
                     List<SinglePDF> filteredList = new ArrayList<>();
                     for (SinglePDF row : pdfList) {
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         if (row.getFileName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }

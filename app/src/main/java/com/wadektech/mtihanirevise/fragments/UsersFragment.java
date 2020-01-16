@@ -88,7 +88,6 @@ public class UsersFragment extends Fragment {
     }
 
     private void searchUsers(String s) {
-        // viewModel = ViewModelProviders.of(getActivity()).get(UsersViewModel.class);
         if (s.equals("")) {
             userAdapter = null;
             viewModel = ViewModelProviders.of(this).get(UsersViewModel.class);
@@ -112,7 +111,6 @@ public class UsersFragment extends Fragment {
      * Replaced method. no longer necessary
      */
     private void readUsers() {
-        //final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
         reference.keepSynced(true);
         reference.addValueEventListener(new ValueEventListener () {

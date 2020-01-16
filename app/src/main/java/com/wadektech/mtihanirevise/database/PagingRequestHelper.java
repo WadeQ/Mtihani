@@ -11,9 +11,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Created by Dennis Tsuma on 5/20/18.
- */
+
 public class PagingRequestHelper {
         private final Object mLock = new Object();
         private final Executor mRetryService;

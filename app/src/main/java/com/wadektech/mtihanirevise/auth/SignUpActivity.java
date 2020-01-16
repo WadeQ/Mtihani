@@ -40,7 +40,6 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class SignUpActivity extends AppCompatActivity {
-
     Button mLogin, btnSignUp;
     EditText etPassword, etUsername, etEmail;
     private static final int RC_SIGN_IN = 1;
@@ -48,7 +47,6 @@ public class SignUpActivity extends AppCompatActivity {
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private static final String TAG = "wadektech";
-    // private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
     private FirebaseUser firebaseUser;
     private AlertDialog alertDialogAndroid;
@@ -74,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         });
 
-        // mAuth = FirebaseAuth.getInstance() ;
         mConnectionProgressDialog = new ProgressDialog(this);
 
         btnSignUp.setOnClickListener(v -> {
@@ -92,17 +89,10 @@ public class SignUpActivity extends AppCompatActivity {
                 registerUser(password, userNmae, email);
             }
         });
-        //initialize the firebase object
+
         mAuth = FirebaseAuth.getInstance();
-       /* mAuthListener = firebaseAuth -> {
-            if (firebaseAuth.getCurrentUser() != null) {
-                checkAdminStatus ();
-            }
-        };*/
         mLogin = findViewById(R.id.loginButton);
 
-        // Configure the ProgressDialog that will be shown if there is a
-        // delay in presenting the user with the next sign in step.
         mConnectionProgressDialog = new ProgressDialog(this, R.style.DialogCustom);
         mConnectionProgressDialog.setMessage("Signing in...");
         // Configure Google Sign In
@@ -135,7 +125,6 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
@@ -145,19 +134,15 @@ public class SignUpActivity extends AppCompatActivity {
             mConnectionProgressDialog.show();
 
             if (result.isSuccess()) {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = result.getSignInAccount();
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 }
 
             } else {
-                // Google Sign In failed, update UI appropriately
-
                 Toast.makeText(this, "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
-                // ...
             }
         }
     }
@@ -167,7 +152,6 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
 

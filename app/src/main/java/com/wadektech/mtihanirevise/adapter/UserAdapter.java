@@ -35,14 +35,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserAdapter extends PagedListAdapter<User,UserAdapter.ViewHolder> {
     private Context context;
-   // private List<User> users ;
     private boolean isChatting ;
-    //private String theLastMessage ;
+
 private final String TAG = "UserAdapter";
-    public UserAdapter(Context context, /*List<User> users,*/ boolean isChatting) {
+    public UserAdapter(Context context, boolean isChatting) {
         super(User.DIFF_CALLBACK);
         this.context = context;
-       // this.users = users;
         this.isChatting = isChatting ;
     }
 
@@ -83,25 +81,6 @@ private final String TAG = "UserAdapter";
                         }
                     });
         }
-
-           // holder.mLastMessage.setVisibility(View.GONE);
-
-        /**
-
-        if (isChatting){
-            if (user.getStatus().equals("online")){
-                holder.mStatusOn.setVisibility(View.VISIBLE);
-                holder.mStatusOff.setVisibility(View.GONE);
-            }else if (user.getStatus().equals("offline")){
-                holder.mStatusOn.setVisibility(View.GONE);
-                holder.mStatusOff.setVisibility(View.VISIBLE);
-            }
-        }else {
-            holder.mStatusOn.setVisibility(View.GONE);
-            holder.mStatusOff.setVisibility(View.GONE);
-        }
-
-         **/
 
         holder.itemView.setOnClickListener(v -> {
             Log.e("TAG","Message");

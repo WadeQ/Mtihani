@@ -3,10 +3,6 @@ package com.wadektech.mtihanirevise.utils;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-/**
- * Created by Dennis Tsuma on 3/11/18.
- */
-
 public class MtihaniAppExecutors {
     private static final Object LOCK = new Object();
     private static MtihaniAppExecutors sInstance;

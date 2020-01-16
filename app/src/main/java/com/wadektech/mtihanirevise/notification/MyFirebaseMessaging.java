@@ -19,12 +19,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.wadektech.mtihanirevise.ui.ChatActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
 
-/*import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;*/
-
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
-
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived (remoteMessage);

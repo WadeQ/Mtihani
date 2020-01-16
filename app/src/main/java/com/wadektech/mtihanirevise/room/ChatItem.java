@@ -51,7 +51,7 @@ public class ChatItem implements Parcelable {
 
     @Ignore
     public ChatItem() {
-        //Don't delete. empty constructor is a must for firestore to work!
+        //Empty constructor is a must for firestore to work!
     }
 
     public long getId() {

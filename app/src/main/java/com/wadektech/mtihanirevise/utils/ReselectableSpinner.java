@@ -3,10 +3,6 @@ package com.wadektech.mtihanirevise.utils;
 import android.content.Context;
 import android.util.AttributeSet;
 
-
-/**
- * Created by Dennis Tsuma on 9/12/18.
- */
 public class ReselectableSpinner extends android.support.v7.widget.AppCompatSpinner {
     public ReselectableSpinner(Context context) {
         super(context);

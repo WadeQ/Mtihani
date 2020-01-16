@@ -22,21 +22,16 @@ import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
 
 public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHolder> {
     public static final int MSG_TYPE_LEFT = 0;
     public static final int MSG_TYPE_RIGHT = 1;
-
     private Context context;
-    //private List<Chat> chats ;
     private String imageurl;
-    // private FirebaseUser firebaseUser;
-    public MessageAdapter(Context context,/* List<Chat> chats ,*/ String imageurl) {
+
+    public MessageAdapter(Context context, String imageurl) {
         super(Chat.DIFF_CALLBACK);
         this.context = context;
-        // this.chats = chats;
         this.imageurl = imageurl;
     }
 
@@ -71,7 +66,6 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             String formattedDate = dateFormat.format(new Date(chat.getDate()));
             holder.mSeen.setText(formattedDate);
             chat.setSeen(true);
-            // Toast.makeText(context, "documentId is: "+chat.getDocumentId(), Toast.LENGTH_SHORT).show();
             MtihaniRepository.updateMessage(chat);
         }
     }
@@ -97,8 +91,6 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        // Log.d("MessageAdapter", "position is:" + position);
-        // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         Chat chat = getItem(position);
         if (chat != null) {
             if (getItem(position).getSender().equals(Constants.getUserId())) {
