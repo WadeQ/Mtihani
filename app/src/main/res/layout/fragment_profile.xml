@@ -11,7 +11,7 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-   <android.support.v7.widget.CardView
+   <androidx.cardview.widget.CardView
        android:id="@+id/card"
        app:cardElevation="@dimen/_2sdp"
        android:layout_width="match_parent"
@@ -47,9 +47,9 @@
 
        </RelativeLayout>
 
-   </android.support.v7.widget.CardView>
+   </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/card2"
         app:cardElevation="@dimen/_2sdp"
         android:layout_marginTop="@dimen/_5sdp"
@@ -96,9 +96,9 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cv_profile"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_155sdp"
@@ -154,6 +154,6 @@
 
         </RelativeLayout>
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

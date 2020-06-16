@@ -1,7 +1,7 @@
 package com.wadektech.mtihanirevise.viewmodels;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
 import com.wadektech.mtihanirevise.repository.MtihaniRepository;

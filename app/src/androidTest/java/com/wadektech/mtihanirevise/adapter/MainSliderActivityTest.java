@@ -1,8 +1,8 @@
 package com.wadektech.mtihanirevise.adapter;
 
 
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
 import com.wadektech.mtihanirevise.ui.MainSliderActivity;

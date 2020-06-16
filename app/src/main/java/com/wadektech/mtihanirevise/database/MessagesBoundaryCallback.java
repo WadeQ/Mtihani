@@ -1,7 +1,7 @@
 package com.wadektech.mtihanirevise.database;
 
-import android.arch.paging.PagedList;
-import android.support.annotation.NonNull;
+import androidx.paging.PagedList;
+import androidx.annotation.NonNull;
 
 import com.wadektech.mtihanirevise.repository.MtihaniRepository;
 import com.wadektech.mtihanirevise.room.Chat;

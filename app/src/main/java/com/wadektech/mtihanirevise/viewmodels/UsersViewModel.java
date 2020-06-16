@@ -1,8 +1,8 @@
 package com.wadektech.mtihanirevise.viewmodels;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
-import android.arch.paging.PagedList;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
+import androidx.paging.PagedList;
 
 import com.wadektech.mtihanirevise.repository.MtihaniRepository;
 import com.wadektech.mtihanirevise.room.ChatItem;

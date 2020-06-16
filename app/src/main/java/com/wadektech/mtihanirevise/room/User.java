@@ -1,11 +1,11 @@
 package com.wadektech.mtihanirevise.room;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.Index;
-import android.arch.persistence.room.PrimaryKey;
-import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.DiffUtil;
 
 @Entity(tableName = "users", indices = {@Index(value = {"userId"}, unique = true)})
 public class User {

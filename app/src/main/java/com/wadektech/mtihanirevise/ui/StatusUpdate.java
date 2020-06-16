@@ -2,11 +2,11 @@ package com.wadektech.mtihanirevise.ui;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +25,7 @@ import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.utils.Constants;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class StatusUpdate extends AppCompatActivity {
     private TextInputLayout statusUpdate;
@@ -45,11 +46,10 @@ public class StatusUpdate extends AppCompatActivity {
         mCoordinate = findViewById(R.id.coordinator);
 
         statusBtnUpdate.setOnClickListener (view -> {
-            String updatestatus = statusUpdate.getEditText ().getText ().toString ();
+            String updatestatus = Objects.requireNonNull(statusUpdate.getEditText()).getText ().toString ();
             if (TextUtils.isEmpty(updatestatus)){
                 statusUpdate.setError("Cannot be blank!");
                 statusUpdate.requestFocus();
-                return;
             } else {
                 pDialog = new ProgressDialog (StatusUpdate.this);
                 pDialog.setMessage ("Please be patient as we update your status");

@@ -2,10 +2,12 @@ package com.wadektech.mtihanirevise.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,50 +18,15 @@ import com.wadektech.mtihanirevise.auth.LoginActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
 
 public class MainSliderActivity extends AppCompatActivity {
-
     public ViewPager mSlideViewPager ;
     private LinearLayout mDotLayout ;
     public TextView[] mDot ;
     public SliderAdapter sliderAdapter;
-    public Button slideViewButton;
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_main_slider);
-
-
-        mAuth = FirebaseAuth.getInstance ();
-
-        slideViewButton = findViewById (R.id.slideViewButton);
-        slideViewButton.setOnClickListener (v -> {
-            if (mAuth.getCurrentUser () != null) {
-                if (!Constants.getUserName ().equals ("")
-                        && !Constants.getUserId ().equals ("")
-                        && !Constants.getEmail ().equals ("")
-                        && !Constants.getImageURL ().equals ("")) {
-
-                    Intent intent = new Intent (MainSliderActivity.this, PastPapersActivity.class);
-                    finish ();
-                    startActivity (intent);
-
-                } else {
-                    //Toast.makeText (this, "slider is the culprit!", Toast.LENGTH_SHORT).show ();
-                    Intent intent = new Intent (MainSliderActivity.this, LoginActivity.class);
-                    finish ();
-                    startActivity (intent);
-                }
-
-            } else {
-                Intent intent = new Intent (MainSliderActivity.this, LoginActivity.class);
-                finish ();
-                startActivity (intent);
-            }
-        });
 
         mSlideViewPager = findViewById (R.id.slideViewPager);
         mDotLayout = findViewById (R.id.dotsLinearLayout);

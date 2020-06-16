@@ -2,7 +2,7 @@ package com.wadektech.mtihanirevise.pdfViewer;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
 import com.wadektech.mtihanirevise.R;

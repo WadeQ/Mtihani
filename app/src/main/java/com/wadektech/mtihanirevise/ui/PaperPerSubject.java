@@ -1,7 +1,7 @@
 package com.wadektech.mtihanirevise.ui;
 
 import android.Manifest;
-import android.arch.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -9,16 +9,16 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import android.support.v7.widget.Toolbar;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -49,8 +49,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.v4.view.MenuItemCompat.expandActionView;
-import static android.support.v4.view.MenuItemCompat.getActionView;
+import static androidx.core.view.MenuItemCompat.expandActionView;
+import static androidx.core.view.MenuItemCompat.getActionView;
 
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
@@ -74,7 +74,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private AlertDialog mDialog;
     private InterstitialAd interstitialAd;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +96,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
 
         List<PdfModel> pdfListItems = getAllItemList();
 
-
         mStatus = findViewById(R.id.tv_status);
         //loading pdfs based on selected year
         singlePDFList = new ArrayList<>();
@@ -113,8 +111,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         viewModel.getSinglePDFDownloadResponse().observe(this, this::onPDFDownloadProgressReceived);
         viewModel.getProgressUpdate().observe(this,this::onProgressUpdate);
         mSwipe.setOnRefreshListener(() -> viewModel.downloadPDFsPerCategory(category));
-
-
 
     }
 
@@ -153,7 +149,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -170,7 +165,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         searchView.setPadding(0, 33, 0, 0);
         searchView.setQueryHint("Search");
         searchView.setQueryHint(Html.fromHtml("<font color = #b71c1c>" + getResources().getString(R.string.hintSearch) + "</font>"));
-        ImageView icon = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView icon = searchView.findViewById(androidx.appcompat.R.id.search_button);
         icon.setColorFilter(Color.RED);
         searchView.clearFocus();
         expandActionView(searchItem);
@@ -279,7 +274,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             //download PDF. device is pre mashmallow
             if (singlePDF != null) {
                 File rootPath = new File(Environment.getExternalStorageDirectory(), "Mtihani");
-
                 final File localFile = new File(rootPath, singlePDF.getFileName());
                 if(!localFile.exists()) {
                     downloadMonitor();
