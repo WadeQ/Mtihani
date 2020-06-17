@@ -107,6 +107,31 @@
     <string name="registered_symbol">Version 1.0, Mtihani Revise®</string>
     <string name="copyright_symbol">© 2019 - Wadek Technologies, All rights reserved</string>
     <string name="hintSearch">Search</string>
+    <string name="back_to_nhome">Back to\nHome</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <string name="general_header">General</string>
+    <string name="app_header">Mtihani Revise</string>
+    <string name="developer_header">Developer Sector</string>
+    <string name="version_header">Version</string>
+
+    <string name="signature_title">Your signature</string>
+    <string name="dark_title">Dark Theme</string>
+    <string name="notifications_title">Notifications</string>
+    <string name="ratings_title">Rate Mtihani Revise?</string>
+    <string name="share_title">Share Mtihani Revise</string>
+    <string name="contact_title">Contact the developer</string>
+    <string name="social_title">Follow Me</string>
+    <string name="version_title">Mtihani Revise</string>
+    <string name="bug_title">Report a bug</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

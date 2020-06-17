@@ -85,6 +85,7 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
             intent.putExtra("imageURL", user.getImageURL());
             intent.putExtra("userName", user.getUsername());
             intent.putExtra("time", user.getTime());
+            intent.putExtra("status", user.getStatus());
             context.startActivity(intent);
         });
     }

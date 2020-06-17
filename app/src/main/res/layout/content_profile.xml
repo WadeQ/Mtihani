@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.ProfileFragment"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <TextView
+            style="@style/headerText"
+            android:text="Account Info"
+            android:layout_marginBottom="20dp"
+            tools:ignore="HardcodedText" />
+
+        <RelativeLayout style="@style/profileDetailsLayout">
+            <ImageButton
+                android:id="@+id/update"
+                android:background="@drawable/ic_edit"
+                style="@style/profileDetailsImage"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/nameTextView"
+                android:text="Status"
+                android:layout_toRightOf="@id/update"
+                style="@style/profileDetailsTextMain" />
+
+            <TextView
+                android:id="@+id/status_display"
+                android:text="I use Mtihani Revise"
+                android:layout_toRightOf="@id/update"
+                style="@style/profileDetailsMiniText" />
+
+        </RelativeLayout>
+
+        <View style="@style/proifleDetailsView" />
+        <RelativeLayout style="@style/profileDetailsLayout">
+            <ImageView
+                android:id="@+id/emailImageView"
+                android:src="@drawable/email"
+                style="@style/profileDetailsImage" />
+
+            <TextView
+                android:text="Email"
+                android:layout_toRightOf="@id/emailImageView"
+                style="@style/profileDetailsTextMain"
+                android:layout_toEndOf="@id/emailImageView" />
+
+            <TextView
+                android:id="@+id/user_email"
+                android:text="@string/wadektech_gmail_com"
+                android:layout_toRightOf="@id/emailImageView"
+                style="@style/profileDetailsMiniText"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_toEndOf="@id/emailImageView" />
+
+        </RelativeLayout>
+        <View style="@style/proifleDetailsView" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

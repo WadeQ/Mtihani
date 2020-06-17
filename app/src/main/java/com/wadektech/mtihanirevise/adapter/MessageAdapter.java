@@ -19,6 +19,7 @@ import com.wadektech.mtihanirevise.utils.Constants;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -40,10 +41,10 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == MSG_TYPE_RIGHT) {
             View view = LayoutInflater.from(context).inflate(R.layout.chat_item_right, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.chat_item_left, parent, false);
-            return new MessageAdapter.ViewHolder(view);
+            return new ViewHolder(view);
         }
     }
 
@@ -62,7 +63,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             }
 
             String strDateFormat = "hh:mm a";
-            DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
             String formattedDate = dateFormat.format(new Date(chat.getDate()));
             holder.mSeen.setText(formattedDate);
             chat.setSeen(true);
@@ -75,7 +76,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
         return super.getItemCount();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView chatMessage;
         public CircleImageView chatImage;
         public TextView mSeen;
@@ -93,7 +94,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
     public int getItemViewType(int position) {
         Chat chat = getItem(position);
         if (chat != null) {
-            if (getItem(position).getSender().equals(Constants.getUserId())) {
+            if (Objects.requireNonNull(getItem(position)).getSender().equals(Constants.getUserId())) {
                 return MSG_TYPE_RIGHT;
             } else {
                 return MSG_TYPE_LEFT;

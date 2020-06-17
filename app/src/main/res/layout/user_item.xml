@@ -59,7 +59,6 @@
         app:civ_border_width="@dimen/_8sdp"
         android:layout_width="@dimen/_15sdp"
         app:civ_border_color="#05df29"
-        android:src="@drawable/ic_launcher_background"
         android:layout_below="@+id/username"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="-25dp"

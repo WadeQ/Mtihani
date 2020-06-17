@@ -40,9 +40,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        Log.d("ChatActivity","ONCREATE");
 
-       // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mUsername = findViewById(R.id.tv_username);
         mUsername.setText(Constants.getUserName());
         mHandler = new Handler();
@@ -67,7 +65,7 @@ public class ChatActivity extends AppCompatActivity {
      * @param
      */
 
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
+    public static class ViewPagerAdapter extends FragmentPagerAdapter {
         private ArrayList<Fragment> fragments;
         private ArrayList<String> titles;
 

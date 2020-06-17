@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#262938</color>
     <color name="colorPrimaryDark">#04081b</color>
-    <color name="colorAccent">#1b5e20</color>
+    <color name="colorAccent">#FF8E29</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorTransparent">#cccccc</color>
     <color name="green">#00c853</color>
@@ -20,5 +20,12 @@
     <color name="grey">#E5E5E5</color>
     <color name="darkColor">#222222</color>
     <color name="colorMain">#FF4081</color>
+    <!--colors for profile-->
+    <color name="profilePrimaryDark">#FF3B30</color>
+    <color name="profileAccentColor">#F7F7F7</color>
+    <color name="whiteTextColor">#fff</color>
+    <color name="profileBackground">#fff</color>
+    <color name="blackTextColor">#000</color>
+    <color name="profileEditTextColor">#707070</color>
 
 </resources>

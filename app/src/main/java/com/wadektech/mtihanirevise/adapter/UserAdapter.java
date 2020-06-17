@@ -76,6 +76,7 @@ private final String TAG = "UserAdapter";
                         public void onError() {
                             Picasso.with (context)
                                     .load (user.getImageURL ())
+                                    .fit()
                                     .error(defaultImageResId)
                                     .into (holder.mProfileImage);
                         }

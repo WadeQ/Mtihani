@@ -15,6 +15,7 @@ public class Constants {
     public static final String imageURL = "imageURL";
     public static final String userName = "userName";
     public static final String email = "email";
+    public static final String status = "statusUpdate";
 
     public static String getUserId(){
         SharedPreferences pfs = MtihaniRevise
@@ -46,5 +47,13 @@ public class Constants {
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
         return pfs.getString(Constants.imageURL,"");
+    }
+
+    public static String getStatus() {
+        SharedPreferences pfs = MtihaniRevise
+                .getApp()
+                .getApplicationContext()
+                .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        return pfs.getString(Constants.status,"");
     }
 }

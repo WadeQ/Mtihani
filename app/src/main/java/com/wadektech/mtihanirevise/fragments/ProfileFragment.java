@@ -9,12 +9,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +32,17 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
+import com.wadektech.mtihanirevise.database.MtihaniDatabase;
 import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
+import com.wadektech.mtihanirevise.repository.MtihaniRepository;
 import com.wadektech.mtihanirevise.room.User;
+import com.wadektech.mtihanirevise.ui.ChatActivity;
+import com.wadektech.mtihanirevise.ui.MessageActivity;
+import com.wadektech.mtihanirevise.ui.PDFViewerActivity;
+import com.wadektech.mtihanirevise.ui.PaperPerSubject;
 import com.wadektech.mtihanirevise.ui.StatusUpdate;
 import com.wadektech.mtihanirevise.utils.Constants;
+import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -46,7 +57,8 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
     CircleImageView profileImage;
     TextView userName, statusDisplay;
-    DatabaseReference databaseReference;
+    TextView userEmail ;
+            DatabaseReference databaseReference;
     StorageReference storageReference;
     public static final int IMAGE_REQUEST = 1;
     private Uri imageUri;
@@ -63,10 +75,17 @@ public class ProfileFragment extends Fragment {
 
         profileImage = view.findViewById(R.id.profile_image);
         userName = view.findViewById(R.id.username);
-        Button btnStatus = view.findViewById(R.id.update);
-
+        ImageButton btnStatus = view.findViewById(R.id.update);
         statusDisplay = view.findViewById(R.id.status_display);
+        statusDisplay.setText(Constants.getStatus());
         userName.setText(Constants.getUserName());
+        TextView navigateBack = view.findViewById(R.id.nav_back);
+        userEmail = view.findViewById(R.id.user_email);
+        userEmail.setText(Constants.getEmail());
+        navigateBack.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ChatActivity.class);
+            startActivity(intent);
+        });
 
 FirebaseFirestore
         .getInstance()
@@ -78,16 +97,21 @@ FirebaseFirestore
                 if(snapshot.exists()){
                     User user = snapshot.toObject(User.class);
                     if(user != null){
-                        statusDisplay.setText(user.getUpdate());
+                        String status = user.getUpdate();
+                        SharedPreferences pfs = MtihaniRevise.getApp()
+                                .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = pfs.edit();
+                        editor.putString(Constants.status, status);
+                        editor.apply();
                     }
                 }
             }
         });
+
         btnStatus.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), StatusUpdate.class);
             startActivity(intent);
         });
-
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
         SharedPreferences pfs = getActivity().getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
@@ -216,4 +240,5 @@ FirebaseFirestore
             }
         }
     }
+
 }

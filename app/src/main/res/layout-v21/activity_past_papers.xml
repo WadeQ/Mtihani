@@ -12,7 +12,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_66sdp"
-        android:background="#00695c"
         android:minHeight="?android:attr/actionBarSize">
 
 <RelativeLayout

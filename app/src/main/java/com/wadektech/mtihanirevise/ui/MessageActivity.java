@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
@@ -168,17 +169,13 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
-
                 // mLinearLayout.scrollToPosition(positionStart);
                 smoothScroller.setTargetPosition(positionStart);
-                mRecycler.getLayoutManager().startSmoothScroll(smoothScroller);
-
+                Objects.requireNonNull(mRecycler.getLayoutManager()).startSmoothScroll(smoothScroller);
             }
         });
         mViewModel.getMessagesList().observe(this, mAdapter::submitList);
-
         userName.setText(userNameString);
-
         mTime.setText("Last seen " + time);
 
         if (imageURL.equals("default")) {
@@ -225,7 +222,6 @@ public class MessageActivity extends AppCompatActivity {
                 @Override
                 public void onItemRangeInserted(int positionStart, int itemCount) {
                     super.onItemRangeInserted(positionStart, itemCount);
-
                     // mLinearLayout.scrollToPosition(positionStart);
                     smoothScroller.setTargetPosition(positionStart);
                     mRecycler.getLayoutManager().startSmoothScroll(smoothScroller);
@@ -318,7 +314,6 @@ public class MessageActivity extends AppCompatActivity {
             }
         });
     }
-
 
     private void currentUser(String userid) {
         SharedPreferences.Editor editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit();

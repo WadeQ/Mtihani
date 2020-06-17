@@ -18,15 +18,21 @@ android {
 
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    defaultConfig{
+        vectorDrawables.useSupportLibrary = true
     }
 }
 repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.preference:preference:1.1.0'
     def lifecycle_version = "1.1.1"
     def room_version = "1.1.1"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -90,4 +96,5 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
 com.google.gms.googleservices.GoogleServicesPlugin.config.disableVersionCheck = true

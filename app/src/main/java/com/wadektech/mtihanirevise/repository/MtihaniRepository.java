@@ -428,7 +428,6 @@ public class MtihaniRepository {
                             adminPassword = null;
 
                         }
-
                     }
                 })
                 .addOnFailureListener(e -> adminPassword.setValue("Unable to authenticate, please try again"));
@@ -464,7 +463,6 @@ public class MtihaniRepository {
                     if (!task.isSuccessful()) {
                         throw Objects.requireNonNull(task.getException());
                     }
-
                     return timetable.getDownloadUrl();
                 })
                 .addOnCompleteListener(task -> {
@@ -559,7 +557,6 @@ public class MtihaniRepository {
                         if (!task.isSuccessful()) {
                             throw Objects.requireNonNull(task.getException());
                         }
-
                         return pdfUpload.getDownloadUrl();
                     })
                     .addOnCompleteListener(task -> {

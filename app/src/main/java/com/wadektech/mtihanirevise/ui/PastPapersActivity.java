@@ -32,6 +32,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.RecyclerViewAdapter;
+import com.wadektech.mtihanirevise.auth.LoginActivity;
 import com.wadektech.mtihanirevise.auth.SignUpActivity;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
 import com.wadektech.mtihanirevise.persistence.MtihaniRevise;
@@ -44,8 +45,6 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import hotchemi.android.rate.AppRate;
-
-//import com.google.firebase.auth.FirebaseUser;
 
 public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         RecyclerViewAdapter.OnItemClickHandler {
@@ -94,7 +93,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
                         this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
 
         mAuth = FirebaseAuth.getInstance();
         userProfile = findViewById(R.id.profileImage);
@@ -153,11 +151,15 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
             startActivity(new Intent(getApplicationContext(), ChatActivity.class));
             return true;
         }
+        if (id == R.id.menuSettings){
+            //send intent to settings activity
+            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            return true;
+        }
         return super.onOptionsItemSelected(item);
     }
 
     private List<RowModel> getAllItemList() {
-
         List<RowModel> allItems = new ArrayList<>();
         allItems.add(new RowModel("KCSE 2000", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2001", R.drawable.pdf));
@@ -219,7 +221,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         */
         if (mAuth.getCurrentUser() == null) {
             finish();
-            startActivity(new Intent(this, SignUpActivity.class));
+            startActivity(new Intent(this, LoginActivity.class));
         }
         if (Constants.getImageURL().equals("default")) {
             userProfile.setImageResource(R.drawable.profile);
