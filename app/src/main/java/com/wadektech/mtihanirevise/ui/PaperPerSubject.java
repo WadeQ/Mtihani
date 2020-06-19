@@ -157,12 +157,9 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         final SearchView searchView = (SearchView) getActionView(menu.findItem(R.id.action_search));
         searchView.setOnQueryTextListener(this);
         Drawable drawColor = getResources().getDrawable(R.drawable.searchcolor);
-        searchView.setBackground(drawColor);
         Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT);
         searchView.setLayoutParams(params);
         searchView.setMaxWidth(Integer.MAX_VALUE);
-        searchView.setIconified(false);
-        searchView.setPadding(0, 33, 0, 0);
         searchView.setQueryHint("Search");
         searchView.setQueryHint(Html.fromHtml("<font color = #b71c1c>" + getResources().getString(R.string.hintSearch) + "</font>"));
         ImageView icon = searchView.findViewById(androidx.appcompat.R.id.search_button);
@@ -197,7 +194,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                     PdfModel pdfModel = snapshot.getValue(PdfModel.class);
                     allItems.add(pdfModel);
                 }
-
             }
 
             @Override

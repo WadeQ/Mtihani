@@ -250,7 +250,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     //Implement the rate app functionality from the rateApp library
-    private void rateApp() {
+    public void rateApp() {
         AppRate.with(this)
                 .setInstallDays(1)
                 .setLaunchTimes(3)
@@ -280,7 +280,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         materialDesignAnimatedDialog
                 .withTitle("Logout")
                 .withMessage("Are you sure you want to log out of Mtihani Revise? Your session will be deleted.")
-                .withDialogColor("#1c90ec")
+                .withDialogColor("#26a69a")
                 .withButton1Text("OK")
                 .isCancelableOnTouchOutside(true)
                 .withButton2Text("Cancel")

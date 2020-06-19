@@ -49,6 +49,7 @@
             android:layout_height="match_parent"
             android:fadeScrollbars="false"
             android:scrollbarThumbVertical="@drawable/scrollbar"
+            tools:listitem=""
             android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

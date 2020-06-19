@@ -23,7 +23,8 @@
         android:layout_margin="@dimen/_5sdp"
         android:imeOptions="actionSearch"
         android:padding="@dimen/_5sdp"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:importantForAutofill="no" />
         </RelativeLayout>
 
 <androidx.recyclerview.widget.RecyclerView

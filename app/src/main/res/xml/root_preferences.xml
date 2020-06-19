@@ -1,5 +1,4 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
     <PreferenceCategory app:title="@string/general_header">
         <SwitchPreferenceCompat
             app:key="dark"
@@ -21,10 +20,11 @@
             app:key="rate"
             app:icon="@drawable/ic_rate_review"
             app:summary="Rate us to know how to serve you better."
+            app:useSimpleSummaryProvider="true"
             app:title="@string/ratings_title" />
 
         <Preference
-            app:key="rate"
+            app:key="share"
             app:icon="@drawable/ic_share"
             app:summary="Enjoying Mtihani Revise?, please feel free to share it among friends."
             app:title="@string/share_title" />
@@ -35,11 +35,13 @@
             app:key="contact"
             app:icon="@drawable/ic_about"
             app:summary="Leave a message and let me know how you feel."
+            app:useSimpleSummaryProvider="true"
             app:title="@string/contact_title" />
         <Preference
             app:key="social"
             app:icon="@drawable/ic_follow"
             app:summary="Follow me on twitter."
+            app:useSimpleSummaryProvider="true"
             app:title="@string/social_title" />
 
     </PreferenceCategory>
@@ -49,13 +51,20 @@
         app:key="app_version"
         app:title="@string/version_title"
             app:icon="@drawable/ic_mtihani"
+            app:useSimpleSummaryProvider="true"
         app:summary="@string/registered_symbol" />
 
         <Preference
             app:key="bugs"
             app:icon="@drawable/ic_bug_report"
             app:title="@string/bug_title"
+            app:useSimpleSummaryProvider="true"
             app:summary="Click here to report any issues with Mtihani Revise." />
-
+        <Preference
+            app:key="logout"
+            app:icon="@drawable/ic_logout"
+            app:title="@string/logout_title"
+            app:useSimpleSummaryProvider="true"
+            app:summary="We sure will miss you, come back sooner." />
     </PreferenceCategory>
 </PreferenceScreen>

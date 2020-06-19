@@ -125,6 +125,7 @@
     <string name="social_title">Follow Me</string>
     <string name="version_title">Mtihani Revise</string>
     <string name="bug_title">Report a bug</string>
+    <string name="logout_title">Logout</string>
 
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
