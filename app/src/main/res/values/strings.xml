@@ -34,7 +34,7 @@
     <string name="logout">Logout</string>
     <string name="twitterUsername">\@derrickwadek</string>
     <string name="wadektech_gmail_com">wadektech@gmail.com</string>
-    <string name="profile">Android Engineer || UX/UI Designer</string>
+    <string name="profile">Android Engineer @mGurush</string>
     <string name="profile_two">Tech writer and i love to code!</string>
     <string name="phone">Phone</string>
     <string name="_254_738_327_378" tools:ignore="TypographyDashes">+254-738-327-378</string>
@@ -113,7 +113,7 @@
 
     <string name="general_header">General</string>
     <string name="app_header">Mtihani Revise</string>
-    <string name="developer_header">Developer Sector</string>
+    <string name="developer_header">Developer</string>
     <string name="version_header">Version</string>
 
     <string name="signature_title">Your signature</string>

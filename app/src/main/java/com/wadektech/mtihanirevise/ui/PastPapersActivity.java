@@ -125,27 +125,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.menuAbout) {
-            //open the developer profile
-            startActivity(new Intent(getApplicationContext(), DeveloperProfile.class));
-            return true;
-        }
-        if (id == R.id.rate_app) {
-            //we will call our rateApp method here
-            rateApp();
-            return true;
-        }
-        if (id == R.id.menu_share) {
-            //we will call our shareApp method here
-            shareApp();
-            return true;
-        }
-        if (id == R.id.menuLogout) {
-            //we will call our signOut method here
-            animatedDialog();
-            return true;
-        }
         if (id == R.id.menu_chat) {
             //send intent to chat activity
             startActivity(new Intent(getApplicationContext(), ChatActivity.class));
@@ -185,33 +164,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         return allItems;
     }
 
-    //method to logout
-    private void signOut() {
-        //signOut user from firebase database
-        mAuth.signOut();
-        //clear user account
-        //send intent to the Login activity
-        new Thread(() -> {
-            MtihaniDatabase db = MtihaniDatabase
-                    .getInstance(PastPapersActivity.this);
-            //Delete chats
-            db.chatDao().deleteChatList();
-            //delete all users
-            db.usersDao().deleteUsersTable();
-            //delete all messages
-            db.singleMessageDao().deleteMessages();
-            //now inform the main thread that we are done
-            mHandler.post(() -> {
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
-                Intent intent = new Intent(getApplicationContext(), MainSliderActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-            });
-
-        }).start();
-
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -249,46 +201,9 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         }
     }
 
-    //Implement the rate app functionality from the rateApp library
-    public void rateApp() {
-        AppRate.with(this)
-                .setInstallDays(1)
-                .setLaunchTimes(3)
-                .setRemindInterval(2)
-                .monitor();
-        AppRate.showRateDialogIfMeetsConditions(this);
-        AppRate.with(this).showRateDialog(this);
-    }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getApplicationContext(), "Connection Failed", Toast.LENGTH_SHORT).show();
-    }
-
-    //implement a custom dialog for share app functionality
-    public void shareApp() {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT,
-                "Hey, want access to all your K.C.S.E past exam papers from 2008 to 2017 at the convenience of your smartphone? Download Mtihani Revise at: https://play.google.com/store/apps/details?id=com.google.android.apps.plus");
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-    }
-
-    //implement a custom dialog for our logout functionality
-    private void animatedDialog() {
-        materialDesignAnimatedDialog
-                .withTitle("Logout")
-                .withMessage("Are you sure you want to log out of Mtihani Revise? Your session will be deleted.")
-                .withDialogColor("#26a69a")
-                .withButton1Text("OK")
-                .isCancelableOnTouchOutside(true)
-                .withButton2Text("Cancel")
-                .withDuration(700)
-                .withEffect(Effectstype.Fall)
-                .setButton1Click(v -> signOut())
-                .setButton2Click(v -> materialDesignAnimatedDialog.dismiss());
-        materialDesignAnimatedDialog.show();
     }
 
     @Override

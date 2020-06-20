@@ -24,7 +24,8 @@
         android:imeOptions="actionSearch"
         android:padding="@dimen/_5sdp"
         android:singleLine="true"
-        android:importantForAutofill="no" />
+        android:importantForAutofill="no"
+        tools:ignore="TextFields" />
         </RelativeLayout>
 
 <androidx.recyclerview.widget.RecyclerView

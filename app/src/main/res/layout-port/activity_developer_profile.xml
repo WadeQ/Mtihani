@@ -114,7 +114,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linlay1">
 
         <LinearLayout
@@ -202,35 +202,6 @@
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/twitterUsername"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/_18ssp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/grey" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="88dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_version"
-                    android:textColor="@color/headings"
-                    android:textSize="@dimen/_13ssp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/proximanovaregular"
-                    android:text="@string/registered_symbol"
-                    android:textColor="@color/colorAccent"
                     android:textSize="@dimen/_18ssp" />
 
                 <View

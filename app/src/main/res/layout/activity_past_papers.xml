@@ -48,6 +48,9 @@
                 android:layout_height="match_parent"
                 android:fadeScrollbars="false"
                 android:clipToPadding="false"
+                tools:listitem="@layout/activity_item_detail"
+                app:spanCount="2"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 android:scrollbarThumbVertical="@drawable/scrollbar"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

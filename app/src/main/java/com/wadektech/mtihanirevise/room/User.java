@@ -139,15 +139,12 @@ public class User {
             return oldItem.userId.equals(newItem.userId)
                     && oldItem.date == newItem.getDate()
                     && oldItem.imageURL.equals(newItem.getImageURL());
-
         }
 
         @Override
         public boolean areContentsTheSame(User oldItem, @NonNull User newItem) {
             return oldItem.equals(newItem);
         }
-
-
     };
 
     @Override
@@ -158,5 +155,4 @@ public class User {
         return userId.equals(mUser.userId) &&
                 date== mUser.date && username.equals(mUser.username);
     }
-
 }

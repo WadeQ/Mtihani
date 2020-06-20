@@ -1,48 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
     <item
         android:icon="@drawable/menu"
         android:title=""
         app:showAsAction="ifRoom">
         <menu>
+
             <item
-                android:id="@+id/menuAbout"
-                android:icon="@drawable/ic_about"
-                android:orderInCategory="100"
-                android:title="@string/about"
-                app:showAsAction="ifRoom" />
-            <item
-                android:icon="@drawable/ic_chat"
-                android:orderInCategory="200"
                 android:id="@+id/menu_chat"
+                android:icon="@drawable/ic_chat"
+                android:orderInCategory="100"
                 android:title="@string/chat_room"
-                app:showAsAction="ifRoom"/>
-            <item
-                android:id="@+id/menu_share"
-                android:icon="@drawable/ic_share"
-                android:orderInCategory="300"
-                android:title="@string/menu_share"
                 app:showAsAction="ifRoom" />
-            <item
-                android:id="@+id/rate_app"
-                android:icon="@drawable/ic_rate_review"
-                android:orderInCategory="400"
-                android:title="@string/rate"
-                app:showAsAction="never" />
-            <item
-            android:id="@+id/menuLogout"
-            android:icon="@drawable/ic_logout"
-            android:orderInCategory="500"
-            android:title="@string/_menu"
-            app:showAsAction="ifRoom" />
+
             <item
                 android:id="@+id/menuSettings"
                 android:icon="@drawable/ic_settings"
-                android:orderInCategory="600"
+                android:orderInCategory="200"
                 android:title="@string/menu_settings"
                 app:showAsAction="ifRoom" />
         </menu>

@@ -6,11 +6,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
 
+import timber.log.Timber;
+
 public class MtihaniRevise extends Application {
     private static MtihaniRevise mRevise;
     @Override
     public void onCreate() {
         super.onCreate ();
+
+        Timber.plant(new Timber.DebugTree());
 
         mRevise = this ;
 

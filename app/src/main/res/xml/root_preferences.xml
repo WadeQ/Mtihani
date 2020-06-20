@@ -37,13 +37,13 @@
             app:summary="Leave a message and let me know how you feel."
             app:useSimpleSummaryProvider="true"
             app:title="@string/contact_title" />
-        <Preference
-            app:key="social"
-            app:icon="@drawable/ic_follow"
-            app:summary="Follow me on twitter."
-            app:useSimpleSummaryProvider="true"
-            app:title="@string/social_title" />
 
+        <Preference
+            app:key="logout"
+            app:icon="@drawable/ic_logout"
+            app:title="@string/logout_title"
+            app:useSimpleSummaryProvider="true"
+            app:summary="We sure will miss you, come back sooner." />
     </PreferenceCategory>
     <PreferenceCategory app:title="@string/version_header">
 
@@ -60,11 +60,6 @@
             app:title="@string/bug_title"
             app:useSimpleSummaryProvider="true"
             app:summary="Click here to report any issues with Mtihani Revise." />
-        <Preference
-            app:key="logout"
-            app:icon="@drawable/ic_logout"
-            app:title="@string/logout_title"
-            app:useSimpleSummaryProvider="true"
-            app:summary="We sure will miss you, come back sooner." />
+
     </PreferenceCategory>
 </PreferenceScreen>
