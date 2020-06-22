@@ -117,6 +117,7 @@ public class ChatActivityViewModel extends ViewModel {
                             User user = task.getResult().toObjects(User.class).get(0);
                             if(user != null){
                                 SharedPreferences pfs = MtihaniRevise
+                                        .Companion
                                         .getApp()
                                         .getApplicationContext()
                                         .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);

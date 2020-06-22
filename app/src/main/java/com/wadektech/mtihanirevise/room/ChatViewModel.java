@@ -17,14 +17,14 @@ public class ChatViewModel extends ViewModel {
     public final LiveData<PagedList<Chat>> chats ;
 
     public ChatViewModel(){
-        mtihaniDatabase = MtihaniDatabase.getInstance (MtihaniRevise.getApp ().getApplicationContext ());
+        mtihaniDatabase = MtihaniDatabase.getInstance (MtihaniRevise.Companion.getApp ().getApplicationContext ());
         chats = new LivePagedListBuilder<> (mtihaniDatabase.chatDao ().getAllChats (), /* page size */ 20)
                 .build ();
 
     }
 
     public void saveChatsToRoom(List<Chat> chats){
-        mtihaniDatabase = MtihaniDatabase.getInstance (MtihaniRevise.getApp ().getApplicationContext ());
+        mtihaniDatabase = MtihaniDatabase.getInstance (MtihaniRevise.Companion.getApp ().getApplicationContext ());
         mtihaniDatabase.chatDao ().insertChatsToDatabase (chats);
     }
 

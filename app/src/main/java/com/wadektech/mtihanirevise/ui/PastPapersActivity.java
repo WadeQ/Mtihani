@@ -57,7 +57,6 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     // FirebaseUser firebaseUser;
     StorageReference storageReference;
     private SwipeRefreshLayout mSwipe;
-    private AlertDialog alertDialogAndroid;
     NiftyDialogBuilder materialDesignAnimatedDialog;
     private Handler mHandler;
 
@@ -179,7 +178,9 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
             userProfile.setImageResource(R.drawable.profile);
         } else {
             final int defaultImageResId = R.drawable.profile;
-            Picasso.with(MtihaniRevise.getApp ())
+            Picasso.with(MtihaniRevise
+                    .Companion
+                    .getApp ())
                     .load(Constants.getImageURL())
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(userProfile, new Callback() {

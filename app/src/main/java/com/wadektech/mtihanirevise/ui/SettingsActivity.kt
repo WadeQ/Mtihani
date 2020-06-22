@@ -1,10 +1,12 @@
 package com.wadektech.mtihanirevise.ui
 
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
@@ -12,6 +14,8 @@ import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.wadektech.mtihanirevise.R
+import com.wadektech.mtihanirevise.utils.Constants
+import com.wadektech.mtihanirevise.utils.snackbar
 import hotchemi.android.rate.AppRate
 import timber.log.Timber
 
@@ -29,8 +33,8 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     class SettingsFragment : PreferenceFragmentCompat(),
-            Preference.OnPreferenceChangeListener,
-            Preference.OnPreferenceClickListener
+            Preference.OnPreferenceClickListener,
+            SharedPreferences.OnSharedPreferenceChangeListener
     {
         private var _darkMode : SwitchPreferenceCompat ?= null
         private var _notificationsOff : SwitchPreferenceCompat?= null
@@ -41,21 +45,26 @@ class SettingsActivity : AppCompatActivity() {
         private var _bugs : Preference?= null
         private var _logout : Preference?= null
         var mAuth: FirebaseAuth? = null
+        private lateinit var prefs : String
 
         private lateinit var materialDesignAnimatedDialog: NiftyDialogBuilder
 
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
+            prefs = Constants.prefKey
+
+            preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+
             materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(requireContext())
 
             mAuth = FirebaseAuth.getInstance()
 
             _darkMode = preferenceManager.findPreference("dark")
-            _darkMode?.onPreferenceChangeListener = this
+            _darkMode?.onPreferenceChangeListener
 
             _notificationsOff = preferenceManager.findPreference("notifications")
-            _notificationsOff?.onPreferenceChangeListener = this
+            _notificationsOff?.onPreferenceChangeListener
 
             _rating = findPreference("rate")
             _rating?.setOnPreferenceClickListener {
@@ -82,13 +91,33 @@ class SettingsActivity : AppCompatActivity() {
                 onPreferenceClick(it)
             }
         }
+/*
+the logic here is to first check if the toggle switch is checked,
+when checked we then check if the stored key value
+corresponds to our key then implement corresponding functionality.
+* */
+        override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+            //storing user details for quick access later
+            val pfs: SharedPreferences = requireActivity().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE)
+            val editor = pfs.edit()
+            editor.putString(Constants.prefKey, pfs.getString(key, ""))
+            editor.apply()
 
-        override fun onPreferenceChange(preference: Preference?, key: Any?): Boolean {
-            TODO("Not yet implemented")
+           if (_darkMode?.isChecked!!){
+               if (key == prefs){
+                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                   snackbar(requireView(),"Lights off...")
+               }
+           }
+            if (_notificationsOff?.isChecked!!){
+               if (key == "notifications"){
+                   snackbar(requireView(),"notifications turned off...")
+               }
+           }
         }
 
         override fun onPreferenceClick(preference: Preference?): Boolean {
-            Timber.d("detected changes on prefs listeners")
+            Timber.d("detected clicks on prefs listeners")
             when {
                 preference!!.key == "rate" -> {
                     rateApp()
@@ -102,7 +131,7 @@ class SettingsActivity : AppCompatActivity() {
                     return true
                 }
                 preference.key== "app_version" -> {
-
+                    snackbar(requireView(),"This is the current version...")
                 }
                 preference.key== "bugs" -> {
                     sendBugs()
@@ -119,11 +148,11 @@ class SettingsActivity : AppCompatActivity() {
             i.type = "message/rfc822"
             i.putExtra(Intent.EXTRA_EMAIL, arrayOf("wadektech@gmail.com"))
             i.putExtra(Intent.EXTRA_SUBJECT, "Mtihani Revise Bug Report")
-            i.putExtra(Intent.EXTRA_TEXT, "Share here...")
+            i.putExtra(Intent.EXTRA_TEXT, "Bug report...")
             try {
                 startActivity(Intent.createChooser(i, "Send mail..."))
             } catch (ex: ActivityNotFoundException) {
-                Toast.makeText(requireContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show()
+                snackbar(requireView(),"There are no email clients installed.")
             }
         }
 
@@ -168,6 +197,30 @@ class SettingsActivity : AppCompatActivity() {
             val intent = Intent(requireContext(), MainSliderActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(intent)
+        }
+
+        private fun toggleNotificationsOff(key : String) {
+            if (key == "notifications"){
+                snackbar(requireView(), "Turned off notifications...")
+            }
+        }
+
+        override fun onResume() {
+            super.onResume()
+            Timber.d("register shared preference listener")
+            preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
+        }
+
+        override fun onPause() {
+            super.onPause()
+            Timber.d("unregister shared preference listener")
+            preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
+        }
+
+        override fun onDestroy() {
+            super.onDestroy()
+            Timber.d("unregister shared preference listener")
+            preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(this)
         }
     }
 }

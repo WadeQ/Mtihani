@@ -67,6 +67,7 @@ public class MtihaniRepository {
                 .build());
         return new LivePagedListBuilder<> (MtihaniDatabase
                 .getInstance(MtihaniRevise
+                        .Companion
                         .getApp()
                         .getApplicationContext())
                 .singleMessageDao()
@@ -78,6 +79,7 @@ public class MtihaniRepository {
     private static void downloadMessages(String myId, String userId) {
         MtihaniDatabase db = MtihaniDatabase
                 .getInstance(MtihaniRevise
+                        .Companion
                 .getApp()
                 .getApplicationContext());
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -143,6 +145,7 @@ public class MtihaniRepository {
                 .build());
         return new LivePagedListBuilder<> (MtihaniDatabase
                 .getInstance(MtihaniRevise
+                        .Companion
                         .getApp()
                         .getApplicationContext())
                 .usersDao()
@@ -161,6 +164,7 @@ public class MtihaniRepository {
                 .build());
         return new LivePagedListBuilder<> (MtihaniDatabase
                 .getInstance(MtihaniRevise
+                        .Companion
                         .getApp()
                         .getApplicationContext())
                 .usersDao()
@@ -176,6 +180,7 @@ public class MtihaniRepository {
                 .execute(() ->
                         MtihaniDatabase
                                 .getInstance(MtihaniRevise
+                                        .Companion
                                         .getApp()
                                         .getApplicationContext())
                                 .singleMessageDao()
@@ -190,6 +195,7 @@ public class MtihaniRepository {
                 .execute(() ->
                         MtihaniDatabase
                                 .getInstance(MtihaniRevise
+                                        .Companion
                                         .getApp()
                                         .getApplicationContext())
                                 .singleMessageDao()
@@ -205,7 +211,10 @@ public class MtihaniRepository {
     }
 
     public static void onZeroUsersLoaded() {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+                .Companion
+                .getApp()
+                .getApplicationContext());
         FirebaseFirestore
                 .getInstance()
                 .collection("Users")
@@ -236,7 +245,11 @@ public class MtihaniRepository {
     }
 
     public static void onUserAtFrontLoaded(User itemAtFront) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase
+                .getInstance(MtihaniRevise
+                        .Companion
+                        .getApp()
+                        .getApplicationContext());
         FirebaseFirestore
                 .getInstance()
                 .collection("Users")
@@ -267,7 +280,11 @@ public class MtihaniRepository {
     }
 
     public static void onUserAtEndLoaded(User itemAtEnd) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase
+                .getInstance(MtihaniRevise
+                        .Companion
+                        .getApp()
+                        .getApplicationContext());
         FirebaseFirestore
                 .getInstance()
                 .collection("Users")
@@ -305,6 +322,7 @@ public class MtihaniRepository {
                 .build());
         return new LivePagedListBuilder<> (MtihaniDatabase
                 .getInstance(MtihaniRevise
+                        .Companion
                         .getApp()
                         .getApplicationContext())
                 .chatDao()
@@ -318,6 +336,7 @@ public class MtihaniRepository {
                 .getDiskIO()
                 .execute(()-> MtihaniDatabase
                         .getInstance(MtihaniRevise
+                                .Companion
                                 .getApp()
                                 .getApplicationContext())
                         .chatDao()
@@ -330,6 +349,7 @@ public class MtihaniRepository {
                 .getDiskIO()
                 .execute(()-> MtihaniDatabase
                         .getInstance(MtihaniRevise
+                                .Companion
                                 .getApp()
                                 .getApplicationContext())
                         .singleMessageDao()
@@ -347,7 +367,8 @@ public class MtihaniRepository {
     }
 
     public static void downloadUsers() {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+                .Companion.getApp().getApplicationContext());
         FirebaseFirestore
                 .getInstance()
                 .collection("Users")
@@ -589,7 +610,9 @@ public class MtihaniRepository {
      * @param userId
      */
     public static void onZeroItemsLoaded(String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+                .Companion
+                .getApp().getApplicationContext());
 
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
@@ -652,7 +675,9 @@ public class MtihaniRepository {
      * @param itemAtFront
      */
     public static void onItemAtFrontLoaded(Chat itemAtFront, String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+                .Companion
+                .getApp().getApplicationContext());
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 
@@ -717,7 +742,9 @@ public class MtihaniRepository {
      */
 
     public static void onItemAtEndLoaded(Chat itemAtEnd, String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise.getApp().getApplicationContext());
+        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+                .Companion
+                .getApp().getApplicationContext());
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 

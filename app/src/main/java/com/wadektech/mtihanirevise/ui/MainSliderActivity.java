@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.preference.PreferenceManager;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +18,7 @@ import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.SliderAdapter;
 import com.wadektech.mtihanirevise.auth.LoginActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
+import com.wadektech.mtihanirevise.utils.ThemeManager;
 
 public class MainSliderActivity extends AppCompatActivity {
     public ViewPager mSlideViewPager ;

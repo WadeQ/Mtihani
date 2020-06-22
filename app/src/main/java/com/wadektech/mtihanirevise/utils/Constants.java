@@ -16,9 +16,11 @@ public class Constants {
     public static final String userName = "userName";
     public static final String email = "email";
     public static final String status = "statusUpdate";
+    public static final String prefKey = "key";
 
     public static String getUserId(){
         SharedPreferences pfs = MtihaniRevise
+                .Companion
                 .getApp()
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
@@ -27,6 +29,7 @@ public class Constants {
 
     public static String getEmail(){
         SharedPreferences pfs = MtihaniRevise
+                .Companion
                 .getApp()
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
@@ -35,6 +38,7 @@ public class Constants {
 
     public static String getUserName(){
         SharedPreferences pfs = MtihaniRevise
+                .Companion
                 .getApp()
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
@@ -43,6 +47,7 @@ public class Constants {
 
     public static String getImageURL() {
         SharedPreferences pfs = MtihaniRevise
+                .Companion
                 .getApp()
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
@@ -51,9 +56,19 @@ public class Constants {
 
     public static String getStatus() {
         SharedPreferences pfs = MtihaniRevise
+                .Companion
                 .getApp()
                 .getApplicationContext()
                 .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
         return pfs.getString(Constants.status,"");
+    }
+
+    public static String getSharedPreferenceKey() {
+        SharedPreferences pfs = MtihaniRevise
+                .Companion
+                .getApp()
+                .getApplicationContext()
+                .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        return pfs.getString(Constants.prefKey,"");
     }
 }

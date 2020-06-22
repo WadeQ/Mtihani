@@ -98,7 +98,7 @@ FirebaseFirestore
                     User user = snapshot.toObject(User.class);
                     if(user != null){
                         String status = user.getUpdate();
-                        SharedPreferences pfs = MtihaniRevise.getApp()
+                        SharedPreferences pfs = MtihaniRevise.Companion.getApp()
                                 .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pfs.edit();
                         editor.putString(Constants.status, status);
@@ -202,7 +202,9 @@ FirebaseFirestore
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
                     String mUri = downloadUri.toString();
-                        SharedPreferences pfs = MtihaniRevise.getApp()
+                        SharedPreferences pfs = MtihaniRevise
+                                .Companion
+                                .getApp()
                                 .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pfs.edit();
                         editor.putString(Constants.imageURL, mUri);
