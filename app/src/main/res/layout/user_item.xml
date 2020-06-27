@@ -74,7 +74,7 @@
         android:layout_width="@dimen/_15sdp"
         app:civ_border_color="#bfbfbf"
         android:visibility="gone"
-        android:src="@drawable/ic_launcher_background"
+        app:srcCompat="@drawable/ic_launcher_background"
         android:layout_below="@+id/username"
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginLeft="-25dp"
