@@ -22,7 +22,7 @@ import com.wadektech.mtihanirevise.ui.MessageActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
+import timber.log.Timber;
 
 
 public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHolder> {
@@ -47,9 +47,8 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         final ChatItem user = getItem(position);
-
+        assert user != null;
         holder.mUsername.setText(user.getUsername());
         holder.mTime.setText(user.getTime());
         if (user.getImageURL().equals("default")) {
@@ -78,7 +77,7 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         holder.lastMessage(user.getUserId());
 
         holder.itemView.setOnClickListener(v -> {
-            Log.e("TAG", "Message");
+            Timber.e("Message");
 
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("userid", user.getUserId());

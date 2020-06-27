@@ -2,6 +2,8 @@ package com.wadektech.mtihanirevise.ui;
 
 import android.Manifest;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -43,6 +45,7 @@ import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.adapter.SinglePDFAdapter;
 import com.wadektech.mtihanirevise.pojo.PdfModel;
 import com.wadektech.mtihanirevise.pojo.SinglePDF;
+import com.wadektech.mtihanirevise.utils.SnackbarKt;
 import com.wadektech.mtihanirevise.viewmodels.PaperPerSubjectViewModel;
 
 import java.io.File;
@@ -114,6 +117,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void onProgressUpdate(Integer integer) {
         if(progressTextView != null)
             progressTextView.setText(integer+"% downloaded");
@@ -126,7 +130,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                 if(openBtn != null)
                     openBtn.setVisibility(View.VISIBLE);
             }
-
             Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
         }
     }

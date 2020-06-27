@@ -25,6 +25,8 @@ import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 
+import timber.log.Timber;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
@@ -131,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
-                Log.e(TAG, "Error type is" );
+                Timber.e("Login failed with error type is");
             }
         }
     }
@@ -140,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth.signInWithCredential (credential)
                 .addOnCompleteListener (this, task -> {
                     if (task.isSuccessful ()) {
-                        Log.d (TAG, "signInWithCredential:success");
+                        Timber.d("signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser ();
                         String userId = "";
                         if (user != null) {
@@ -152,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                         mConnectionProgressDialog.dismiss ();
 
                     } else {
-                        Log.e ("SignupActivity", "Failed Registration" + task.getException ());
+                        Timber.d("Failed Registration %s", task.getException());
                         Toast.makeText (LoginActivity.this, "Authentication failed." + task.getException (), LENGTH_SHORT).show ();
                     }
                 });

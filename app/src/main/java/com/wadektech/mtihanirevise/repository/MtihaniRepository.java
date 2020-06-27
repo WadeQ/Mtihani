@@ -3,6 +3,8 @@ package com.wadektech.mtihanirevise.repository;
 import androidx.lifecycle.LiveData;
 import androidx.paging.LivePagedListBuilder;
 import androidx.paging.PagedList;
+
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
@@ -36,6 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import timber.log.Timber;
 
 public class MtihaniRepository {
     private static final Object LOCK = new Object();
@@ -741,10 +745,11 @@ public class MtihaniRepository {
      * @param itemAtEnd
      */
 
+    @SuppressLint("TimberArgCount")
     public static void onItemAtEndLoaded(Chat itemAtEnd, String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(MtihaniRevise
+        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
                 .Companion
-                .getApp().getApplicationContext());
+                .getApp()).getApplicationContext());
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         CollectionReference messages = firestore.collection("messages");
 
@@ -784,15 +789,15 @@ public class MtihaniRepository {
                                            chatList.add(chat);
                                        }
                                     }
-                                    Log.d(TAG, "onItemAtEndLoaded chats received are: %s" + chatList.size());
+                                    Timber.d("onItemAtEndLoaded chats received are: %s%s", chatList.size());
                                     db.singleMessageDao()
                                             .saveChatsList(chatList);
                                 } else {
-                                    Log.d(TAG, "onItemAtEndLoaded snapshot is empty");
+                                    Timber.d("onItemAtEndLoaded snapshot is empty");
                                 }
                             } else {
                                 if (task.getException() != null)
-                                    Log.d(TAG, task.getException().toString());
+                                    Timber.d(task.getException().toString());
                             }
 
                         }

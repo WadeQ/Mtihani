@@ -104,7 +104,7 @@ corresponds to our key then implement corresponding functionality.
             editor.apply()
 
            if (_darkMode?.isChecked!!){
-               if (key == prefs){
+               if (key == "dark"){
                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
                    snackbar(requireView(),"Lights off...")
                }

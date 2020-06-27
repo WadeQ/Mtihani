@@ -54,8 +54,8 @@ public class UsersFragment extends Fragment {
 
         users = new ArrayList<>();
         // readUsers();
-        viewModel = ViewModelProviders.of(getActivity()).get(UsersViewModel.class);
-        viewModel.getUsersList().observe(this, usersList -> {
+        viewModel = ViewModelProviders.of(requireActivity()).get(UsersViewModel.class);
+        viewModel.getUsersList().observe(getViewLifecycleOwner(), usersList -> {
             userAdapter = new UserAdapter (getContext(), /*users ,*/ true);
             recyclerView.setAdapter(userAdapter);
             userAdapter.submitList(usersList);

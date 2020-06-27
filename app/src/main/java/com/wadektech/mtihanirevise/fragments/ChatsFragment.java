@@ -19,6 +19,8 @@ import com.wadektech.mtihanirevise.notification.Token;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
 
+import java.util.Objects;
+
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
 
@@ -55,13 +57,12 @@ public class ChatsFragment extends Fragment {
 
     private void chatList() {
 
-        UsersViewModel viewModel = ViewModelProviders.of(getActivity())
+        UsersViewModel viewModel = ViewModelProviders.of(requireActivity())
                 .get(UsersViewModel.class);
-        viewModel.getChatList().observe(this,usersList->{
+        viewModel.getChatList().observe(getViewLifecycleOwner(),usersList->{
             mAdapter = new ChatsAdapter (getActivity(),true);
             recyclerView.setAdapter(mAdapter);
             mAdapter.submitList(usersList);
         });
     }
-
 }

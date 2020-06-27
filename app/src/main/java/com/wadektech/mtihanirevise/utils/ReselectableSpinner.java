@@ -3,6 +3,8 @@ package com.wadektech.mtihanirevise.utils;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import java.util.Objects;
+
 public class ReselectableSpinner extends androidx.appcompat.widget.AppCompatSpinner {
     public ReselectableSpinner(Context context) {
         super(context);
@@ -24,7 +26,7 @@ public class ReselectableSpinner extends androidx.appcompat.widget.AppCompatSpin
             // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
             // Timber.d("setSelection advanced called");
 
-            getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this, getSelectedView(), position, getSelectedItemId());
 
         }
     }
@@ -36,7 +38,7 @@ public class ReselectableSpinner extends androidx.appcompat.widget.AppCompatSpin
         if (sameSelected) {
             // Timber.d("setSelection called");
             // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
-            getOnItemSelectedListener().onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this, getSelectedView(), position, getSelectedItemId());
         }
     }
 }

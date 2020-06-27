@@ -58,6 +58,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 
 public class MessageActivity extends AppCompatActivity {
@@ -208,7 +209,7 @@ public class MessageActivity extends AppCompatActivity {
         //by the way why do you create the adapter before you have the imageUrl?
         //if you scroll upwards you will see adapter being assigned
         // mAdapter = new MessageAdapter(MessageActivity.this, user.getImageURL());
-        Log.d("MessageActivity", "messages received" + monitor + " times");
+        Timber.d("messages received" + monitor + " times");
         if (chats != null) {
             monitor++;
             smoothScroller = new LinearSmoothScroller(this) {
@@ -324,7 +325,7 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("MessageActivity", "ONSTART");
+        Timber.d("ONSTART");
         updateTimeAndDate();
         status("status");
     }
@@ -401,9 +402,7 @@ public class MessageActivity extends AppCompatActivity {
                 .orderBy("date", com.google.firebase.firestore.Query.Direction.DESCENDING);
         query.addSnapshotListener(this, (snapshots, e) -> {
             if (e != null) {
-                Toast.makeText(this, "error while listening...", Toast.LENGTH_SHORT).show();
-                Log.d("MessageActivity", "error while listening " +
-                        e.toString());
+                Timber.d("error while listening %s", e.toString());
                 return;
             }
             if (snapshots != null && !snapshots.isEmpty()) {

@@ -35,6 +35,9 @@ import com.wadektech.mtihanirevise.utils.Constants;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Objects;
+
+import timber.log.Timber;
 
 import static android.widget.Toast.LENGTH_SHORT;
 
@@ -152,7 +155,7 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Log.d(TAG, "signInWithCredential:success");
+                        Timber.d("signInWithCredential:success");
                         FirebaseUser user = mAuth.getCurrentUser();
 
                         Calendar calendar = Calendar.getInstance();
@@ -170,10 +173,8 @@ public class SignUpActivity extends AppCompatActivity {
 
                         String name = user.getDisplayName();
                         Uri image = user.getPhotoUrl();
-                        String imageUrl = "";
                         imageURL = "";
                         if (image != null) {
-                            imageUrl = image.toString();
                             imageURL = image.toString();
                         } else {
                             imageURL = "default";
@@ -186,6 +187,7 @@ public class SignUpActivity extends AppCompatActivity {
                                 "Error saving data " + e.toString () , LENGTH_SHORT).show ());
 
 
+                        assert name != null;
                         User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(),
                                 "Hello there! I use Mtihani Revise.",
                                 time, System.currentTimeMillis(), user.getEmail());
@@ -210,9 +212,9 @@ public class SignUpActivity extends AppCompatActivity {
                                         startActivity(intent);
                                     } else {
                                         if (task12.getException() != null)
-                                            Log.d(TAG, "error:" + task12.getException().toString());
+                                            Timber.d("error:%s", task12.getException().toString());
                                         Toast.makeText(this, "Error saving data " +
-                                                task12.getException().toString(), LENGTH_SHORT).show();
+                                                Objects.requireNonNull(task12.getException()).toString(), LENGTH_SHORT).show();
                                     }
                                 });
                         mConnectionProgressDialog.dismiss();
@@ -220,7 +222,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     } else {
                         // If sign in fails, display a message to the user.
-                        Log.e("SignupActivity", "Failed Registration" + task.getException());
+                        Timber.e("Failed Registration%s", task.getException());
                         Toast.makeText(getApplicationContext(), "Authentication failed." +
                                 task.getException(), LENGTH_SHORT).show();
                         // updateUI(null);
@@ -238,7 +240,7 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(etEmail, etPassword).addOnCompleteListener(task -> {
             //We have received a response, we need to close/exit the Progress Dialog now
             mConnectionProgressDialog.dismiss();
-            //checking if task is succesfully implemented
+            //checking if task is successfully implemented
             if (task.isSuccessful()) {
                 FirebaseUser firebaseUser = mAuth.getCurrentUser();
                 String userId = null;
@@ -282,7 +284,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                             } else {
                                 if (task12.getException() != null)
-                                    Log.d(TAG, "error:" + task12.getException().toString());
+                                    Timber.d("error:%s", task12.getException().toString());
                             }
                         });
             } else {

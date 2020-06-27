@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#04081b</color>
     <color name="colorAccent">#d35400</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="toolbar">#26a69a</color>
+    <color name="toolbar">#000</color>
     <color name="colorTransparent">#cccccc</color>
     <color name="green">#00c853</color>
     <color name="edit_text">#1b5e20</color>
@@ -28,5 +28,4 @@
     <color name="profileBackground">#fff</color>
     <color name="blackTextColor">#000</color>
     <color name="profileEditTextColor">#707070</color>
-
 </resources>

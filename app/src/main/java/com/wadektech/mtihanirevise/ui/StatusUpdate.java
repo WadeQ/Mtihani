@@ -27,6 +27,8 @@ import com.wadektech.mtihanirevise.utils.Constants;
 import java.util.HashMap;
 import java.util.Objects;
 
+import timber.log.Timber;
+
 public class StatusUpdate extends AppCompatActivity {
     private TextInputLayout statusUpdate;
     DatabaseReference reference;
@@ -68,7 +70,7 @@ public class StatusUpdate extends AppCompatActivity {
                             statusUpdate.getEditText().setText("");
                         }).addOnFailureListener(e -> {
                     pDialog.dismiss();
-                    Log.d(TAG, "error updating status " +e.getMessage());
+                    Timber.d("error updating status %s", e.getMessage());
 
                 });
             }

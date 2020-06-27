@@ -8,6 +8,8 @@ import androidx.annotation.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import timber.log.Timber;
+
 
 /**
  * This class extends MutableLiveData. It only calls setValue and postValue
@@ -18,7 +20,7 @@ public class SingleLiveEvent<T> extends MutableLiveData<T> {
     @MainThread
     public void observe(LifecycleOwner owner,final Observer<? super T> observer){
         if (hasActiveObservers()){
-           // Timber.d("multiple observers registered but only one will be notified of changes");
+           Timber.d("multiple observers registered but only one will be notified of changes");
         }
         //observe the internal mutablelivedata
         super.observe(owner, t -> {

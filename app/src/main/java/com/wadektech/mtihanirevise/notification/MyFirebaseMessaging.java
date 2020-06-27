@@ -31,7 +31,9 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String currentUser = sharedPreferences.getString ("currentuser", "none");
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance ().getCurrentUser ();
+        assert currentUser != null;
         if (!currentUser.equals(user)) {
+            assert sented != null;
             if (firebaseUser != null && sented.equals (Constants.getUserId())) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
                     sendOreoNotification(remoteMessage);
@@ -49,6 +51,7 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String body = remoteMessage.getData().get("body");
 
         RemoteMessage.Notification notification = remoteMessage.getNotification ();
+        assert user != null;
         int j = Integer.parseInt (user.replaceAll("[\\D]" , ""));
         Intent intent = new Intent (this,ChatActivity.class/* MessageActivity.class*/);
         Bundle bundle = new Bundle ();

@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class UserAdapter extends PagedListAdapter<User,UserAdapter.ViewHolder> {
     private Context context;
@@ -48,7 +49,7 @@ private final String TAG = "UserAdapter";
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.classroom_user_item, parent, false);
-        return new UserAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @SuppressLint("SetTextI18n")
@@ -57,6 +58,7 @@ private final String TAG = "UserAdapter";
 
         final User user = getItem(position);
 
+        assert user != null;
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
         holder.mTime.setText (user.getTime ());
@@ -84,7 +86,6 @@ private final String TAG = "UserAdapter";
         }
 
         holder.itemView.setOnClickListener(v -> {
-            Log.e("TAG","Message");
 
             ChatItem item = new ChatItem(user.getUserId(),user.getUsername(),user.getImageURL(),
                     user.getStatus(),user.getSearch(),user.getUpdate(),user.getTime(),
@@ -104,7 +105,7 @@ private final String TAG = "UserAdapter";
     public int getItemCount() {
         return super.getItemCount();
     }
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         public TextView mUsername , mLastMessage, mStatus;
         public CircleImageView mProfileImage ;
         public CircleImageView mStatusOff , mStatusOn;
@@ -121,6 +122,8 @@ private final String TAG = "UserAdapter";
             mTime = itemView.findViewById (R.id.tv_timestamp);
         }
     }
+
+    @SuppressLint({"TimberArgCount", "SetTextI18n"})
     private void lastMessage(final String userid , final TextView mLastMessage){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -157,14 +160,14 @@ private final String TAG = "UserAdapter";
                                 if (!snapshot.isEmpty()) {
                                     List<Chat> chatList = snapshot.toObjects(Chat.class);
                                     lastMessageList.addAll(chatList);
-                                    Log.d(TAG, "lastMessage chats received are: %s" + chatList.size());
+                                    Timber.d("lastMessage chats received are: %s%s", chatList.size());
 
                                 } else {
-                                    Log.d(TAG, "lastMessage snapshot is empty");
+                                    Timber.d("lastMessage snapshot is empty");
                                 }
                             } else {
                                 if (task.getException() != null)
-                                    Log.d(TAG, task.getException().toString());
+                                    Timber.d(task.getException().toString());
                             }
 
                         }

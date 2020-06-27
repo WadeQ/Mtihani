@@ -44,7 +44,10 @@ import com.wadektech.mtihanirevise.ui.StatusUpdate;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
 
+import java.util.Objects;
+
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -92,13 +95,14 @@ FirebaseFirestore
         .collection("Users")
         .document(Constants.getUserId())
         .get()
-        .addOnSuccessListener(getActivity(), snapshot -> {
+        .addOnSuccessListener(requireActivity(), snapshot -> {
             if(snapshot != null){
                 if(snapshot.exists()){
                     User user = snapshot.toObject(User.class);
                     if(user != null){
                         String status = user.getUpdate();
-                        SharedPreferences pfs = MtihaniRevise.Companion.getApp()
+                        SharedPreferences pfs =
+                                Objects.requireNonNull(MtihaniRevise.Companion.getApp())
                                 .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pfs.edit();
                         editor.putString(Constants.status, status);
@@ -114,8 +118,9 @@ FirebaseFirestore
         });
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
-        SharedPreferences pfs = getActivity().getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        SharedPreferences pfs = requireActivity().getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
         String imageURL = pfs.getString(Constants.imageURL,"");
+        assert imageURL != null;
         if(imageURL.equals("")|| imageURL.equals("default")) {
             FirebaseFirestore
                     .getInstance()
@@ -157,7 +162,7 @@ FirebaseFirestore
 
                         } else {
                             if (task.getException() != null) {
-                                Log.d("ProfileFragment", "error " + task.getException().toString());
+                                Timber.d("error %s", task.getException().toString());
                             }
                         }
                     });
@@ -179,7 +184,7 @@ FirebaseFirestore
     }
 
     private String getFileExtension(Uri uri) {
-        ContentResolver contentResolver = getContext().getContentResolver();
+        ContentResolver contentResolver = requireContext().getContentResolver();
         MimeTypeMap mimeTypeMap = MimeTypeMap.getSingleton();
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri));
     }
@@ -195,16 +200,17 @@ FirebaseFirestore
             uploadTask = sReference.putFile(imageUri);
             uploadTask.continueWithTask(task -> {
                 if (!task.isSuccessful()) {
-                    throw task.getException();
+                    throw Objects.requireNonNull(task.getException());
                 }
                 return sReference.getDownloadUrl();
             }).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
+                    assert downloadUri != null;
                     String mUri = downloadUri.toString();
-                        SharedPreferences pfs = MtihaniRevise
+                        SharedPreferences pfs = Objects.requireNonNull(MtihaniRevise
                                 .Companion
-                                .getApp()
+                                .getApp())
                                 .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = pfs.edit();
                         editor.putString(Constants.imageURL, mUri);
@@ -242,5 +248,4 @@ FirebaseFirestore
             }
         }
     }
-
 }
