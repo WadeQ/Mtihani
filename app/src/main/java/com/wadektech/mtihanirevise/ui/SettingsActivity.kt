@@ -40,7 +40,6 @@ class SettingsActivity : AppCompatActivity() {
         private var _bugs : Preference?= null
         private var _logout : Preference?= null
         var mAuth: FirebaseAuth? = null
-        private lateinit var prefs : String
 
         private lateinit var materialDesignAnimatedDialog: NiftyDialogBuilder
 

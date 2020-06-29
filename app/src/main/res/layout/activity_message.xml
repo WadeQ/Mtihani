@@ -102,6 +102,7 @@
             android:layout_toLeftOf="@+id/btn_send_message"
             android:background="@android:color/transparent"
             android:hint="@string/type_message"
+            android:textColor="@color/blackTextColor"
             android:inputType="textMultiLine"
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_15sdp"

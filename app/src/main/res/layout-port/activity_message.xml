@@ -103,6 +103,7 @@
             android:background="@android:color/transparent"
             android:hint="@string/type_message"
             android:inputType="textMultiLine"
+           android:textColor="@color/text"
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"

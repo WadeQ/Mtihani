@@ -4,11 +4,12 @@
     <color name="colorPrimaryDark">#04081b</color>
     <color name="colorAccent">#d35400</color>
     <color name="colorWhite">#FFFFFF</color>
-    <color name="toolbar">#000</color>
+    <color name="toolbar">#262938</color>
     <color name="colorTransparent">#cccccc</color>
+    <color name="background">#04081b</color>
     <color name="green">#00c853</color>
     <color name="edit_text">#1b5e20</color>
-    <color name="text">#000000</color>
+    <color name="text">#04081b</color>
     <color name="address">#2F7092</color>
     <color name="followers">#0D5D98</color>
     <color name="headings">#3797CF</color>
@@ -25,7 +26,7 @@
     <color name="profilePrimaryDark">#FF3B30</color>
     <color name="profileAccentColor">#F7F7F7</color>
     <color name="whiteTextColor">#fff</color>
-    <color name="profileBackground">#fff</color>
-    <color name="blackTextColor">#000</color>
+    <color name="profileBackground">#04081b</color>
+    <color name="blackTextColor">#fff</color>
     <color name="profileEditTextColor">#707070</color>
 </resources>

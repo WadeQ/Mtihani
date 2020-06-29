@@ -789,7 +789,7 @@ public class MtihaniRepository {
                                            chatList.add(chat);
                                        }
                                     }
-                                    Timber.d("onItemAtEndLoaded chats received are: %s%s", chatList.size());
+                                    Timber.d("onItemAtEndLoaded chats received are: ", +chatList.size());
                                     db.singleMessageDao()
                                             .saveChatsList(chatList);
                                 } else {

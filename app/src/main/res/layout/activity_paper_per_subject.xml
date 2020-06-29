@@ -10,9 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp"
-        android:background="#26a69a"
+        android:background="@color/toolbar"
         android:minHeight="?android:attr/actionBarSize" >
-
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout

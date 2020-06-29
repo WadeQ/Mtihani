@@ -12,6 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_66sdp"
+        android:background="@color/toolbar"
         android:minHeight="?android:attr/actionBarSize">
 
         <RelativeLayout
@@ -48,9 +49,6 @@
                 android:layout_height="match_parent"
                 android:fadeScrollbars="false"
                 android:clipToPadding="false"
-                tools:listitem="@layout/activity_item_detail"
-                app:spanCount="2"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 android:scrollbarThumbVertical="@drawable/scrollbar"
                 android:scrollbars="vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
