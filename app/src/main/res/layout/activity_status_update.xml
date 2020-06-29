@@ -26,7 +26,7 @@
             android:background="@drawable/btn_bg"
             android:text="@string/_status_update"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorWhite"
             android:textSize="@dimen/_18ssp"
             android:textStyle="bold"
             app:fontFamily="@font/proximanovaregular"
@@ -52,12 +52,12 @@
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="380dp"
+                android:layout_width="match_parent"
                 android:layout_height="61dp"
                 android:hint="@string/status_update"
                 android:inputType="text"
                 android:maxLength="38"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/text"
                 android:textColorHint="@color/green" />
         </com.google.android.material.textfield.TextInputLayout>
 

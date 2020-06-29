@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/profile_background"
     tools:context=".ui.DeveloperProfile">
 
     <RelativeLayout
@@ -94,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <TextView
@@ -103,7 +104,7 @@
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_13ssp" />
 
             </LinearLayout>
@@ -143,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/wadektech_gmail_com"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -172,7 +173,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/facebook_com_wadektech"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -201,7 +202,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/proximanovaregular"
                     android:text="@string/twitterUsername"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View

@@ -4,7 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/profile_background"
     tools:context=".ui.DeveloperProfile">
 
     <RelativeLayout
@@ -42,7 +43,7 @@
             android:layout_below="@+id/imgUser"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/_5sdp"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="@font/proximanovaregular"
             android:text="@string/derrick_wadek"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/_32ssp" />
@@ -54,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_name"
             android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif"
+            android:fontFamily="@font/proximanovaregular"
             android:text="@string/nairobi_kenya"
             android:textAllCaps="true"
             android:textColor="@color/address"
@@ -92,18 +93,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/profile_two"
                     android:textAllCaps="true"
-                    android:textColor="@color/colorWhite"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_13ssp" />
 
             </LinearLayout>
@@ -114,7 +115,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/linlay1">
 
         <LinearLayout
@@ -141,9 +142,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/wadektech_gmail_com"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -170,9 +171,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/facebook_com_wadektech"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View
@@ -199,38 +200,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
+                    android:fontFamily="@font/proximanovaregular"
                     android:text="@string/twitterUsername"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/_18ssp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_1sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:background="@color/grey" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="88dp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/app_version"
-                    android:textColor="@color/headings"
-                    android:textSize="@dimen/_13ssp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="@string/registered_symbol"
-                    android:textColor="@color/colorAccent"
+                    android:textColor="@color/text"
                     android:textSize="@dimen/_18ssp" />
 
                 <View

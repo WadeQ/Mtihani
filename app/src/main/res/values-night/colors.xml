@@ -9,7 +9,8 @@
     <color name="background">#04081b</color>
     <color name="green">#00c853</color>
     <color name="edit_text">#1b5e20</color>
-    <color name="text">#04081b</color>
+    <color name="text">#fff</color>
+    <color name="profile_background">#04081b</color>
     <color name="address">#2F7092</color>
     <color name="followers">#0D5D98</color>
     <color name="headings">#3797CF</color>
