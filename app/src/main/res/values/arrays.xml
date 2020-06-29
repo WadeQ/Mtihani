@@ -9,4 +9,16 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="pref_theme_option_labels">
+        <item>@string/default_mode_label</item>
+        <item>@string/dark_mode_label</item>
+        <item>@string/day_mode_label</item>
+    </string-array>
+
+    <string-array name="pref_theme_option_values">
+        <item>@string/default_mode_value</item>
+        <item>@string/dark_mode_value</item>
+        <item>@string/day_mode_value</item>
+    </string-array>
 </resources>

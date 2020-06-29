@@ -127,6 +127,19 @@
     <string name="bug_title">Report a bug</string>
     <string name="logout_title">Logout</string>
 
+    <string name="pref_Night_mode_key">night_mode_state_key</string>
+    <string name="select_theme">Select Theme</string>
+
+    <!--    The List Preference Labels-->
+    <string name="default_mode_label">System Default</string>
+    <string name="dark_mode_label">Dark Mode</string>
+    <string name="day_mode_label">Day Mode</string>
+
+    <!--    The List Preference values-->
+    <string name="default_mode_value">System Default</string>
+    <string name="dark_mode_value">Dark Mode</string>
+    <string name="day_mode_value">Day Mode</string>
+
     <!-- Sync Preferences -->
     <string name="sync_title">Sync email periodically</string>
     <string name="attachment_title">Download incoming attachments</string>

@@ -1,20 +1,17 @@
 package com.wadektech.mtihanirevise.auth;
 
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,14 +28,10 @@ import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.PastPapersActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
-
 import timber.log.Timber;
-
 import static android.widget.Toast.LENGTH_SHORT;
 
 
@@ -55,7 +48,6 @@ public class SignUpActivity extends AppCompatActivity {
     private AlertDialog alertDialogAndroid;
     String user;
     private String imageURL;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +109,6 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //mAuth.addAuthStateListener(mAuthListener);
-
     }
 
     private void signIn() {
@@ -141,7 +132,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if (account != null) {
                     firebaseAuthWithGoogle(account);
                 }
-
             } else {
                 Toast.makeText(this, "Something went wrong.",
                         LENGTH_SHORT).show();
@@ -186,7 +176,6 @@ public class SignUpActivity extends AppCompatActivity {
                         }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (),
                                 "Error saving data " + e.toString () , LENGTH_SHORT).show ());
 
-
                         assert name != null;
                         User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(),
                                 "Hello there! I use Mtihani Revise.",
@@ -219,7 +208,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 });
                         mConnectionProgressDialog.dismiss();
                         //  updateUI(user);
-
                     } else {
                         // If sign in fails, display a message to the user.
                         Timber.e("Failed Registration%s", task.getException());
@@ -281,7 +269,6 @@ public class SignUpActivity extends AppCompatActivity {
                                 Intent intent = new Intent(SignUpActivity.this, PastPapersActivity.class);
                                 finish();
                                 startActivity(intent);
-
                             } else {
                                 if (task12.getException() != null)
                                     Timber.d("error:%s", task12.getException().toString());

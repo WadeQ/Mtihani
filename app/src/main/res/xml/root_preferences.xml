@@ -1,11 +1,14 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        app:defaultValue="@string/default_mode_value"
+        app:entries="@array/pref_theme_option_labels"
+        app:entryValues="@array/pref_theme_option_values"
+        app:icon="@drawable/ic_dark"
+        app:key="@string/pref_Night_mode_key"
+        app:title="@string/select_theme"
+        app:dialogTitle="Choose a Theme"/>
     <PreferenceCategory app:title="@string/general_header">
-        <SwitchPreferenceCompat
-            app:key="dark"
-            app:icon="@drawable/ic_dark"
-            app:title="@string/dark_title"
-            app:summary="Toggle on dark theme for lights out experience."
-            app:useSimpleSummaryProvider="true" />
 
         <SwitchPreferenceCompat
             app:key="notifications"
@@ -48,11 +51,11 @@
     <PreferenceCategory app:title="@string/version_header">
 
         <Preference
-        app:key="app_version"
-        app:title="@string/version_title"
+            app:key="app_version"
+            app:title="@string/version_title"
             app:icon="@drawable/ic_mtihani"
             app:useSimpleSummaryProvider="true"
-        app:summary="@string/registered_symbol" />
+            app:summary="@string/registered_symbol" />
 
         <Preference
             app:key="bugs"

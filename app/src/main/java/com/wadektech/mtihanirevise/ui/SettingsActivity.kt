@@ -1,20 +1,16 @@
 package com.wadektech.mtihanirevise.ui
 
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.*
 import com.gitonway.lee.niftymodaldialogeffects.lib.Effectstype
 import com.gitonway.lee.niftymodaldialogeffects.lib.NiftyDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.wadektech.mtihanirevise.R
-import com.wadektech.mtihanirevise.utils.Constants
 import com.wadektech.mtihanirevise.utils.snackbar
 import hotchemi.android.rate.AppRate
 import timber.log.Timber
@@ -36,7 +32,6 @@ class SettingsActivity : AppCompatActivity() {
             Preference.OnPreferenceClickListener,
             SharedPreferences.OnSharedPreferenceChangeListener
     {
-        private var _darkMode : SwitchPreferenceCompat ?= null
         private var _notificationsOff : SwitchPreferenceCompat?= null
         private var _rating : Preference?= null
         private var _share : Preference?= null
@@ -52,16 +47,22 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey)
 
-            prefs = Constants.prefKey
+            val sharedPreferences = preferenceScreen.sharedPreferences
+            val prefScreen: PreferenceScreen = preferenceScreen
+            //Used index 0 to get the ListPreference since there is only one preference in our pref screens at the moment
+            val p = prefScreen.getPreference(0)
+            //Get the value of the listPreference from sharedPref
+            //Set the default value of the preference to System Default
+            val value = sharedPreferences.getString(p.key, (R.string.default_mode_value.toString()))
+            if (value!=null){
+                setPreferenceSummary(p, value)
+            }
 
             preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(this)
 
             materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(requireContext())
 
             mAuth = FirebaseAuth.getInstance()
-
-            _darkMode = preferenceManager.findPreference("dark")
-            _darkMode?.onPreferenceChangeListener
 
             _notificationsOff = preferenceManager.findPreference("notifications")
             _notificationsOff?.onPreferenceChangeListener
@@ -97,23 +98,20 @@ when checked we then check if the stored key value
 corresponds to our key then implement corresponding functionality.
 * */
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            //storing user details for quick access later
-            val pfs: SharedPreferences = requireActivity().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE)
-            val editor = pfs.edit()
-            editor.putString(Constants.prefKey, pfs.getString(key, ""))
-            editor.apply()
-
-           if (_darkMode?.isChecked!!){
-               if (key == "dark"){
-                   AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-                   snackbar(requireView(),"Lights off...")
-               }
-           }
-            if (_notificationsOff?.isChecked!!){
-               if (key == "notifications"){
-                   snackbar(requireView(),"notifications turned off...")
-               }
-           }
+            val pref = findPreference<ListPreference>(key.toString())
+            if (pref!=null){
+                val value = sharedPreferences?.getString(key, (R.string.default_mode_value.toString()))
+                //Change the theme
+                when(value){
+                    "System Default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                    "Dark Mode" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    "Day Mode" ->  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                }
+                //Set the summary
+                if (value != null) {
+                    setPreferenceSummary(pref, value)
+                }
+            }
         }
 
         override fun onPreferenceClick(preference: Preference?): Boolean {
@@ -141,6 +139,16 @@ corresponds to our key then implement corresponding functionality.
                 }
             }
             return true
+        }
+
+        private fun setPreferenceSummary(preference: Preference?, value : String){
+            // Figure out the label of the selected value
+            val listPreference = preference as ListPreference
+            val prefIndex: Int = listPreference.findIndexOfValue(value)
+            if (prefIndex >= 0) {
+                // Set the summary to that label
+                listPreference.summary = listPreference.entries[prefIndex]
+            }
         }
 
         private fun sendBugs(){

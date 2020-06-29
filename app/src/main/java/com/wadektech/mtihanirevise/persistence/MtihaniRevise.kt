@@ -2,10 +2,10 @@ package com.wadektech.mtihanirevise.persistence
 
 import android.app.Application
 import android.preference.PreferenceManager
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.OkHttpDownloader
 import com.squareup.picasso.Picasso
-import com.wadektech.mtihanirevise.utils.ThemeManager
 import timber.log.Timber
 import timber.log.Timber.DebugTree
 
@@ -14,6 +14,7 @@ class MtihaniRevise : Application() {
         super.onCreate()
         Timber.plant(DebugTree())
         app = this
+        initTheme()
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
         val builder = Picasso.Builder(this)
         builder.downloader(OkHttpDownloader(applicationContext))
@@ -30,6 +31,13 @@ class MtihaniRevise : Application() {
 
     private fun initTheme() {
         val preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        ThemeManager.applyTheme(preferences.getString(true.toString(), "")!!)
+        val selectedTheme = preferences.getString("night_mode_state_key", "")
+        if (selectedTheme!=null){
+            when(selectedTheme){
+                "System Default" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                "Dark Mode" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                "Day Mode" ->  AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+        }
     }
 }
