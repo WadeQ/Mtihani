@@ -33,6 +33,7 @@ class SettingsActivity : AppCompatActivity() {
             SharedPreferences.OnSharedPreferenceChangeListener
     {
         private var _notificationsOff : SwitchPreferenceCompat?= null
+        private var pref : ListPreference?= null
         private var _rating : Preference?= null
         private var _share : Preference?= null
         private var _contact : Preference?= null
@@ -63,9 +64,6 @@ class SettingsActivity : AppCompatActivity() {
 
             mAuth = FirebaseAuth.getInstance()
 
-            _notificationsOff = preferenceManager.findPreference("notifications")
-            _notificationsOff?.onPreferenceChangeListener
-
             _rating = findPreference("rate")
             _rating?.setOnPreferenceClickListener {
                 onPreferenceClick(it)
@@ -91,13 +89,9 @@ class SettingsActivity : AppCompatActivity() {
                 onPreferenceClick(it)
             }
         }
-/*
-the logic here is to first check if the toggle switch is checked,
-when checked we then check if the stored key value
-corresponds to our key then implement corresponding functionality.
-* */
+
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-            val pref = findPreference<ListPreference>(key.toString())
+            pref = findPreference(key.toString())
             if (pref!=null){
                 val value = sharedPreferences?.getString(key, (R.string.default_mode_value.toString()))
                 //Change the theme

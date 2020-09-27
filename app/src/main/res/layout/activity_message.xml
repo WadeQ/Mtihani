@@ -39,7 +39,7 @@
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:text="@string/username"
-                android:textColor="@color/text_color"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="@dimen/_71sdp" />
@@ -53,13 +53,12 @@
                 android:text="Last seen 00:00"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_centerVertical="true"
-                android:textColor="@color/text_color"
+                android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_12ssp"
                 android:layout_alignLeft="@+id/username"
                 tools:ignore="HardcodedText" />
 
         </RelativeLayout>
-
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -82,12 +81,16 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/message"
-        android:padding="@dimen/_5sdp"
-        android:layout_margin="@dimen/_8sdp"
-        android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_rounded_input_field"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/_8sdp"
+        android:layout_marginLeft="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginEnd="@dimen/_8sdp"
+        android:layout_marginRight="@dimen/_8sdp"
+        android:layout_marginBottom="11dp"
+        android:padding="@dimen/_5sdp">
 
         <EditText
             android:id="@+id/et_send_message"
@@ -102,7 +105,6 @@
             android:layout_toLeftOf="@+id/btn_send_message"
             android:background="@android:color/transparent"
             android:hint="@string/type_message"
-            android:textColor="@color/blackTextColor"
             android:inputType="textMultiLine"
             android:paddingStart="@dimen/_10sdp"
             android:paddingLeft="@dimen/_15sdp"
@@ -110,7 +112,7 @@
             app:layout_constraintEnd_toStartOf="@+id/btn_send_message"
             app:layout_constraintStart_toEndOf="@+id/btn_send_image"
             app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill,RtlSymmetry" />
+            tools:ignore="Autofill,RtlSymmetry,UnknownIdInLayout" />
 
         <ImageButton
             android:id="@+id/btn_send_image"
@@ -123,9 +125,10 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
+            android:tint="@color/colorPrimaryDark"
             android:layout_toStartOf="@+id/et_send_message"
             android:layout_toLeftOf="@+id/et_send_message"
-            android:background="@drawable/ic_photo_camera_black_24dp"
+            android:background="@drawable/ic_send_image"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/et_send_message"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,16 +143,15 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/ic_action_name"
+            android:background="@drawable/ic_send"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/et_send_message"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.615"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="ContentDescription" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

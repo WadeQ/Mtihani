@@ -139,7 +139,7 @@ FirebaseFirestore
                                         } else {
                                             final int defaultImageResId = R.drawable.profile;
                                             Picasso.with(getContext())
-                                                    .load(Constants.getImageURL())
+                                                    .load(user.getImageURL())
                                                     .networkPolicy(NetworkPolicy.OFFLINE)
                                                     .into(profileImage, new Callback() {
                                                         @Override
@@ -150,7 +150,7 @@ FirebaseFirestore
                                                         @Override
                                                         public void onError() {
                                                             Picasso.with(getActivity())
-                                                                    .load(Constants.getImageURL())
+                                                                    .load(user.getImageURL())
                                                                     .error(defaultImageResId)
                                                                     .into(profileImage);
                                                         }
