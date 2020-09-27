@@ -11,7 +11,6 @@
         android:id="@+id/message"
         android:padding="@dimen/_1sdp"
         android:layout_margin="@dimen/_8sdp"
-        android:background="@drawable/bg_rounded_input_field"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <EditText
@@ -20,6 +19,7 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:hint="@string/search_users"
+        android:textColor="@color/blackTextColor"
         android:layout_margin="@dimen/_5sdp"
         android:imeOptions="actionSearch"
         android:padding="@dimen/_5sdp"
@@ -32,6 +32,8 @@
     android:id="@+id/rv_classroom"
     android:layout_below="@+id/message"
     android:layout_width="match_parent"
+    android:clipToPadding="false"
+    tools:listitem="@layout/classroom_user_item"
     android:layout_height="match_parent"
     tools:ignore="NotSibling">
 
