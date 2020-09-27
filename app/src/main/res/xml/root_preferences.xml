@@ -38,7 +38,7 @@
         <Preference
             app:key="contact"
             app:icon="@drawable/ic_about"
-            app:summary="Leave a message and let me know how you feel."
+            app:summary="Contact developer."
             app:useSimpleSummaryProvider="true"
             app:title="@string/contact_title" />
 
