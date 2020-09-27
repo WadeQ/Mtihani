@@ -8,15 +8,16 @@
         app:key="@string/pref_Night_mode_key"
         app:title="@string/select_theme"
         app:dialogTitle="Choose a Theme"/>
-    <PreferenceCategory app:title="@string/general_header">
 
-        <SwitchPreferenceCompat
-            app:key="notifications"
-            app:icon="@drawable/ic_notifications"
-            app:title="@string/notifications_title"
-            app:summary="Turn off all notifications."
-            app:useSimpleSummaryProvider="true" />
-    </PreferenceCategory>
+<!--    <PreferenceCategory app:title="@string/general_header">-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="notifications"-->
+<!--            app:icon="@drawable/ic_notifications"-->
+<!--            app:title="@string/notifications_title"-->
+<!--            app:summary="Turn off all notifications."-->
+<!--            app:useSimpleSummaryProvider="true" />-->
+<!--    </PreferenceCategory>-->
 
     <PreferenceCategory app:title="@string/app_header">
         <Preference
@@ -37,7 +38,7 @@
         <Preference
             app:key="contact"
             app:icon="@drawable/ic_about"
-            app:summary="Leave a message and let me know how you feel."
+            app:summary="Contact developer."
             app:useSimpleSummaryProvider="true"
             app:title="@string/contact_title" />
 

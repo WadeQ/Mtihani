@@ -118,8 +118,9 @@ class SettingsActivity : AppCompatActivity() {
                 }
                 preference.key== "contact" -> {
                     //open the developer profile
-                    startActivity(Intent(context, DeveloperProfile::class.java))
-                    return true
+//                    startActivity(Intent(context, DeveloperProfile::class.java))
+//                    return true
+                    contactDeveloper()
                 }
                 preference.key== "app_version" -> {
                     snackbar(requireView(),"This is the current version...")
@@ -141,6 +142,19 @@ class SettingsActivity : AppCompatActivity() {
             if (prefIndex >= 0) {
                 // Set the summary to that label
                 listPreference.summary = listPreference.entries[prefIndex]
+            }
+        }
+
+        private fun contactDeveloper(){
+            val i = Intent(Intent.ACTION_SEND)
+            i.type = "message/rfc822"
+            i.putExtra(Intent.EXTRA_EMAIL, arrayOf("wadektech@gmail.com"))
+            i.putExtra(Intent.EXTRA_SUBJECT, "Do you want to leave a message to the developer?")
+            i.putExtra(Intent.EXTRA_TEXT, "Leave a message here...")
+            try {
+                startActivity(Intent.createChooser(i, "Send mail..."))
+            } catch (ex: ActivityNotFoundException) {
+                snackbar(requireView(),"There are no email clients installed.")
             }
         }
 
