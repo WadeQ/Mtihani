@@ -29,5 +29,6 @@
     <color name="whiteTextColor">#fff</color>
     <color name="profileBackground">#04081b</color>
     <color name="blackTextColor">#fff</color>
+    <color name="msgColor">#000</color>
     <color name="profileEditTextColor">#707070</color>
 </resources>

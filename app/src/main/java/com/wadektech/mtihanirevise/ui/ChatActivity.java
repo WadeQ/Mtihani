@@ -1,6 +1,8 @@
 package com.wadektech.mtihanirevise.ui;
 
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.annotation.Nullable;
@@ -47,6 +49,7 @@ public class ChatActivity extends AppCompatActivity {
 
       mTabLayout = findViewById(R.id.main_tabs);
         mViewPager = findViewById(R.id.main_tabPager);
+        mTabLayout.setTabTextColors(ColorStateList.valueOf(getResources().getColor(R.color.colorWhite)));
         ChatActivityViewModel viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
         viewModel.downloadUsers();
 
