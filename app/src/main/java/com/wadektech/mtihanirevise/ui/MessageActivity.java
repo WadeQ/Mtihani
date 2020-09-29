@@ -2,6 +2,8 @@ package com.wadektech.mtihanirevise.ui;
 
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,6 +20,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -177,7 +181,7 @@ public class MessageActivity extends AppCompatActivity {
         });
         mViewModel.getMessagesList().observe(this, mAdapter::submitList);
         userName.setText(userNameString);
-        mTime.setText("Last seen " + time);
+//        mTime.setText("Last seen " + time);
 
         if (imageURL.equals("default")) {
             imageView.setImageResource(R.drawable.profile);
@@ -202,6 +206,41 @@ public class MessageActivity extends AppCompatActivity {
                     });
         }
 
+    }
+
+    private void getUserStatus(){
+        FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();
+        assert mAuth != null;
+        String currentUser = mAuth.getUid();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = rootRef.child("Users").child(currentUser);
+        userRef.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.child("status").hasChild("state")){
+                        String status = Objects.requireNonNull(dataSnapshot.child("status").child("state").getValue()).toString();
+                        String date = Objects.requireNonNull(dataSnapshot.child("status").child("date").getValue()).toString();
+                        String time = Objects.requireNonNull(dataSnapshot.child("status").child("time").getValue()).toString();
+
+                        if (status.equals("online")){
+                            mTime.setText("online");
+                        } else if (status.equals("offline")){
+                            mTime.setText("Last seen " + date + ", "+time);
+                        }
+                    }else {
+                        mTime.setText("Offline");
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void onMessagesReceived(PagedList<Chat> chats) {
@@ -324,6 +363,7 @@ public class MessageActivity extends AppCompatActivity {
         Timber.d("ONSTART");
         updateTimeAndDate();
         status("status");
+        getUserStatus();
     }
 
     private void status(String status) {
@@ -338,6 +378,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         status("online");
+        getUserStatus();
         currentUser(userid);
         updateTimeAndDate();
         newIncomingMessageListener(Constants.getUserId(), userid);
@@ -347,6 +388,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         updateTimeAndDate();
+        getUserStatus();
         status("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
     }
@@ -356,6 +398,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onPause();
         //reference.removeEventListener(seenListener);
         status("offline");
+        getUserStatus();
         currentUser("none");
         updateTimeAndDate();
     }
@@ -364,6 +407,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         status("offline");
+        getUserStatus();
     }
 
     private void updateTimeAndDate() {
