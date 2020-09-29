@@ -205,10 +205,6 @@ public class MessageActivity extends AppCompatActivity {
     }
 
     private void onMessagesReceived(PagedList<Chat> chats) {
-        //chatList has been receive so let us wire our adapter
-        //by the way why do you create the adapter before you have the imageUrl?
-        //if you scroll upwards you will see adapter being assigned
-        // mAdapter = new MessageAdapter(MessageActivity.this, user.getImageURL());
         Timber.d("messages received" + monitor + " times");
         if (chats != null) {
             monitor++;
@@ -225,7 +221,7 @@ public class MessageActivity extends AppCompatActivity {
                     super.onItemRangeInserted(positionStart, itemCount);
                     // mLinearLayout.scrollToPosition(positionStart);
                     smoothScroller.setTargetPosition(positionStart);
-                    mRecycler.getLayoutManager().startSmoothScroll(smoothScroller);
+                    Objects.requireNonNull(mRecycler.getLayoutManager()).startSmoothScroll(smoothScroller);
 
                 }
             });

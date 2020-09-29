@@ -2,6 +2,7 @@ package com.wadektech.mtihanirevise.ui;
 
 import androidx.lifecycle.ViewModelProviders;
 
+import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +15,10 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
@@ -25,18 +29,24 @@ import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 
 public class ChatActivity extends AppCompatActivity {
     TextView mUsername, mStatus;
    // FirebaseUser firebaseUser;
-    DatabaseReference reference;
+    DatabaseReference rootRef;
     TabLayout mTabLayout;
     ViewPager mViewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private Handler mHandler;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +56,9 @@ public class ChatActivity extends AppCompatActivity {
         mUsername = findViewById(R.id.tv_username);
         mUsername.setText(Constants.getUserName());
         mHandler = new Handler();
+
+        rootRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
       mTabLayout = findViewById(R.id.main_tabs);
         mViewPager = findViewById(R.id.main_tabPager);
@@ -58,7 +71,7 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        status("online");
+        updateStatus("online");
         getUnreadCountFromRoom();
     }
 
@@ -100,36 +113,41 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void status(String status) {
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .document(Constants.getUserId())
-                .update("status" , status) ;
+    public void updateStatus(String status) {
+        String saveCurrentTime, saveCurrentDate ;
+        Calendar calendar = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+        HashMap<String, Object> statusMap = new HashMap<>();
+        statusMap.put("time", saveCurrentTime);
+        statusMap.put("date", saveCurrentDate);
+        statusMap.put("state", status);
+
+       String currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+       rootRef.child("Users").child(currentUserId).child("status").updateChildren(statusMap);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        status("online");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        status("offline");
+        updateStatus("online");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        status("offline");
+        updateStatus("online");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        status("offline");
+        updateStatus("offline");
     }
 
     private void getUnreadCountFromRoom() {
