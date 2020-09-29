@@ -32,7 +32,6 @@ public class ChatsFragment extends Fragment {
     private ChatsAdapter mAdapter;
     DatabaseReference databaseReference ;
 
-
     public ChatsFragment() {
         // Required empty public constructor
     }
