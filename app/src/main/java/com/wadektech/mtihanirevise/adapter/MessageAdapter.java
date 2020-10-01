@@ -10,6 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.repository.MtihaniRepository;
@@ -68,6 +75,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             holder.mSeen.setText(formattedDate);
             chat.setSeen(true);
             MtihaniRepository.updateMessage(chat);
+
         }
     }
 
@@ -79,7 +87,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView chatMessage;
         public CircleImageView chatImage;
-        public TextView mSeen;
+        public TextView mSeen, mStatus;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -102,5 +110,9 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
         } else {
             return MSG_TYPE_RIGHT;
         }
+    }
+
+    private void getUserStatus(String userId){
+
     }
 }

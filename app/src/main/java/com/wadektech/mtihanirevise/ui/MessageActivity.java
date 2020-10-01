@@ -46,6 +46,7 @@ import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.room.ChatDao;
 import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.ChatViewModel;
+import com.wadektech.mtihanirevise.room.Status;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.utils.InjectorUtils;
@@ -215,18 +216,21 @@ public class MessageActivity extends AppCompatActivity {
     private void getUserStatus(){
         FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();
         assert mAuth != null;
-        String currentUser = mAuth.getUid();
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = rootRef.child("Users").child(currentUser);
+        String userId = rootRef.getKey();
+        assert userId != null;
+        DatabaseReference userRef = rootRef.child("Users").child(userId);
         userRef.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    if (dataSnapshot.child("status").hasChild("state")){
-                        String status = Objects.requireNonNull(dataSnapshot.child("status").child("state").getValue()).toString();
-                        String date = Objects.requireNonNull(dataSnapshot.child("status").child("date").getValue()).toString();
-                        String time = Objects.requireNonNull(dataSnapshot.child("status").child("time").getValue()).toString();
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Status statusUpdate = snapshot.getValue(Status.class);
+                        assert statusUpdate != null;
+                        String status = statusUpdate.getState();
+                        String date = statusUpdate.getDate();
+                        String time = statusUpdate.getTime();
 
                         if (status.equals("online")) {
                             mTime.setText("online");
