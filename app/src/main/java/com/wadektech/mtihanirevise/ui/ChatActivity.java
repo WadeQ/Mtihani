@@ -116,6 +116,8 @@ public class ChatActivity extends AppCompatActivity {
     public void updateStatus(String status) {
         String saveCurrentTime, saveCurrentDate ;
         Calendar calendar = Calendar.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         @SuppressLint("SimpleDateFormat")
         SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
         saveCurrentDate = currentDate.format(calendar.getTime());
@@ -141,7 +143,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        updateStatus("online");
+        updateStatus("offline");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        updateStatus("offline");
     }
 
     @Override
