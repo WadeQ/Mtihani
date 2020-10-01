@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil;
 @Entity(tableName = "messages", indices = {@Index(value = {"date"}, unique = true)})
 public class Chat {
     @PrimaryKey(autoGenerate = true)
-    private long id ;
+    private int id ;
     private String sender ;
     private String receiver ;
     private String message ;
@@ -32,7 +32,7 @@ public class Chat {
         this.documentId=documentId;
     }
 
-    public Chat(long id, String sender, String receiver, String message , boolean seen, long date
+    public Chat(int id, String sender, String receiver, String message , boolean seen, long date
     ,String documentId) {
         this.id = id ;
         this.sender = sender;
@@ -92,11 +92,11 @@ public class Chat {
         this.seen = seen;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
