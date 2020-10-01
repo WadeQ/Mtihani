@@ -10,7 +10,7 @@ import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.User;
 
 
-@Database(entities = {Chat.class,User.class, ChatItem.class}, version = 3, exportSchema = false)
+@Database(entities = {Chat.class,User.class, ChatItem.class}, version = 4, exportSchema = false)
 public abstract class MtihaniDatabase extends RoomDatabase {
     private static final String DATABASE_NAME = "mtihani";
     private static final Object LOCK = new Object();

@@ -46,12 +46,14 @@ import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.room.ChatDao;
 import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.ChatViewModel;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.utils.InjectorUtils;
 import com.wadektech.mtihanirevise.viewmodelfactories.MessagesActivityViewModelFactory;
 import com.wadektech.mtihanirevise.viewmodels.MessagesActivityViewModel;
 import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -126,6 +128,8 @@ public class MessageActivity extends AppCompatActivity {
                 mChatItem = savedInstanceState.getParcelable("mChatItem");
             }
         }
+
+        getUserStatus();
 
         userid = intent.getStringExtra("userid");
         imageURL = intent.getStringExtra("imageURL");
@@ -218,24 +222,22 @@ public class MessageActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
+                if (dataSnapshot.exists()) {
                     if (dataSnapshot.child("status").hasChild("state")){
                         String status = Objects.requireNonNull(dataSnapshot.child("status").child("state").getValue()).toString();
                         String date = Objects.requireNonNull(dataSnapshot.child("status").child("date").getValue()).toString();
                         String time = Objects.requireNonNull(dataSnapshot.child("status").child("time").getValue()).toString();
 
-                        if (status.equals("online")){
+                        if (status.equals("online")) {
                             mTime.setText("online");
-                        } else if (status.equals("offline")){
-                            mTime.setText("Last seen " + date + ", "+time);
+                        } else if (status.equals("offline")) {
+                            mTime.setText("Last seen " + date + ", " + time);
+                        } else {
+                            mTime.setText("offline");
                         }
-                    }else {
-                        mTime.setText("Offline");
                     }
                 }
-
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -362,23 +364,21 @@ public class MessageActivity extends AppCompatActivity {
         super.onStart();
         Timber.d("ONSTART");
         updateTimeAndDate();
-        status("status");
-        getUserStatus();
+//        updateStatus("online");
+//        getUserStatus();
     }
 
-    private void status(String status) {
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .document(Constants.getUserId())
-                .update("status" , status) ;
+    @Override
+    protected void onStop() {
+        super.onStop();
+//        updateStatus("offline");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        status("online");
-        getUserStatus();
+//        updateStatus("online");
+//        getUserStatus();
         currentUser(userid);
         updateTimeAndDate();
         newIncomingMessageListener(Constants.getUserId(), userid);
@@ -388,8 +388,8 @@ public class MessageActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         updateTimeAndDate();
-        getUserStatus();
-        status("online");
+//        getUserStatus();
+//        updateStatus("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
     }
 
@@ -397,8 +397,8 @@ public class MessageActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         //reference.removeEventListener(seenListener);
-        status("offline");
-        getUserStatus();
+//        updateStatus("offline");
+//        getUserStatus();
         currentUser("none");
         updateTimeAndDate();
     }
@@ -406,8 +406,8 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        status("offline");
-        getUserStatus();
+//        updateStatus("offline");
+//        getUserStatus();
     }
 
     private void updateTimeAndDate() {
@@ -473,5 +473,26 @@ public class MessageActivity extends AppCompatActivity {
         if (mChatItem != null)
             outState.putParcelable("mChatItem", mChatItem);
     }
+
+//    public void updateStatus(String status) {
+//        String saveCurrentTime, saveCurrentDate ;
+//        Calendar calendar = Calendar.getInstance();
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//        @SuppressLint("SimpleDateFormat")
+//        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+//        saveCurrentDate = currentDate.format(calendar.getTime());
+//        @SuppressLint("SimpleDateFormat")
+//        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+//        saveCurrentTime = currentTime.format(calendar.getTime());
+//        HashMap<String, Object> statusMap = new HashMap<>();
+//        statusMap.put("time", saveCurrentTime);
+//        statusMap.put("date", saveCurrentDate);
+//        statusMap.put("state", status);
+//
+//        String currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
+//        rootRef.child("Users").child(currentUserId).child("status").updateChildren(statusMap);
+//
+//    }
 }
 
