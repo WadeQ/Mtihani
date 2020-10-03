@@ -161,12 +161,10 @@ public class ChatActivity extends AppCompatActivity {
     private void getUnreadCountFromRoom() {
 //      New thread to perform background operation
         new Thread(() -> {
-
            final int  unreadCount = MtihaniDatabase
                    .getInstance(ChatActivity.this)
                    .singleMessageDao()
                    .getUnreadCount(Constants.getUserId(),false);
-
 
 //                  Update the value background thread to UI thread
                 mHandler.post(() -> {
@@ -188,9 +186,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
 
                 });
-
         }).start();
     }
-
 }
 
