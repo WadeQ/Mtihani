@@ -217,9 +217,8 @@ public class MessageActivity extends AppCompatActivity {
         FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();
         assert mAuth != null;
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        String userId = rootRef.getKey();
-        assert userId != null;
-        DatabaseReference userRef = rootRef.child("Users").child(userId);
+        String userId = mAuth.getUid();
+        DatabaseReference userRef = rootRef.child("Users").orderByKey().getRef().child(userId);
         userRef.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
@@ -367,7 +366,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Timber.d("ONSTART");
-        updateTimeAndDate();
+        updateTimeAndDate("online");
 //        updateStatus("online");
 //        getUserStatus();
     }
@@ -375,6 +374,7 @@ public class MessageActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        updateTimeAndDate("offline");
 //        updateStatus("offline");
     }
 
@@ -384,14 +384,14 @@ public class MessageActivity extends AppCompatActivity {
 //        updateStatus("online");
 //        getUserStatus();
         currentUser(userid);
-        updateTimeAndDate();
+        updateTimeAndDate("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        updateTimeAndDate();
+        updateTimeAndDate("online");
 //        getUserStatus();
 //        updateStatus("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
@@ -404,22 +404,30 @@ public class MessageActivity extends AppCompatActivity {
 //        updateStatus("offline");
 //        getUserStatus();
         currentUser("none");
-        updateTimeAndDate();
+        updateTimeAndDate("offline");
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        updateTimeAndDate("offline");
 //        updateStatus("offline");
 //        getUserStatus();
     }
 
-    private void updateTimeAndDate() {
-        //reference = FirebaseDatabase.getInstance().getReference("Users").child(myid);
-        String delegate = "hh:mm aaa";
-        String time = (String) DateFormat.format(delegate, Calendar.getInstance().getTime());
+    private void updateTimeAndDate(String status) {
+        String saveCurrentTime, saveCurrentDate ;
+        Calendar calendar = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("time", time/*String.valueOf(ServerValue.TIMESTAMP)*/);
+        hashMap.put("time", saveCurrentTime);
+//        hashMap.put("date", saveCurrentDate);
+        hashMap.put("status", status);
         // reference.updateChildren(hashMap);
         FirebaseFirestore
                 .getInstance()
@@ -427,7 +435,6 @@ public class MessageActivity extends AppCompatActivity {
                 .document(myid)
                 .update(hashMap);
     }
-
     /**
      * This is the listener that listens for new messages.
      * By the way the new messages we are interested in are only the messages

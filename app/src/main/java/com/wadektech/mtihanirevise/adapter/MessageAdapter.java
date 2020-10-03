@@ -94,6 +94,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             chatMessage = itemView.findViewById(R.id.chat_message);
             chatImage = itemView.findViewById(R.id.chat_profile);
             mSeen = itemView.findViewById(R.id.tv_last_seen);
+            mStatus =itemView.findViewById(R.id.tv_time);
 
         }
     }
@@ -112,7 +113,4 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
         }
     }
 
-    private void getUserStatus(String userId){
-
-    }
 }
