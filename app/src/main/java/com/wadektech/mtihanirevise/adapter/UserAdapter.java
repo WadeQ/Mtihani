@@ -17,7 +17,11 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.NetworkPolicy;
@@ -30,6 +34,9 @@ import com.wadektech.mtihanirevise.ui.MessageActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executor;
+
+import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
@@ -55,9 +62,7 @@ private final String TAG = "UserAdapter";
     @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         final User user = getItem(position);
-
         assert user != null;
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
@@ -86,7 +91,6 @@ private final String TAG = "UserAdapter";
         }
 
         holder.itemView.setOnClickListener(v -> {
-
             ChatItem item = new ChatItem(user.getUserId(),user.getUsername(),user.getImageURL(),
                     user.getStatus(),user.getSearch(),user.getUpdate(),user.getTime(),
             user.getDate());
@@ -97,8 +101,10 @@ private final String TAG = "UserAdapter";
             intent.putExtra("userName",user.getUsername());
             intent.putExtra("time",user.getTime());
             intent.putExtra("mChatItem",item);
+            intent.putExtra("status", user.getStatus());
             context.startActivity(intent);
         });
+
     }
 
     @Override
@@ -109,7 +115,7 @@ private final String TAG = "UserAdapter";
         public TextView mUsername , mLastMessage, mStatus;
         public CircleImageView mProfileImage ;
         public CircleImageView mStatusOff , mStatusOn;
-        public TextView mTime ;
+        public TextView mTime,mStatusUpdate ;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -120,72 +126,7 @@ private final String TAG = "UserAdapter";
             mLastMessage = itemView.findViewById(R.id.tv_last_msg);
             mStatus = itemView.findViewById (R.id.tv_status);
             mTime = itemView.findViewById (R.id.tv_timestamp);
+            mStatusUpdate = itemView.findViewById(R.id.tv_time);
         }
-    }
-
-    @SuppressLint({"TimberArgCount", "SetTextI18n"})
-    private void lastMessage(final String userid , final TextView mLastMessage){
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference messages = firestore.collection("messages");
-
-        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", userid)
-                .whereEqualTo("receiver", firebaseUser.getUid())
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(1)
-                .get());
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", firebaseUser.getUid())
-                .whereEqualTo("receiver", userid)
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(1)
-                .get());
-        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
-                .toArray(new Task[2]));
-        combinedTask.addOnCompleteListener(
-                tasks -> {
-                    if (tasks.getResult() != null) {
-                        List<Chat> lastMessageList = new ArrayList<>();
-                        for (Task task : tasks.getResult()) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
-                                assert snapshot != null;
-                                if (!snapshot.isEmpty()) {
-                                    List<Chat> chatList = snapshot.toObjects(Chat.class);
-                                    lastMessageList.addAll(chatList);
-                                    Timber.d("lastMessage chats received are: %s%s", chatList.size());
-
-                                } else {
-                                    Timber.d("lastMessage snapshot is empty");
-                                }
-                            } else {
-                                if (task.getException() != null)
-                                    Timber.d(task.getException().toString());
-                            }
-
-                        }
-                        if (lastMessageList.size() != 0) {
-                            if(lastMessageList.size()>1) {
-                                if (lastMessageList.get(0).getDate() > lastMessageList.get(1).getDate()) {
-                                    mLastMessage.setText(lastMessageList.get(0).getMessage());
-                                } else {
-                                    mLastMessage.setText(lastMessageList.get(1).getMessage());
-                                }
-                            }else {
-                                mLastMessage.setText(lastMessageList.get(0).getMessage());
-                            }
-                        } else {
-                            mLastMessage.setText("No saved messages yet!");
-                        }
-                    }
-
-                });
     }
 }

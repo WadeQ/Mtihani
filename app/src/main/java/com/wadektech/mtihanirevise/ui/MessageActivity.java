@@ -1,11 +1,18 @@
 package com.wadektech.mtihanirevise.ui;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.paging.PagedList;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,8 +37,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
@@ -69,12 +83,13 @@ import timber.log.Timber;
 
 
 public class MessageActivity extends AppCompatActivity {
+    private static final int IMAGE_REQUEST = 2366;
     private CircleImageView imageView;
-    private TextView userName, mTime;
+    private TextView userName, mTime ;
     //FirebaseUser firebaseUser;
     DatabaseReference reference;
     EditText editSend;
-    ImageButton btnSend;
+    ImageButton btnSend, mSendImageMessage;
     MessageAdapter mAdapter;
     // List<Chat> chats;
     RecyclerView mRecycler;
@@ -86,7 +101,7 @@ public class MessageActivity extends AppCompatActivity {
     // private String imageurl;
     private static int monitor = 0;
     Intent intent;
-    private String myid;
+    private String myid, status, date;
     private String userid;
     private String userNameString;
     private String time;
@@ -96,8 +111,15 @@ public class MessageActivity extends AppCompatActivity {
     private String imageURL;
     private ValueEventListener seenListener;
     private MessagesActivityViewModel mViewModel;
+    private String checker = "";
+    private Uri imageUri ;
+    private String myImageUrl = "" ;
+    private StorageTask imageUploadTask ;
+
+    public MessageActivity() {}
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +143,7 @@ public class MessageActivity extends AppCompatActivity {
         editSend = findViewById(R.id.et_send_message);
         btnSend = findViewById(R.id.btn_send_message);
         mRecycler = findViewById(R.id.rv_message);
+        mSendImageMessage = findViewById(R.id.btn_send_image);
         mTime = findViewById(R.id.tv_time);
         intent = getIntent();
         mChatItem = intent.getParcelableExtra("mChatItem");
@@ -130,12 +153,37 @@ public class MessageActivity extends AppCompatActivity {
             }
         }
 
+        mSendImageMessage.setOnClickListener(v -> {
+            CharSequence[] options = new CharSequence[]{
+                    "images",
+                    "Pdf Files",
+                    "Ms Word Files/Docs"
+            };
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Select file type...");
+            builder.setItems(options, (DialogInterface dialog, int which) -> {
+                if (which == 0){
+                    checker = "image";
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    intent.setType("image/*");
+                    startActivityForResult(Intent.createChooser(intent, "Choose Image"), IMAGE_REQUEST);
+                } else if (which == 1){
+                    checker = "pdf";
+                } else {
+                    checker = "docx";
+                }
+            });
+        });
+
+
         getUserStatus();
 
         userid = intent.getStringExtra("userid");
         imageURL = intent.getStringExtra("imageURL");
         userNameString = intent.getStringExtra("userName");
         time = intent.getStringExtra("time");
+        status = intent.getStringExtra("status");
         this.myid = Constants.getUserId();
 
         //setting up recyclerview
@@ -144,7 +192,7 @@ public class MessageActivity extends AppCompatActivity {
         linearLayoutManager.setStackFromEnd(true);
         mRecycler.setLayoutManager(linearLayoutManager);
         //creating the adapter
-        mAdapter = new MessageAdapter (MessageActivity.this,/* chats ,*/ imageURL);//is this necessary at this point?
+        mAdapter = new MessageAdapter (MessageActivity.this,imageURL);//is this necessary at this point?
         //getting viewmodel
         mRecycler.setAdapter(mAdapter);
         chatViewModel = ViewModelProviders.of(this).get(ChatViewModel.class);
@@ -213,37 +261,16 @@ public class MessageActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("SetTextI18n")
     private void getUserStatus(){
-        FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();
-        assert mAuth != null;
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-        String userId = mAuth.getUid();
-        DatabaseReference userRef = rootRef.child("Users").orderByKey().getRef().child(userId);
-        userRef.addValueEventListener(new ValueEventListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        Status statusUpdate = snapshot.getValue(Status.class);
-                        assert statusUpdate != null;
-                        String status = statusUpdate.getState();
-                        String date = statusUpdate.getDate();
-                        String time = statusUpdate.getTime();
-
-                        if (status.equals("online")) {
-                            mTime.setText("online");
-                        } else if (status.equals("offline")) {
-                            mTime.setText("Last seen " + date + ", " + time);
-                        } else {
-                            mTime.setText("offline");
-                        }
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        DocumentReference usersRef = firestore.collection("Users").document();
+        usersRef.addSnapshotListener((documentSnapshot, e) -> {
+            assert documentSnapshot != null;
+            if (e != null && documentSnapshot.exists()){
+                String status = documentSnapshot.getString("status");
+//                Timber.d("getUserStatus: %s", status);
+                Toast.makeText(getApplicationContext(), "Updated status is: "+status, Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -274,29 +301,6 @@ public class MessageActivity extends AppCompatActivity {
         }
     }
 
-    private void seenMessage(final String userid) {
-        reference = FirebaseDatabase.getInstance().getReference("Chats");
-        reference.keepSynced(true);
-        seenListener = reference.addValueEventListener(new ValueEventListener () {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Chat chat = snapshot.getValue(Chat.class);
-                    assert chat != null;
-                    if (chat.getReceiver().equals(myid) && chat.getSender().equals(userid)) {
-                        HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("isseen", true);
-                        snapshot.getRef().updateChildren(hashMap);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
 
     private void sendMessage(String sender, final String receiver, String message) {
 
@@ -368,7 +372,7 @@ public class MessageActivity extends AppCompatActivity {
         Timber.d("ONSTART");
         updateTimeAndDate("online");
 //        updateStatus("online");
-//        getUserStatus();
+        getUserStatus();
     }
 
     @Override
@@ -382,7 +386,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 //        updateStatus("online");
-//        getUserStatus();
+        getUserStatus();
         currentUser(userid);
         updateTimeAndDate("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
@@ -392,7 +396,7 @@ public class MessageActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         updateTimeAndDate("online");
-//        getUserStatus();
+        getUserStatus();
 //        updateStatus("online");
         newIncomingMessageListener(Constants.getUserId(), userid);
     }
@@ -402,7 +406,7 @@ public class MessageActivity extends AppCompatActivity {
         super.onPause();
         //reference.removeEventListener(seenListener);
 //        updateStatus("offline");
-//        getUserStatus();
+        getUserStatus();
         currentUser("none");
         updateTimeAndDate("offline");
     }
@@ -412,10 +416,13 @@ public class MessageActivity extends AppCompatActivity {
         super.onDestroy();
         updateTimeAndDate("offline");
 //        updateStatus("offline");
-//        getUserStatus();
+        getUserStatus();
     }
 
     private void updateTimeAndDate(String status) {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = dbRef.child("Users")
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid());
         String saveCurrentTime, saveCurrentDate ;
         Calendar calendar = Calendar.getInstance();
         @SuppressLint("SimpleDateFormat")
@@ -426,14 +433,14 @@ public class MessageActivity extends AppCompatActivity {
         saveCurrentTime = currentTime.format(calendar.getTime());
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("time", saveCurrentTime);
-//        hashMap.put("date", saveCurrentDate);
+        hashMap.put("date", saveCurrentDate);
         hashMap.put("status", status);
-        // reference.updateChildren(hashMap);
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .document(myid)
-                .update(hashMap);
+        userRef.updateChildren(hashMap);
+//        FirebaseFirestore
+//                .getInstance()
+//                .collection("Users")
+//                .document(myid)
+//                .update(hashMap);
     }
     /**
      * This is the listener that listens for new messages.
@@ -475,7 +482,6 @@ public class MessageActivity extends AppCompatActivity {
                 //Toast.makeText(this, "snap is null or empty", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     @Override
@@ -485,25 +491,24 @@ public class MessageActivity extends AppCompatActivity {
             outState.putParcelable("mChatItem", mChatItem);
     }
 
-//    public void updateStatus(String status) {
-//        String saveCurrentTime, saveCurrentDate ;
-//        Calendar calendar = Calendar.getInstance();
-//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-//        @SuppressLint("SimpleDateFormat")
-//        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
-//        saveCurrentDate = currentDate.format(calendar.getTime());
-//        @SuppressLint("SimpleDateFormat")
-//        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-//        saveCurrentTime = currentTime.format(calendar.getTime());
-//        HashMap<String, Object> statusMap = new HashMap<>();
-//        statusMap.put("time", saveCurrentTime);
-//        statusMap.put("date", saveCurrentDate);
-//        statusMap.put("state", status);
-//
-//        String currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
-//        rootRef.child("Users").child(currentUserId).child("status").updateChildren(statusMap);
-//
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
+            imageUri = data.getData();
+            if (!checker.equals("image")){
+
+            } if (checker.equals("image")){
+                StorageReference imageRef = FirebaseStorage.getInstance().getReference().child("Image Messages");
+                StorageReference = imageRef.child()
+                sendMessage(Constants.getUserId(), userid, message);
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Nothing selected! Please select file..",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
 }
 

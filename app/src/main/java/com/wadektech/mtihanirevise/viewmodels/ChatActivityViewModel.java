@@ -17,6 +17,9 @@ import com.wadektech.mtihanirevise.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import timber.log.Timber;
 
 public class ChatActivityViewModel extends ViewModel {
     private MutableLiveData<User> currentUser;
@@ -78,14 +81,14 @@ public class ChatActivityViewModel extends ViewModel {
                                 }
                                 MtihaniRepository.saveNewMessages(chatList);
                             }else{
-                                Log.d("ChatActivityViewModel", "unread list is empty");
+                                Timber.d("unread list is empty");
 
                                 emptyUnreadList.setValue("empty!");
                             }
                         }
                     } else {
                         if (task.getException() != null) {
-                            Log.d("ChatActivityViewModel", "error is:" + task.getException().toString());
+                            Timber.d("error is:%s", task.getException().toString());
                         }
                     }
                 });
@@ -116,9 +119,9 @@ public class ChatActivityViewModel extends ViewModel {
                             if (!task.getResult().isEmpty()) {
                             User user = task.getResult().toObjects(User.class).get(0);
                             if(user != null){
-                                SharedPreferences pfs = MtihaniRevise
+                                SharedPreferences pfs = Objects.requireNonNull(MtihaniRevise
                                         .Companion
-                                        .getApp()
+                                        .getApp())
                                         .getApplicationContext()
                                         .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pfs.edit();
@@ -126,10 +129,10 @@ public class ChatActivityViewModel extends ViewModel {
                                 editor.putString(Constants.email,user.getEmail());
                                 editor.putString(Constants.userId,user.getUserId());
                                 editor.putString(Constants.imageURL,user.getImageURL());
-                                editor.commit();
-                                Log.d("ChatActivityViewModel","userId is"+user.getUserId()
-                                +" username is: "+user.getUsername()+" email is: "+user.getEmail()
-                                +" imageURL is "+user.getImageURL());
+                                editor.apply();
+                                Timber.d("userId is" + user.getUserId()
+                                        + " username is: " + user.getUsername() + " email is: " + user.getEmail()
+                                        + " imageURL is " + user.getImageURL());
                                 returningUser.setValue("success");
                             }else{
                                 returningUser.setValue("fail");
@@ -141,7 +144,7 @@ public class ChatActivityViewModel extends ViewModel {
                     } else {
                         returningUser.setValue("error");
                         if (task.getException() != null) {
-                            Log.d("ChatActivityViewModel", "error is:" + task.getException().toString());
+                            Timber.d("error is:%s", task.getException().toString());
                         }
                     }
                 });

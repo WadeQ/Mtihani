@@ -29,7 +29,6 @@ public class MessagesActivityViewModel extends ViewModel {
     }
 
     public void saveNewMessages(List<Chat> chats) {
-        //MVVM at work. only the repository should interact with database directly
         MtihaniRepository.saveNewMessages(chats);
     }
 
