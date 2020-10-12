@@ -25,7 +25,6 @@ import com.wadektech.mtihanirevise.utils.Constants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -70,15 +69,13 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
                         .into(holder.chatImage);
             }
 
-            String saveCurrentTime, saveCurrentDate ;
-            Calendar calendar = Calendar.getInstance();
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
-            saveCurrentDate = currentDate.format(calendar.getTime());
-            @SuppressLint("SimpleDateFormat")
-            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-            saveCurrentTime = currentTime.format(calendar.getTime());
-            holder.mSeen.setText(""+saveCurrentDate+", "+saveCurrentTime);
+            String strDateFormat = "hh:mm a";
+            String timeDateFormat = "MMM dd, yyyy";
+            @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
+            @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat(timeDateFormat);
+            String formattedTime = dateFormat.format(new Date(chat.getDate()));
+            String formattedDate = date.format(new Date(chat.getDate()));
+            holder.mSeen.setText(""+formattedDate+", "+formattedTime);
             chat.setSeen(true);
             MtihaniRepository.updateMessage(chat);
 

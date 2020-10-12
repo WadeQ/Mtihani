@@ -401,7 +401,7 @@ class MessageActivity : AppCompatActivity() {
             selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
             val selectedImageBytes = outputStream.toByteArray()
             StorageUtil.uploadMessageImage(selectedImageBytes) { imagePath ->
-                sendMessage(FirebaseAuth.getInstance().currentUser!!.uid,userid,imagePath)
+
             }
         }
     }
