@@ -476,37 +476,6 @@ public class MtihaniRepository {
         }
     }
 
-    public void uploadPDFFile(Uri uri, String category, String fileName) {
-        if (uploadResponse == null)
-            uploadResponse = InjectorUtils.provideSingleLiveEvent();
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference ref = firebaseStorage.getReference("PDF_Files");
-        StorageReference timetable = ref.child(fileName);
-        timetable.putFile(uri)
-                .continueWithTask(task -> {
-                    // Forward any exceptions
-                    if (!task.isSuccessful()) {
-                        throw Objects.requireNonNull(task.getException());
-                    }
-                    return timetable.getDownloadUrl();
-                })
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Uri downloadUri = task.getResult();
-                        assert downloadUri != null;
-                        String pdfUrl = downloadUri.toString();
-                        uploadResponse.setValue("success");
-                        uploadResponse = null;
-                        savePDFDownloadUrlInDb(pdfUrl, category, fileName);
-
-                    } else {
-                        uploadResponse.setValue("fail");
-                        uploadResponse = null;
-                    }
-
-                });
-    }
-
     private void savePDFDownloadUrlInDb(String pdfUrl, String category, String fileName) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Map<String, Object> map = InjectorUtils.provideStringHashMap();
@@ -564,47 +533,6 @@ public class MtihaniRepository {
             // Log.e("firebase ", ";local tem file not created  created " + exception.toString());
             singlePDFDownloadResponse.setValue("An error occurred");
         });
-
-    }
-
-    public void uploadPDFs(List<PDFObject> pdfObjects, String category) {
-        if (uploadResponse == null)
-            uploadResponse = InjectorUtils.provideSingleLiveEvent();
-        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-        StorageReference ref = firebaseStorage.getReference("PDF_Files");
-
-        for (int i = 0; i < pdfObjects.size(); i++) {
-            int count = i;
-            PDFObject pdf = pdfObjects.get(i);
-            StorageReference pdfUpload = ref.child(pdf.getFileName());
-            pdfUpload.putFile(pdf.getPdfUri())
-                    .continueWithTask(task -> {
-                        // Forward any exceptions
-                        if (!task.isSuccessful()) {
-                            throw Objects.requireNonNull(task.getException());
-                        }
-                        return pdfUpload.getDownloadUrl();
-                    })
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-                            assert downloadUri != null;
-                            String pdfUrl = downloadUri.toString();
-                            if (count == pdfObjects.size() - 1) {
-                                uploadResponse.setValue("success");
-                            }
-
-                            savePDFDownloadUrlInDb(pdfUrl, category, pdf.getFileName());
-
-                        } else {
-                            uploadResponse.setValue("fail");
-                            uploadResponse = null;
-                        }
-
-                    });
-
-
-        }
 
     }
 

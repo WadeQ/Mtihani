@@ -106,34 +106,4 @@ public class UsersFragment extends Fragment {
             });
         }
     }
-
-    /**
-     * Replaced method. no longer necessary
-     */
-    private void readUsers() {
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-        reference.keepSynced(true);
-        reference.addValueEventListener(new ValueEventListener () {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (mSearch.getText().toString().equals("")) {
-                    users.clear();
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        User user = snapshot.getValue(User.class);
-                        assert user != null;
-                       // assert firebaseUser != null;
-                        if (user.getUserId() != null && !user.getUserId().equals(Constants.getUserId())) {
-                            users.add(user);
-                        }
-                    }
-                    userAdapter = new UserAdapter (getContext(), /*users,*/ false);
-                    recyclerView.setAdapter(userAdapter);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-    }
 }
