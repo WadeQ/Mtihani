@@ -65,7 +65,7 @@
         android:layout_toEndOf="@id/chat_user_profile"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:fontFamily="@font/proximanovaregular"
-        android:text="00:00"
+        android:text="offline"
         android:textColor="@color/blackTextColor"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toTopOf="@+id/tv_status"
