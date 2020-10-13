@@ -15,11 +15,16 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
 import com.wadektech.mtihanirevise.fragments.ChatsFragment;
@@ -28,6 +33,8 @@ import com.wadektech.mtihanirevise.fragments.UsersFragment;
 import com.wadektech.mtihanirevise.room.Chat;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.utils.Constants;
+import com.wadektech.mtihanirevise.utils.SnackbarKt;
+import com.wadektech.mtihanirevise.utils.StatusUtils;
 import com.wadektech.mtihanirevise.viewmodels.ChatActivityViewModel;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +43,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
+
+import timber.log.Timber;
 
 
 public class ChatActivity extends AppCompatActivity {
@@ -66,6 +75,8 @@ public class ChatActivity extends AppCompatActivity {
         ChatActivityViewModel viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
         viewModel.downloadUsers();
 
+        listenForUserStatus();
+
     }
 
     @Override
@@ -73,6 +84,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onStart();
         updateStatus("online");
         getUnreadCountFromRoom();
+        listenForUserStatus();
     }
 
     /**
@@ -131,13 +143,13 @@ public class ChatActivity extends AppCompatActivity {
 
        String currentUserId = Objects.requireNonNull(mAuth.getCurrentUser()).getUid();
        rootRef.child("Users").child(currentUserId).child("status").updateChildren(statusMap);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateStatus("online");
+
     }
 
     @Override
@@ -187,6 +199,27 @@ public class ChatActivity extends AppCompatActivity {
 
                 });
         }).start();
+    }
+
+    public void listenForUserStatus(){
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users")
+                .whereEqualTo("userId", Constants.getUserId())
+                .addSnapshotListener((snapshots, e) -> {
+                    if (e != null) {
+                        Timber.e("listen:error%s", e.getMessage());
+                        return;
+                    }
+
+                    for (DocumentChange dc : Objects.requireNonNull(snapshots).getDocumentChanges()) {
+                        Timber.d("Status listener: %s", dc.getDocument().getData());
+                        Toast.makeText(getApplicationContext(), "Status listener"+ dc.getDocument().getData(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    public void updateUserStatus(String status){
+
     }
 }
 

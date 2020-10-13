@@ -1,6 +1,8 @@
 package com.wadektech.mtihanirevise.adapter;
 
 import android.annotation.SuppressLint;
+
+import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -66,7 +68,10 @@ private final String TAG = "UserAdapter";
         assert user != null;
         holder.mStatus.setText (user.getUpdate ());
         holder.mUsername.setText(user.getUsername());
-        holder.mTime.setText (user.getTime ());
+        if(user.getStatus().equals("online")){
+            holder.mTime.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.mTime.setText("online");
+        }
         if (user.getImageURL().equals("default") ){
             holder.mProfileImage.setImageResource(R.drawable.profile);
         }else {
