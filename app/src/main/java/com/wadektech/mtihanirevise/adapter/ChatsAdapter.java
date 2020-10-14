@@ -24,7 +24,6 @@ import com.wadektech.mtihanirevise.utils.Constants;
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
-
 public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHolder> {
     private Context context;
     private boolean isChatting;

@@ -5,7 +5,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import android.content.Context;
 
-@Database (entities = {Chat.class}, version = 3, exportSchema = false)
+@Database (entities = {Chat.class}, version = 7, exportSchema = false)
 public abstract class MtihaniDatabase extends RoomDatabase {
 
     private static final Object LOCK = new Object ();

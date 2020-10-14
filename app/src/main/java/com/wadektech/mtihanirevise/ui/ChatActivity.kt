@@ -187,7 +187,7 @@ class ChatActivity : AppCompatActivity() {
         saveCurrentTime = currentTime.format(calendar.time)
         val hashMap = HashMap<String, Any>()
         hashMap["time"] = saveCurrentTime
-        hashMap["state"] = status
+        hashMap["status"] = status
         FirebaseFirestore
                 .getInstance()
                 .collection("Users")

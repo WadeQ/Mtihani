@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -23,11 +22,11 @@ import com.wadektech.mtihanirevise.room.User
 import com.wadektech.mtihanirevise.ui.MessageActivity
 import com.wadektech.mtihanirevise.utils.Constants
 import de.hdodenhof.circleimageview.CircleImageView
+import hotchemi.android.rate.AppRate.with
 import timber.log.Timber
 import java.util.*
 
 class UserAdapter(private val context: Context, private val isChatting: Boolean) : PagedListAdapter<User?, UserAdapter.ViewHolder>(User.DIFF_CALLBACK) {
-    private val TAG = "UserAdapter"
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.classroom_user_item, parent, false)
         return ViewHolder(view)
@@ -48,10 +47,14 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
                         return@addSnapshotListener
                     }
                     for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
-                        Timber.d("Status listener: %s", dc.document.data)
-                        if (user.status == "online") {
-                            holder.mTime.setTextColor(ContextCompat.getColor(context, R.color.green))
+                        Timber.d("Status listener: %s", dc.document.toObject(User::class.java).status)
+                        val userStatus = dc.document.toObject(User::class.java)
+                        if (userStatus.status == "online") {
+                            holder.mTime.setTextColor(ContextCompat.getColor(context, R.color.blackTextColor))
                             holder.mTime.text = "online"
+
+                        } else{
+                            holder.mTime.text = "offline"
                         }
                     }
                 }
@@ -88,29 +91,11 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         }
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount()
-    }
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var mUsername: TextView
-        var mLastMessage: TextView
-        var mStatus: TextView
-        var mProfileImage: CircleImageView
-        var mStatusOff: CircleImageView
-        var mStatusOn: CircleImageView
-        var mTime: TextView
-        var mStatusUpdate: TextView
+        var mUsername: TextView = itemView.findViewById(R.id.username)
+        var mStatus: TextView = itemView.findViewById(R.id.tv_status)
+        var mProfileImage: CircleImageView = itemView.findViewById(R.id.chat_user_profile)
+        var mTime: TextView = itemView.findViewById(R.id.tv_timestamp)
 
-        init {
-            mUsername = itemView.findViewById(R.id.username)
-            mProfileImage = itemView.findViewById(R.id.chat_user_profile)
-            mStatusOff = itemView.findViewById(R.id.img_off)
-            mStatusOn = itemView.findViewById(R.id.img_on)
-            mLastMessage = itemView.findViewById(R.id.tv_last_msg)
-            mStatus = itemView.findViewById(R.id.tv_status)
-            mTime = itemView.findViewById(R.id.tv_timestamp)
-            mStatusUpdate = itemView.findViewById(R.id.tv_time)
-        }
     }
 }

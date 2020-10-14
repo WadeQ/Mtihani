@@ -38,64 +38,64 @@ dependencies {
     def room_version = "1.1.1"
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //noinspection GradleCompatible
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
     //circle image view library
-    implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:rules:1.1.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test:rules:1.3.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    implementation 'com.google.firebase:firebase-auth:16.1.0'//16.1.0
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
-    implementation 'com.google.firebase:firebase-core:16.0.6'//16.0.6
-    implementation 'com.google.firebase:firebase-storage:16.0.5'//16.0.5
-    implementation 'com.google.firebase:firebase-database:16.0.5'//16.0.5
-    implementation 'com.google.firebase:firebase-messaging:17.3.4'//17.3.4
+    implementation 'com.google.firebase:firebase-auth:19.4.0'//16.1.0
+    implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-core:17.5.1'//16.0.6
+    implementation 'com.google.firebase:firebase-storage:19.2.0'//16.0.5
+    implementation 'com.google.firebase:firebase-database:19.5.0'//16.0.5
+    implementation 'com.google.firebase:firebase-messaging:20.3.0'//17.3.4
     implementation 'androidx.palette:palette:1.0.0'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.5.0'
     //implementation 'com.github.barteksc:android-pdf-viewer:1.6.0'
     //using the newest version of the library
     implementation 'com.github.barteksc:android-pdf-viewer:3.1.0-beta.1'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
-    implementation 'androidx.multidex:multidex:2.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'com.nineoldandroids:library:2.4.0'
     //library for bar graph
     implementation 'com.github.PhilJay:MPAndroidChart:v2.2.4'
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //persistence for picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+    implementation 'com.squareup.picasso:picasso:2.5.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.8.0'
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation 'com.github.sd6352051.niftydialogeffects:niftydialogeffects:1.0.0@aar'
-    implementation 'com.squareup.okhttp:okhttp:2.4.0'
+    implementation 'com.squareup.okhttp:okhttp:2.7.5'
     // ViewModel and LiveData
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
-    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    annotationProcessor 'androidx.lifecycle:lifecycle-compiler:2.2.0'
     // room
-    implementation 'androidx.room:room-runtime:2.0.0'
-    annotationProcessor 'androidx.room:room-compiler:2.0.0'
-    implementation 'androidx.room:room-rxjava2:2.0.0'
+    implementation 'androidx.room:room-runtime:2.2.5'
+    annotationProcessor 'androidx.room:room-compiler:2.2.5'
+    implementation 'androidx.room:room-rxjava2:2.2.5'
     // Paging
-    implementation 'androidx.paging:paging-runtime:2.0.0'
+    implementation 'androidx.paging:paging-runtime:2.1.2'
     //Firebase Firestore
-    implementation 'com.google.firebase:firebase-firestore:17.1.4'//17.1.4
+    implementation 'com.google.firebase:firebase-firestore:21.7.1'//17.1.4
     // Ads SDK
-    implementation 'com.google.firebase:firebase-ads:17.1.3'//17.1.4
+    implementation 'com.google.firebase:firebase-ads:19.4.0'//17.1.4
     //sdp for various screen sizes
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
     implementation 'com.intuit.ssp:ssp-android:1.0.6'
     //RxJava plus RxAndroid
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.12'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.16'
     //Material design
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.1'
     // logging
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
