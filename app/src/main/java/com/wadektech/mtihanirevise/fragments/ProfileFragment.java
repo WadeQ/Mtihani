@@ -125,7 +125,7 @@ FirebaseFirestore
             FirebaseFirestore
                     .getInstance()
                     .collection("Users")
-                    .document(/*firebaseUser.getUid()*/Constants.getUserId())
+                    .document(Constants.getUserId())
                     .get()
                     .addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {

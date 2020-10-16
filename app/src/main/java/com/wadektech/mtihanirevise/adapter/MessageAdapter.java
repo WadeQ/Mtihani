@@ -70,7 +70,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             }
 
             String strDateFormat = "hh:mm a";
-            String timeDateFormat = "MMM dd, yyyy";
+            String timeDateFormat = "MMM dd";
             @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat(strDateFormat);
             @SuppressLint("SimpleDateFormat") DateFormat date = new SimpleDateFormat(timeDateFormat);
             String formattedTime = dateFormat.format(new Date(chat.getDate()));
