@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -54,27 +53,22 @@
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <TextView
-        android:id="@+id/tv_timestamp"
+        android:id="@+id/tv_user_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_170sdp"
-        android:layout_marginLeft="@dimen/_170sdp"
         android:layout_marginTop="@dimen/_8sdp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
         android:layout_toEndOf="@id/chat_user_profile"
         android:layout_toRightOf="@+id/chat_user_profile"
         android:fontFamily="@font/proximanovaregular"
-        android:text="offline"
+        android:text="@string/offline"
         android:textColor="@color/blackTextColor"
         android:textSize="@dimen/_12ssp"
         app:layout_constraintBottom_toTopOf="@+id/tv_status"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/username"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:ignore="HardcodedText" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <View
         android:layout_width="@dimen/_250sdp"

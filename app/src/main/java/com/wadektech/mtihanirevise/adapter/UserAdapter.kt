@@ -26,7 +26,8 @@ import hotchemi.android.rate.AppRate.with
 import timber.log.Timber
 import java.util.*
 
-class UserAdapter(private val context: Context, private val isChatting: Boolean) : PagedListAdapter<User?, UserAdapter.ViewHolder>(User.DIFF_CALLBACK) {
+class UserAdapter(private val context: Context, private val isChatting: Boolean)
+    : PagedListAdapter<User?, UserAdapter.ViewHolder>(User.DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.classroom_user_item, parent, false)
         return ViewHolder(view)
@@ -40,7 +41,7 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
 
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("Users")
-                .whereEqualTo("userId", Constants.getUserId())
+                .whereEqualTo("userId", user.userId)
                 .addSnapshotListener { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
                     if (e != null) {
                         Timber.e("listen:error%s", e.message)
@@ -49,12 +50,18 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
                     for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
                         Timber.d("Status listener: %s", dc.document.toObject(User::class.java).status)
                         val userStatus = dc.document.toObject(User::class.java)
-                        if (userStatus.status == "online") {
-                            holder.mTime.setTextColor(ContextCompat.getColor(context, R.color.blackTextColor))
-                            holder.mTime.text = "online"
+                        when (userStatus.status) {
+                            "online" -> {
+                                holder.mUserOnlineStatus.setTextColor(ContextCompat.getColor(context, R.color.green))
+                                holder.mUserOnlineStatus.text = "online"
 
-                        } else{
-                            holder.mTime.text = "offline"
+                            }
+                            "offline" -> {
+                                holder.mUserOnlineStatus.text = "offline"
+                            }
+                            else -> {
+                                holder.mUserOnlineStatus.text = ""+user.date+ ", "+user.time
+                            }
                         }
                     }
                 }
@@ -95,7 +102,7 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         var mUsername: TextView = itemView.findViewById(R.id.username)
         var mStatus: TextView = itemView.findViewById(R.id.tv_status)
         var mProfileImage: CircleImageView = itemView.findViewById(R.id.chat_user_profile)
-        var mTime: TextView = itemView.findViewById(R.id.tv_timestamp)
+        var mUserOnlineStatus: TextView = itemView.findViewById(R.id.tv_user_status)
 
     }
 }

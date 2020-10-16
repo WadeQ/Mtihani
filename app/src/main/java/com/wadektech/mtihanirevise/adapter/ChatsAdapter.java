@@ -107,7 +107,7 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
             mStatusOn = itemView.findViewById(R.id.img_on);
             mLastMessage = itemView.findViewById(R.id.tv_last_msg);
             mStatus = itemView.findViewById(R.id.tv_status);
-            mTime = itemView.findViewById(R.id.tv_timestamp);
+            mTime = itemView.findViewById(R.id.tv_time_status);
 
         }
 
