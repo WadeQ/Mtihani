@@ -53,11 +53,11 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
                         when (userStatus.status) {
                             "online" -> {
                                 holder.mUserOnlineStatus.setTextColor(ContextCompat.getColor(context, R.color.green))
-                                holder.mUserOnlineStatus.text = "online"
+                                holder.mUserOnlineStatus.text = user.status
 
                             }
                             "offline" -> {
-                                holder.mUserOnlineStatus.text = "offline"
+                                holder.mUserOnlineStatus.text = user.status
                             }
                             else -> {
                                 holder.mUserOnlineStatus.text = ""+user.date+ ", "+user.time

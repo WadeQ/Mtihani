@@ -53,7 +53,7 @@ class ChatActivity : AppCompatActivity() {
         mTabLayout?.tabTextColors = ColorStateList.valueOf(resources.getColor(R.color.colorWhite))
         val viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel::class.java)
         viewModel.downloadUsers()
-        listenForUserStatus()
+//        listenForUserStatus()
     }
 
     override fun onStart() {
@@ -61,7 +61,7 @@ class ChatActivity : AppCompatActivity() {
         updateStatus("online")
         updateUserStatus("online")
         unreadCountFromRoom
-        listenForUserStatus()
+//        listenForUserStatus()
     }
 
     /**
@@ -163,22 +163,22 @@ class ChatActivity : AppCompatActivity() {
                 }
             }.start()
         }
-
-    private fun listenForUserStatus() {
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("Users")
-                .whereEqualTo("userId", Constants.getUserId())
-                .addSnapshotListener { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
-                    if (e != null) {
-                        Timber.e("listen:error%s", e.message)
-                        return@addSnapshotListener
-                    }
-                    for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
-                        Timber.d("Status listener: %s", dc.document.data)
-                        Toast.makeText(applicationContext, "Status listener" + dc.document.data, Toast.LENGTH_LONG).show()
-                    }
-                }
-    }
+//
+//    private fun listenForUserStatus() {
+//        val firestore = FirebaseFirestore.getInstance()
+//        firestore.collection("Users")
+//                .whereEqualTo("userId", Constants.getUserId())
+//                .addSnapshotListener { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
+//                    if (e != null) {
+//                        Timber.e("listen:error%s", e.message)
+//                        return@addSnapshotListener
+//                    }
+//                    for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
+//                        Timber.d("Status listener: %s", dc.document.data)
+//                        Toast.makeText(applicationContext, "Status listener" + dc.document.data, Toast.LENGTH_LONG).show()
+//                    }
+//                }
+//    }
 
     private fun updateUserStatus(status: String) {
         val saveCurrentTime: String
