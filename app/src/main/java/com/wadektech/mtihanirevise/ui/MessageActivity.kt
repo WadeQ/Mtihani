@@ -15,6 +15,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
@@ -39,11 +40,9 @@ import com.wadektech.mtihanirevise.adapter.MessageAdapter
 import com.wadektech.mtihanirevise.database.MtihaniDatabase
 import com.wadektech.mtihanirevise.fragments.APIService
 import com.wadektech.mtihanirevise.notification.*
+import com.wadektech.mtihanirevise.pojo.Status
 import com.wadektech.mtihanirevise.repository.MtihaniRepository.sendMessageToFirebase
-import com.wadektech.mtihanirevise.room.Chat
-import com.wadektech.mtihanirevise.room.ChatDao
-import com.wadektech.mtihanirevise.room.ChatItem
-import com.wadektech.mtihanirevise.room.ChatViewModel
+import com.wadektech.mtihanirevise.room.*
 import com.wadektech.mtihanirevise.utils.Constants
 import com.wadektech.mtihanirevise.utils.InjectorUtils
 import com.wadektech.mtihanirevise.utils.StorageUtil
@@ -119,7 +118,7 @@ class MessageActivity : AppCompatActivity() {
         mRecycler = findViewById(R.id.rv_message)
         mSendImageMessage = findViewById(R.id.btn_send_image)
         mTime = findViewById(R.id.tv_time)
-        intent = getIntent()
+        intent = intent
         mChatItem = intent.getParcelableExtra("mChatItem")
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("mChatItem")) {
@@ -145,23 +144,21 @@ class MessageActivity : AppCompatActivity() {
         mRecycler?.setHasFixedSize(true)
         val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         linearLayoutManager.stackFromEnd = true
-        mRecycler?.setLayoutManager(linearLayoutManager)
+        mRecycler?.layoutManager = linearLayoutManager
         //creating the adapter
         mAdapter = MessageAdapter(this@MessageActivity, imageURL) //is this necessary at this point?
         //getting viewmodel
-        mRecycler?.setAdapter(mAdapter)
+        mRecycler?.adapter = mAdapter
         chatViewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
         //observing the pagelist from viewmodel
         chatViewModel!!.chats.observe(this, Observer { pagedList: PagedList<Chat?> -> mAdapter!!.submitList(pagedList) })
-        // firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         btnSend?.setOnClickListener {
             notify = true
             val message = editSend?.text.toString().trim { it <= ' ' }
             if (message != "") {
                 sendMessage(Constants.getUserId(), userid, message)
             } else {
-                //Avoid toasting using application context
-                Toast.makeText( /*getApplicationContext()*/this, "Blank message!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Blank message!", Toast.LENGTH_SHORT).show()
             }
             editSend?.setText("")
         }
@@ -178,13 +175,13 @@ class MessageActivity : AppCompatActivity() {
         mAdapter!!.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
-                smoothScroller?.setTargetPosition(positionStart)
+                smoothScroller?.targetPosition = positionStart
                 Objects.requireNonNull(mRecycler?.layoutManager)!!.startSmoothScroll(smoothScroller)
             }
         })
         mViewModel!!.messagesList.observe(this, Observer { pagedList: PagedList<Chat?> -> mAdapter!!.submitList(pagedList) })
-        userName?.setText(userNameString)
-        //        mTime.setText("Last seen " + time);
+        userName?.text = userNameString
+
         if (imageURL == "default") {
             imageView?.setImageResource(R.drawable.profile)
         } else {
@@ -205,7 +202,6 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun onMessagesReceived(chats: PagedList<Chat>?) {
-        Timber.d("%s times", "messages received" + monitor)
         if (chats != null) {
             monitor++
             smoothScroller = object : LinearSmoothScroller(this) {
@@ -217,7 +213,7 @@ class MessageActivity : AppCompatActivity() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                     super.onItemRangeInserted(positionStart, itemCount)
                     // mLinearLayout.scrollToPosition(positionStart);
-                    smoothScroller?.setTargetPosition(positionStart)
+                    smoothScroller?.targetPosition = positionStart
                     Objects.requireNonNull(mRecycler!!.layoutManager)!!.startSmoothScroll(smoothScroller)
                 }
             })
@@ -284,13 +280,13 @@ class MessageActivity : AppCompatActivity() {
         super.onStart()
         Timber.d("ONSTART")
         updateTimeAndDate("online")
-        //        updateStatus("online");
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onStop() {
         super.onStop()
         updateTimeAndDate("offline")
-        //        updateStatus("offline");
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onResume() {
@@ -298,13 +294,14 @@ class MessageActivity : AppCompatActivity() {
         //        updateStatus("online");
         currentUser(userid)
         updateTimeAndDate("online")
+        listenToFirebaseRealtimeStatus()
         newIncomingMessageListener(Constants.getUserId(), userid)
     }
 
     override fun onRestart() {
         super.onRestart()
         updateTimeAndDate("online")
-        //        updateStatus("online");
+        listenToFirebaseRealtimeStatus()
         newIncomingMessageListener(Constants.getUserId(), userid)
     }
 
@@ -314,12 +311,13 @@ class MessageActivity : AppCompatActivity() {
 //        updateStatus("offline");
         currentUser("none")
         updateTimeAndDate("offline")
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         updateTimeAndDate("offline")
-        //        updateStatus("offline");
+        listenToFirebaseRealtimeStatus()
     }
 
     private fun updateTimeAndDate(status: String) {
@@ -329,7 +327,7 @@ class MessageActivity : AppCompatActivity() {
         val saveCurrentTime: String
         val saveCurrentDate: String
         val calendar = Calendar.getInstance()
-        @SuppressLint("SimpleDateFormat") val currentDate = SimpleDateFormat("MMM dd, yyyy")
+        @SuppressLint("SimpleDateFormat") val currentDate = SimpleDateFormat("MMM dd")
         saveCurrentDate = currentDate.format(calendar.time)
         @SuppressLint("SimpleDateFormat") val currentTime = SimpleDateFormat("hh:mm a")
         saveCurrentTime = currentTime.format(calendar.time)
@@ -338,11 +336,38 @@ class MessageActivity : AppCompatActivity() {
         hashMap["date"] = saveCurrentDate
         hashMap["status"] = status
         userRef.updateChildren(hashMap)
-        //        FirebaseFirestore
-//                .getInstance()
-//                .collection("Users")
-//                .document(myid)
-//                .update(hashMap);
+
+    }
+
+    private fun listenToFirebaseRealtimeStatus(){
+        val rootRef : DatabaseReference = FirebaseDatabase.getInstance().reference
+        val userRef = rootRef.child("Users").child(userid!!).child("status")
+        userRef.addValueEventListener(object : ValueEventListener{
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                    val status = snapshot.getValue(Status::class.java)
+                    if (status != null) {
+                        when(status.state){
+                            "online" -> {
+                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity, R.color.colorAccent))
+                                mTime?.text = getString(R.string.active_now)
+                            }
+                            "offline" -> {
+                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity, R.color.colorAccent))
+                                mTime?.text = "Active "+status.date+", "+status.time
+                            }
+                            else -> {
+                                mTime?.text = "offline"
+                            }
+                        }
+                    }
+            }
+
+            @SuppressLint("BinaryOperationInTimber")
+            override fun onCancelled(error: DatabaseError) {
+                Timber.e("Error listening to realtime Status "+error.message)
+            }
+        })
     }
 
     /**
