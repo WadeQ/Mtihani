@@ -38,6 +38,7 @@
                 android:layout_marginStart="@dimen/_50sdp"
                 android:layout_centerVertical="true"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
                 android:text="@string/username"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/_14ssp"
@@ -53,8 +54,9 @@
                 android:text="Last seen 00:00"
                 android:layout_marginBottom="@dimen/_5sdp"
                 android:layout_centerVertical="true"
+                android:textStyle="bold"
                 android:textColor="@color/colorWhite"
-                android:textSize="@dimen/_12ssp"
+                android:textSize="@dimen/_10ssp"
                 android:layout_alignLeft="@+id/username"
                 tools:ignore="HardcodedText" />
 

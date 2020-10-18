@@ -323,7 +323,7 @@ class MessageActivity : AppCompatActivity() {
     private fun updateTimeAndDate(status: String) {
         val dbRef = FirebaseDatabase.getInstance().reference
         val userRef = dbRef.child("Users")
-                .child(Objects.requireNonNull(FirebaseAuth.getInstance().currentUser)!!.uid)
+                .child(myid!!).child("status")
         val saveCurrentTime: String
         val saveCurrentDate: String
         val calendar = Calendar.getInstance()
@@ -345,16 +345,18 @@ class MessageActivity : AppCompatActivity() {
         userRef.addValueEventListener(object : ValueEventListener{
             @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
-                    val status = snapshot.getValue(Status::class.java)
-                    if (status != null) {
-                        when(status.state){
+                    val user = snapshot.getValue(Status::class.java)
+                    if (user != null) {
+                        when(user.status){
                             "online" -> {
-                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity, R.color.colorAccent))
+                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity,
+                                        R.color.colorAccent))
                                 mTime?.text = getString(R.string.active_now)
                             }
                             "offline" -> {
-                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity, R.color.colorAccent))
-                                mTime?.text = "Active "+status.date+", "+status.time
+                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity,
+                                        R.color.colorAccent))
+                                mTime?.text = "Active "+user.date+", "+user.time
                             }
                             else -> {
                                 mTime?.text = "offline"
@@ -433,7 +435,6 @@ class MessageActivity : AppCompatActivity() {
 
     companion object {
         private const val IMAGE_REQUEST = 2366
-
         // private String imageurl;
         private var monitor = 0
     }
