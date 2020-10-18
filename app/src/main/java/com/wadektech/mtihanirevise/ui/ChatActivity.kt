@@ -53,15 +53,14 @@ class ChatActivity : AppCompatActivity() {
         mTabLayout?.tabTextColors = ColorStateList.valueOf(resources.getColor(R.color.colorWhite))
         val viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel::class.java)
         viewModel.downloadUsers()
-//        listenForUserStatus()
+
     }
 
     override fun onStart() {
         super.onStart()
-        updateStatus("online")
         updateUserStatus("online")
         unreadCountFromRoom
-//        listenForUserStatus()
+
     }
 
     /**
@@ -91,45 +90,23 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    private fun updateStatus(status: String) {
-        val saveCurrentTime: String
-        val saveCurrentDate: String
-        val calendar = Calendar.getInstance()
-        val mAuth = FirebaseAuth.getInstance()
-        val rootRef = FirebaseDatabase.getInstance().reference
-        @SuppressLint("SimpleDateFormat") val currentDate = SimpleDateFormat("MMM dd, yyyy")
-        saveCurrentDate = currentDate.format(calendar.time)
-        @SuppressLint("SimpleDateFormat") val currentTime = SimpleDateFormat("hh:mm a")
-        saveCurrentTime = currentTime.format(calendar.time)
-        val statusMap = HashMap<String, Any>()
-        statusMap["time"] = saveCurrentTime
-        statusMap["date"] = saveCurrentDate
-        statusMap["state"] = status
-        val currentUserId = Objects.requireNonNull(mAuth.currentUser)!!.uid
-        rootRef.child("Users").child(currentUserId).child("status").updateChildren(statusMap)
-    }
-
     override fun onResume() {
         super.onResume()
-        updateStatus("online")
         updateUserStatus("online")
     }
 
     override fun onStop() {
         super.onStop()
-        updateStatus("offline")
         updateUserStatus("offline")
     }
 
     override fun onPause() {
         super.onPause()
-        updateStatus("offline")
         updateUserStatus("offline")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        updateStatus("offline")
         updateUserStatus("offline")
     }
     //Update the value background thread to UI thread
@@ -163,22 +140,6 @@ class ChatActivity : AppCompatActivity() {
                 }
             }.start()
         }
-//
-//    private fun listenForUserStatus() {
-//        val firestore = FirebaseFirestore.getInstance()
-//        firestore.collection("Users")
-//                .whereEqualTo("userId", Constants.getUserId())
-//                .addSnapshotListener { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
-//                    if (e != null) {
-//                        Timber.e("listen:error%s", e.message)
-//                        return@addSnapshotListener
-//                    }
-//                    for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
-//                        Timber.d("Status listener: %s", dc.document.data)
-//                        Toast.makeText(applicationContext, "Status listener" + dc.document.data, Toast.LENGTH_LONG).show()
-//                    }
-//                }
-//    }
 
     private fun updateUserStatus(status: String) {
         val saveCurrentTime: String
