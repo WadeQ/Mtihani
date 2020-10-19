@@ -48,30 +48,22 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         return new ChatsAdapter.ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ChatItem user = getItem(position);
         assert user != null;
         holder.mUsername.setText(user.getUsername());
 
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        long since = System.currentTimeMillis() - user.getDate();
+        long seconds = since/1000;
+        long minutes = seconds/60;
+        long hours = minutes/60;
+        long days = hours/24 ;
 
-        try {
-            Date formattedDate = date.parse(String.valueOf(date));
-            long since = System.currentTimeMillis() - user.getDate();
-            long seconds = since/1000;
-            long minutes = seconds/60;
-            long hours = minutes/60;
-            long days = hours/24 ;
-
-            if (days < 1){
-                holder.mTime.setText(user.getTime());
-            } else {
-                holder.mTime.setText(String.valueOf(user.getDate()));
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (days < 1){
+            holder.mTime.setText(user.getTime());
+        } else {
+            holder.mTime.setText(String.valueOf(user.getDate()));
         }
 
         if (user.getImageURL().equals("default")) {
