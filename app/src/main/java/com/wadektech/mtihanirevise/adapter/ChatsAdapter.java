@@ -21,13 +21,18 @@ import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 import timber.log.Timber;
 
 public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHolder> {
-    private Context context;
+    private final Context context;
     private boolean isChatting;
-    private Handler mHandler;
+    private final Handler mHandler;
 
     public ChatsAdapter(Context context, boolean isChatting) {
         super(ChatItem.DIFF_CALLBACK);
@@ -43,13 +48,24 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         return new ChatsAdapter.ViewHolder(view);
     }
 
-    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final ChatItem user = getItem(position);
         assert user != null;
         holder.mUsername.setText(user.getUsername());
-        holder.mTime.setText(user.getTime());
+
+        long since = System.currentTimeMillis() - user.getDate();
+        long seconds = since/1000;
+        long minutes = seconds/60;
+        long hours = minutes/60;
+        long days = hours/24 ;
+
+        if (days < 1){
+            holder.mTime.setText(user.getTime());
+        } else {
+            holder.mTime.setText(String.valueOf(user.getDate()));
+        }
+
         if (user.getImageURL().equals("default")) {
             holder.mProfileImage.setImageResource(R.drawable.profile);
         } else {
