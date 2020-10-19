@@ -141,13 +141,16 @@ class ChatActivity : AppCompatActivity() {
             }.start()
         }
 
+    @SuppressLint("SimpleDateFormat")
     private fun updateUserStatus(status: String) {
         val saveCurrentTime: String
         val calendar = Calendar.getInstance()
-        @SuppressLint("SimpleDateFormat") val currentTime = SimpleDateFormat("hh:mm a")
+        val currentTime = SimpleDateFormat("hh:mm a")
         saveCurrentTime = currentTime.format(calendar.time)
+        val saveCurrentDate : Long = System.currentTimeMillis()
         val hashMap = HashMap<String, Any>()
         hashMap["time"] = saveCurrentTime
+        hashMap["date"] = saveCurrentDate
         hashMap["status"] = status
         FirebaseFirestore
                 .getInstance()
