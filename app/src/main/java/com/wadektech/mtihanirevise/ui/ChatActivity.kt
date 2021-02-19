@@ -40,9 +40,11 @@ class ChatActivity : AppCompatActivity() {
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var mHandler: Handler? = null
     var mAuth: FirebaseAuth? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
         mUsername = findViewById(R.id.tv_username)
         mUsername?.text = Constants.getUserName()
         mHandler = Handler()
@@ -50,8 +52,11 @@ class ChatActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         mTabLayout = findViewById(R.id.main_tabs)
         mViewPager = findViewById(R.id.main_tabPager)
-        mTabLayout?.tabTextColors = ColorStateList.valueOf(resources.getColor(R.color.colorWhite))
-        val viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel::class.java)
+        mTabLayout?.tabTextColors = ColorStateList
+                .valueOf(resources.getColor(R.color.colorWhite))
+
+        val viewModel = ViewModelProviders.of(this)
+                .get(ChatActivityViewModel::class.java)
         viewModel.downloadUsers()
 
     }
@@ -60,7 +65,6 @@ class ChatActivity : AppCompatActivity() {
         super.onStart()
         updateUserStatus("online")
         unreadCountFromRoom
-
     }
 
     /**
@@ -87,7 +91,6 @@ class ChatActivity : AppCompatActivity() {
         override fun getPageTitle(position: Int): CharSequence? {
             return titles[position]
         }
-
     }
 
     override fun onResume() {
@@ -109,6 +112,7 @@ class ChatActivity : AppCompatActivity() {
         super.onDestroy()
         updateUserStatus("offline")
     }
+
     //Update the value background thread to UI thread
     //New thread to perform background operation
     private val unreadCountFromRoom: Unit
@@ -124,16 +128,22 @@ class ChatActivity : AppCompatActivity() {
                 mHandler!!.post {
                     if (unreadCount == 0) {
                         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-                        viewPagerAdapter!!.addFragment(ChatsFragment(), "Chats")
-                        viewPagerAdapter!!.addFragment(UsersFragment(), "Classroom")
-                        viewPagerAdapter!!.addFragment(ProfileFragment(), "Profile")
+                        viewPagerAdapter!!.addFragment(ChatsFragment(),
+                                "Chats")
+                        viewPagerAdapter!!.addFragment(UsersFragment(),
+                                "Classroom")
+                        viewPagerAdapter!!.addFragment(ProfileFragment(),
+                                "Profile")
                         mViewPager!!.adapter = viewPagerAdapter
                         mTabLayout!!.setupWithViewPager(mViewPager)
                     } else {
                         viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-                        viewPagerAdapter!!.addFragment(ChatsFragment(), "($unreadCount) Chats")
-                        viewPagerAdapter!!.addFragment(UsersFragment(), "Classroom")
-                        viewPagerAdapter!!.addFragment(ProfileFragment(), "Profile")
+                        viewPagerAdapter!!.addFragment(ChatsFragment(),
+                                "($unreadCount) Chats")
+                        viewPagerAdapter!!.addFragment(UsersFragment(),
+                                "Classroom")
+                        viewPagerAdapter!!.addFragment(ProfileFragment(),
+                                "Profile")
                         mViewPager!!.adapter = viewPagerAdapter
                         mTabLayout!!.setupWithViewPager(mViewPager)
                     }

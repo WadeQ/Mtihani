@@ -29,7 +29,8 @@ import java.util.*
 class UserAdapter(private val context: Context, private val isChatting: Boolean)
     : PagedListAdapter<User?, UserAdapter.ViewHolder>(User.DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.classroom_user_item, parent, false)
+        val view = LayoutInflater.from(context)
+                .inflate(R.layout.classroom_user_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -42,17 +43,21 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("Users")
                 .whereEqualTo("userId", user.userId)
-                .addSnapshotListener { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
+                .addSnapshotListener { snapshots: QuerySnapshot?,
+                                       e: FirebaseFirestoreException? ->
                     if (e != null) {
                         Timber.e("listen:error%s", e.message)
                         return@addSnapshotListener
                     }
                     for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
-                        Timber.d("Status listener: %s", dc.document.toObject(User::class.java).status)
+                        Timber.d("Status listener: %s",
+                                dc.document.toObject(User::class.java).status)
                         val userStatus = dc.document.toObject(User::class.java)
                         when (userStatus.status) {
                             "online" -> {
-                                holder.mUserOnlineStatus.setTextColor(ContextCompat.getColor(context, R.color.green))
+                                holder.mUserOnlineStatus
+                                        .setTextColor(ContextCompat
+                                                .getColor(context, R.color.green))
                                 holder.mUserOnlineStatus.text = user.status
 
                             }
@@ -83,6 +88,7 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
                         }
                     })
         }
+
         holder.itemView.setOnClickListener { v: View? ->
             val item = ChatItem(user.userId, user.username, user.imageURL,
                     user.status, user.search, user.update, user.time,

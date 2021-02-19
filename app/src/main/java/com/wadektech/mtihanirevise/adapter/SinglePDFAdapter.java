@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SinglePDFAdapter extends RecyclerView.Adapter<SinglePDFAdapter.SinglePDFAdapterViewHolder> implements Filterable {
+public class SinglePDFAdapter extends
+        RecyclerView.Adapter<SinglePDFAdapter.SinglePDFAdapterViewHolder> implements Filterable {
     private List<SinglePDF> pdfList;
     private List<SinglePDF>pdfListFiltered;
     private OnSinglePDFClickHandler mHandler;

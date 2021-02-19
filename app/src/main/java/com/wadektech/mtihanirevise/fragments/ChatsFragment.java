@@ -20,8 +20,6 @@ import com.wadektech.mtihanirevise.utils.Constants;
 import com.wadektech.mtihanirevise.viewmodels.UsersViewModel;
 
 import java.util.Objects;
-//import com.google.firebase.auth.FirebaseAuth;
-//import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,11 +29,10 @@ public class ChatsFragment extends Fragment {
     private ChatsAdapter mAdapter;
     DatabaseReference databaseReference ;
 
-    public ChatsFragment() {
-        // Required empty public constructor
-    }
+    public ChatsFragment() { }
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chats, container, false);
         recyclerView = v.findViewById(R.id.rv_chat_frag);
@@ -47,10 +44,16 @@ public class ChatsFragment extends Fragment {
 
         return v ;
     }
+
     private void updateToken(String token){
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance ().getReference ("Tokens");
+        DatabaseReference databaseReference = FirebaseDatabase
+                .getInstance ()
+                .getReference ("Tokens");
         Token token1 = new Token (token);
-        databaseReference.child (/*firebaseUser.getUid ()*/Constants.getUserId()).setValue (token1);
+        databaseReference
+                .child (Constants
+                .getUserId())
+                .setValue (token1);
     }
 
     private void chatList() {

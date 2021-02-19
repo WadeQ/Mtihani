@@ -44,7 +44,8 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.chats_users_item, parent, false);
+        View view = LayoutInflater.from(context)
+                .inflate(R.layout.chats_users_item, parent, false);
         return new ChatsAdapter.ViewHolder(view);
     }
 
@@ -90,15 +91,17 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         }
 
         holder.lastMessage(user.getUserId());
-
         holder.itemView.setOnClickListener(v -> {
-            Timber.e("Message");
-
+            ChatItem chatItem = new ChatItem(
+                    user.getUserId(), user.getUsername(), user.getImageURL(),
+                    user.getStatus(), user.getSearch(), user.getUpdate(), user.getTime(),
+                    user.getDate());
             Intent intent = new Intent(context, MessageActivity.class);
             intent.putExtra("userid", user.getUserId());
             intent.putExtra("imageURL", user.getImageURL());
             intent.putExtra("userName", user.getUsername());
             intent.putExtra("time", user.getTime());
+            intent.putExtra("mChatItem", chatItem);
             intent.putExtra("status", user.getStatus());
             context.startActivity(intent);
         });

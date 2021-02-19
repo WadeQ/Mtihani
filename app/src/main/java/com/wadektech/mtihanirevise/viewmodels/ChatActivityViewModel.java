@@ -44,16 +44,19 @@ public class ChatActivityViewModel extends ViewModel {
                     if (task.isSuccessful()) {
                         if (task.getResult() != null) {
                             if (!task.getResult().isEmpty()) {
-                                currentUser.setValue(task.getResult().toObjects(User.class).get(0));
+                                currentUser
+                                        .setValue(task.getResult()
+                                                .toObjects(User.class)
+                                                .get(0));
                             }
                         }
                     } else {
                         if (task.getException() != null) {
-                            Log.d("ChatActivityViewModel", "error is:" + task.getException().toString());
+                            Log.d("ChatActivityViewModel",
+                                    "error is:" + task.getException().toString());
                         }
                     }
                 });
-
     }
 
     public LiveData<User> getCurrentUser() {
@@ -123,7 +126,9 @@ public class ChatActivityViewModel extends ViewModel {
                                         .Companion
                                         .getApp())
                                         .getApplicationContext()
-                                        .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+                                        .getSharedPreferences(Constants
+                                                .myPreferences,
+                                                Context.MODE_PRIVATE);
                                 SharedPreferences.Editor editor = pfs.edit();
                                 editor.putString(Constants.userName,user.getUsername());
                                 editor.putString(Constants.email,user.getEmail());
@@ -131,7 +136,8 @@ public class ChatActivityViewModel extends ViewModel {
                                 editor.putString(Constants.imageURL,user.getImageURL());
                                 editor.apply();
                                 Timber.d("userId is" + user.getUserId()
-                                        + " username is: " + user.getUsername() + " email is: " + user.getEmail()
+                                        + " username is: " + user.getUsername()
+                                        + " email is: " + user.getEmail()
                                         + " imageURL is " + user.getImageURL());
                                 returningUser.setValue("success");
                             }else{
@@ -144,7 +150,8 @@ public class ChatActivityViewModel extends ViewModel {
                     } else {
                         returningUser.setValue("error");
                         if (task.getException() != null) {
-                            Timber.d("error is:%s", task.getException().toString());
+                            Timber.d("error is:%s",
+                                    task.getException().toString());
                         }
                     }
                 });

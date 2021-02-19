@@ -13,7 +13,8 @@ import com.wadektech.mtihanirevise.pojo.RowModel;
 
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolders> {
+public class RecyclerViewAdapter extends
+        RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolders> {
     private OnItemClickHandler mHandler;
     private List<RowModel> itemList;
 
@@ -26,7 +27,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     @NonNull
     @Override
     public RecyclerViewHolders onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_past_papers, null);
+        View view = LayoutInflater
+                .from(parent.getContext()).inflate(R.layout.row_past_papers, null);
         return new RecyclerViewHolders(view);
     }
 
@@ -45,7 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         void onGridItemClicked(String category);
     }
 
-    public class RecyclerViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RecyclerViewHolders extends
+            RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView examYear;
         public ImageView examPhoto;
 

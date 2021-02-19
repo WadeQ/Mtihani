@@ -148,6 +148,7 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="offline">offline</string>
     <string name="active_now">Active now</string>
+    <string name="show_password">show password</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

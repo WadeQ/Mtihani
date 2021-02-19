@@ -18,7 +18,7 @@
         <ImageView
             android:id="@+id/tv_subject_icon"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/_200sdp"
+            android:layout_height="@dimen/_180sdp"
             android:contentDescription="@string/kcse_1996"
             android:src="@drawable/pdf"
             android:scaleType="centerCrop" />

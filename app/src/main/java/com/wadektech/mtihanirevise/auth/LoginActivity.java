@@ -6,8 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -39,6 +43,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener mAuthListener;
     private ProgressDialog mConnectionProgressDialog;
     ChatActivityViewModel viewModel;
+    CheckBox mCheckPassword ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,19 +54,25 @@ public class LoginActivity extends AppCompatActivity {
         loginEmail = findViewById (R.id.et_email);
         loginPassword = findViewById (R.id.et_password);
         googleLogin = findViewById (R.id.tv_google_login);
+        mCheckPassword = findViewById(R.id.password_check);
 
         mAuth = FirebaseAuth.getInstance ();
          viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
         viewModel.getReturningUser().observe(this,response->{
             if(response != null){
                 if(response.equals("success")){
-                    Intent intent = new Intent (LoginActivity.this, PastPapersActivity.class);
+                    Intent intent = new Intent (LoginActivity.this,
+                            PastPapersActivity.class);
                     finish ();
                     startActivity (intent);
                 }else if(response.equals("fail")){
-                    Toast.makeText(this, "record not found, please sign up again", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            "record not found, please sign up again",
+                            Toast.LENGTH_SHORT).show();
                 }else{
-                    Toast.makeText(this, "An error occurred", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this,
+                            "An error occurred",
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -81,11 +92,13 @@ public class LoginActivity extends AppCompatActivity {
                        viewModel.signInReturningUser(email);
                     } else {
                         Toast.makeText (getApplicationContext (),
-                                "Authentication Failed! Please check your network and try again" + task.getException (), Toast.LENGTH_SHORT).show ();
+                                "Authentication Failed! Please check your network and try again"
+                                        + task.getException (), Toast.LENGTH_SHORT).show ();
                     }
                 });
             }
         });
+
         btnSignUp.setOnClickListener (v -> {
             Intent intent = new Intent (this, SignUpActivity.class);
             finish();
@@ -93,9 +106,22 @@ public class LoginActivity extends AppCompatActivity {
 
         });
 
+        mCheckPassword.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                // Show Password
+                loginPassword.setTransformationMethod(HideReturnsTransformationMethod
+                        .getInstance());
+            } else {
+                // Hide Password
+                loginPassword.setTransformationMethod(PasswordTransformationMethod
+                        .getInstance());
+            }
+        });
+
         googleLogin.setOnClickListener (v -> signIn ());
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions
+                .DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
@@ -138,7 +164,8 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
     public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential (account.getIdToken (), null);
+        AuthCredential credential = GoogleAuthProvider.getCredential (account.getIdToken (),
+                null);
         mAuth.signInWithCredential (credential)
                 .addOnCompleteListener (this, task -> {
                     if (task.isSuccessful ()) {
@@ -155,7 +182,8 @@ public class LoginActivity extends AppCompatActivity {
 
                     } else {
                         Timber.d("Failed Registration %s", task.getException());
-                        Toast.makeText (LoginActivity.this, "Authentication failed." + task.getException (), LENGTH_SHORT).show ();
+                        Toast.makeText (LoginActivity.this, "Authentication failed."
+                                + task.getException (), LENGTH_SHORT).show ();
                     }
                 });
     }

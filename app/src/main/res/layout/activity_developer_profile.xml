@@ -31,7 +31,7 @@
                 android:background="@drawable/circle"
                 android:padding="@dimen/_3sdp"
                 android:scaleType="centerInside"
-                android:src="@drawable/ic_user"
+                android:src="@drawable/ic_profile"
                 tools:ignore="ContentDescription" />
 
         </RelativeLayout>

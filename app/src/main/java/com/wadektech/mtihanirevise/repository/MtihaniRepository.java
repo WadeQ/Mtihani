@@ -124,7 +124,8 @@ public class MtihaniRepository {
                                             chatList.add(chat);
                                         }
                                     }
-                                    Log.d(TAG, "message chats received are: %s" + chatList.size());
+                                    Log.d(TAG, "message chats received are: %s"
+                                            + chatList.size());
                                     db.singleMessageDao()
                                             .saveChatsList(chatList);
                                 } else {
@@ -215,7 +216,8 @@ public class MtihaniRepository {
     }
 
     public static void onZeroUsersLoaded() {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
+        MtihaniDatabase db = MtihaniDatabase
+                .getInstance(Objects.requireNonNull(MtihaniRevise
                 .Companion
                 .getApp())
                 .getApplicationContext());
@@ -235,14 +237,16 @@ public class MtihaniRepository {
                                     if (!task.getResult().isEmpty()) {
                                         db
                                                 .usersDao()
-                                                .saveUsersList(task.getResult().toObjects(User.class));
+                                                .saveUsersList(task.getResult()
+                                                        .toObjects(User.class));
                                     } else {
                                         Log.d(TAG, "onZeroUsersLoaded list is empty");
                                     }
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    Log.d(TAG, "error onZeroUsersLoaded" + task.getException().toString());
+                                    Log.d(TAG, "error onZeroUsersLoaded"
+                                            + task.getException().toString());
                                 }
                             }
                         });
@@ -270,14 +274,16 @@ public class MtihaniRepository {
                                     if (!task.getResult().isEmpty()) {
                                         db
                                                 .usersDao()
-                                                .saveUsersList(task.getResult().toObjects(User.class));
+                                                .saveUsersList(task.getResult()
+                                                        .toObjects(User.class));
                                     } else {
                                         Log.d(TAG, "onUserAtFrontLoaded list is empty");
                                     }
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    Log.d(TAG, "error onUserAtFrontLoaded" + task.getException().toString());
+                                    Log.d(TAG, "error onUserAtFrontLoaded"
+                                            + task.getException().toString());
                                 }
                             }
                         });
@@ -305,14 +311,16 @@ public class MtihaniRepository {
                                     if (!task.getResult().isEmpty()) {
                                         db
                                                 .usersDao()
-                                                .saveUsersList(task.getResult().toObjects(User.class));
+                                                .saveUsersList(task.getResult()
+                                                        .toObjects(User.class));
                                     } else {
                                         Log.d(TAG, "onUserAtEndLoaded list is empty");
                                     }
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    Log.d(TAG, "error onUserAtEndLoaded" + task.getException().toString());
+                                    Log.d(TAG, "error onUserAtEndLoaded"
+                                            + task.getException().toString());
                                 }
                             }
                         });

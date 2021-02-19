@@ -7,7 +7,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.format.DateFormat;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
@@ -48,6 +51,7 @@ public class SignUpActivity extends AppCompatActivity {
     private AlertDialog alertDialogAndroid;
     String user;
     private String imageURL;
+    CheckBox mCheckPassword ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,12 +63,25 @@ public class SignUpActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.et_email);
         btnSignUp = findViewById(R.id.btnSignUp);
         mLogin = findViewById(R.id.btnLogin);
+        mCheckPassword = findViewById(R.id.password_check);
 
         mLogin.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             finish();
             startActivity(intent);
 
+        });
+
+        mCheckPassword.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                // Show Password
+                etPassword.setTransformationMethod(HideReturnsTransformationMethod
+                        .getInstance());
+            } else {
+                // Hide Password
+                etPassword.setTransformationMethod(PasswordTransformationMethod
+                        .getInstance());
+            }
         });
 
         mConnectionProgressDialog = new ProgressDialog(this);
@@ -91,13 +108,15 @@ public class SignUpActivity extends AppCompatActivity {
         mConnectionProgressDialog = new ProgressDialog(this, R.style.DialogCustom);
         mConnectionProgressDialog.setMessage("Signing in...");
         // Configure Google Sign In
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions
+                .DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .requestProfile()
                 .build();
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(this, connectionResult -> Toast.makeText(getApplicationContext(),
+                .enableAutoManage(this,
+                        connectionResult -> Toast.makeText(getApplicationContext(),
                         "You got an error", LENGTH_SHORT).show())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
@@ -141,7 +160,8 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
-        AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
+        AuthCredential credential = GoogleAuthProvider
+                .getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
@@ -151,14 +171,18 @@ public class SignUpActivity extends AppCompatActivity {
                         Calendar calendar = Calendar.getInstance();
 
                         String delegate = "hh:mm aaa";
-                        String time = (String) DateFormat.format(delegate, calendar.getTime());
+                        String time = (String) DateFormat
+                                .format(delegate, calendar.getTime());
 
                         String userId = "";
                         if (user != null) {
                             userId = user.getUid();
                         }
                         assert user != null;
-                        reference = FirebaseDatabase.getInstance().getReference("Users").child(user.getUid());
+                        reference = FirebaseDatabase
+                                .getInstance()
+                                .getReference("Users")
+                                .child(user.getUid());
                         reference.keepSynced(true);
 
                         String name = user.getDisplayName();
@@ -177,7 +201,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 "Error saving data " + e.toString () , LENGTH_SHORT).show ());
 
                         assert name != null;
-                        User mUser = new User(userId, name, imageURL, "offline", name.toLowerCase(),
+                        User mUser = new User(userId, name, imageURL, "offline",
+                                name.toLowerCase(),
                                 "Hello there! I use Mtihani Revise.",
                                 time, System.currentTimeMillis(), user.getEmail());
                         FirebaseFirestore
@@ -188,7 +213,8 @@ public class SignUpActivity extends AppCompatActivity {
                                 .addOnCompleteListener(this, task12 -> {
                                     if (task12.isSuccessful()) {
                                         //storing user details for quick access later
-                                        SharedPreferences pfs = getSharedPreferences(Constants.myPreferences, MODE_PRIVATE);
+                                        SharedPreferences pfs = getSharedPreferences(Constants
+                                                .myPreferences, MODE_PRIVATE);
                                         SharedPreferences.Editor editor = pfs.edit();
                                         editor.putString(Constants.userId, user.getUid());
                                         editor.putString(Constants.userName, name);
@@ -196,14 +222,18 @@ public class SignUpActivity extends AppCompatActivity {
                                         editor.putString(Constants.email, user.getEmail());
                                         editor.apply();
 
-                                        Intent intent = new Intent(SignUpActivity.this, PastPapersActivity.class);
+                                        Intent intent = new Intent(SignUpActivity.this,
+                                                PastPapersActivity.class);
                                         finish();
                                         startActivity(intent);
                                     } else {
                                         if (task12.getException() != null)
-                                            Timber.d("error:%s", task12.getException().toString());
+                                            Timber.d("error:%s", task12.getException()
+                                                    .toString());
                                         Toast.makeText(this, "Error saving data " +
-                                                Objects.requireNonNull(task12.getException()).toString(), LENGTH_SHORT).show();
+                                                Objects.requireNonNull(task12.getException())
+                                                        .toString(),
+                                                LENGTH_SHORT).show();
                                     }
                                 });
                         mConnectionProgressDialog.dismiss();
@@ -236,7 +266,10 @@ public class SignUpActivity extends AppCompatActivity {
                     userId = firebaseUser.getUid();
                 }
                 assert userId != null;
-                reference = FirebaseDatabase.getInstance().getReference("Users").child(userId);
+                reference = FirebaseDatabase
+                        .getInstance()
+                        .getReference("Users")
+                        .child(userId);
 
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "offline");
@@ -250,9 +283,16 @@ public class SignUpActivity extends AppCompatActivity {
                 String delegate = "hh:mm aaa";
                 String time = (String) DateFormat.format(delegate, calendar.getTime());
 
-                User user = new User(userId, etUsername, "default", "offline", etUsername.toLowerCase(),
-                        "Hello there! I use Mtihani Revise.", time, System.currentTimeMillis(), etEmail);
-                SharedPreferences pfs = getSharedPreferences(Constants.myPreferences, MODE_PRIVATE);
+                User user = new User(userId,
+                        etUsername,
+                        "default",
+                        "offline",
+                        etUsername.toLowerCase(),
+                        "Hello there! I use Mtihani Revise.",
+                        time,
+                        System.currentTimeMillis(), etEmail);
+                SharedPreferences pfs = getSharedPreferences(Constants
+                        .myPreferences, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pfs.edit();
                 editor.putString(Constants.userId, userId);
                 editor.putString(Constants.userName, etUsername);
@@ -266,12 +306,14 @@ public class SignUpActivity extends AppCompatActivity {
                         .set(user)
                         .addOnCompleteListener(this, task12 -> {
                             if (task12.isSuccessful()) {
-                                Intent intent = new Intent(SignUpActivity.this, PastPapersActivity.class);
+                                Intent intent = new Intent(SignUpActivity.this,
+                                        PastPapersActivity.class);
                                 finish();
                                 startActivity(intent);
                             } else {
                                 if (task12.getException() != null)
-                                    Timber.d("error:%s", task12.getException().toString());
+                                    Timber.d("error:%s",
+                                            task12.getException().toString());
                             }
                         });
             } else {

@@ -105,10 +105,13 @@ class MessageActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
         topToolBar.setNavigationOnClickListener { v: View? ->
-            startActivity(Intent(this@MessageActivity, ChatActivity::class.java)
+            startActivity(Intent(this@MessageActivity,
+                    ChatActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
-        apiService = Client.getClient("https://fcm.googleapis.com/").create(APIService::class.java)
+
+        apiService = Client.getClient("https://fcm.googleapis.com/")
+                .create(APIService::class.java)
         reference = FirebaseDatabase.getInstance().getReference("Chats")
         reference!!.keepSynced(true)
         imageView = findViewById(R.id.chat_user_profile)
@@ -118,50 +121,64 @@ class MessageActivity : AppCompatActivity() {
         mRecycler = findViewById(R.id.rv_message)
         mSendImageMessage = findViewById(R.id.btn_send_image)
         mTime = findViewById(R.id.tv_time)
+
         intent = intent
         mChatItem = intent.getParcelableExtra("mChatItem")
+        mChatItem?.let {
+            userid = it.userId
+            imageURL = it.imageURL
+            userNameString = it.username
+            time = it.time
+            status = it.status
+        }
+
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("mChatItem")) {
                 mChatItem = savedInstanceState.getParcelable("mChatItem")
             }
         }
+
+        myid = Constants.getUserId()
         mSendImageMessage?.setOnClickListener{
             val intent = Intent()
             intent.action = Intent.ACTION_GET_CONTENT
             intent.type = "image/*"
             intent.putExtra(Intent.EXTRA_MIME_TYPES, arrayOf("image/jpeg", "image/png"))
-            startActivityForResult(Intent.createChooser(intent, "Choose Image"), IMAGE_REQUEST)
+            startActivityForResult(Intent.createChooser(intent,
+                    "Choose Image"), IMAGE_REQUEST)
         }
-
-        userid = intent.getStringExtra("userid")
-        imageURL = intent.getStringExtra("imageURL")
-        userNameString = intent.getStringExtra("userName")
-        time = intent.getStringExtra("time")
-        status = intent.getStringExtra("status")
-        myid = Constants.getUserId()
 
         //setting up recyclerview
         mRecycler?.setHasFixedSize(true)
-        val linearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        val linearLayoutManager = LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false)
         linearLayoutManager.stackFromEnd = true
         mRecycler?.layoutManager = linearLayoutManager
         //creating the adapter
-        mAdapter = MessageAdapter(this@MessageActivity, imageURL) //is this necessary at this point?
+        mAdapter = MessageAdapter(this@MessageActivity, imageURL)
         //getting viewmodel
         mRecycler?.adapter = mAdapter
-        chatViewModel = ViewModelProviders.of(this).get(ChatViewModel::class.java)
+        chatViewModel = ViewModelProviders.of(this)
+                .get(ChatViewModel::class.java)
         //observing the pagelist from viewmodel
-        chatViewModel!!.chats.observe(this, Observer { pagedList: PagedList<Chat?> -> mAdapter!!.submitList(pagedList) })
+        chatViewModel!!.chats.observe(this, Observer { pagedList:
+                                                       PagedList<Chat?> -> mAdapter!!
+                                                    .submitList(pagedList) })
         btnSend?.setOnClickListener {
             notify = true
-            val message = editSend?.text.toString().trim { it <= ' ' }
+            val message = editSend?.text.toString().trim {
+                it <= ' '
+            }
+
             if (message != "") {
                 sendMessage(Constants.getUserId(), userid, message)
             } else {
-                Toast.makeText(this, "Blank message!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Blank message!",
+                        Toast.LENGTH_SHORT).show()
             }
             editSend?.setText("")
         }
+
         newIncomingMessageListener(Constants.getUserId(), userid) //listen for new messages
         val factory = InjectorUtils
                 .provideMessagesViewModelFactory(myid, userid)
@@ -172,14 +189,19 @@ class MessageActivity : AppCompatActivity() {
                 return SNAP_TO_END
             }
         }
+
         mAdapter!!.registerAdapterDataObserver(object : AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 smoothScroller?.targetPosition = positionStart
-                Objects.requireNonNull(mRecycler?.layoutManager)!!.startSmoothScroll(smoothScroller)
+                Objects.requireNonNull(mRecycler?.layoutManager)!!.
+                startSmoothScroll(smoothScroller)
             }
         })
-        mViewModel!!.messagesList.observe(this, Observer { pagedList: PagedList<Chat?> -> mAdapter!!.submitList(pagedList) })
+
+        mViewModel!!.messagesList.observe(this, Observer { pagedList:
+                                                           PagedList<Chat?> -> mAdapter!!.
+                                                            submitList(pagedList) })
         userName?.text = userNameString
 
         if (imageURL == "default") {
@@ -214,7 +236,8 @@ class MessageActivity : AppCompatActivity() {
                     super.onItemRangeInserted(positionStart, itemCount)
                     // mLinearLayout.scrollToPosition(positionStart);
                     smoothScroller?.targetPosition = positionStart
-                    Objects.requireNonNull(mRecycler!!.layoutManager)!!.startSmoothScroll(smoothScroller)
+                    Objects.requireNonNull(mRecycler!!.layoutManager)!!.
+                    startSmoothScroll(smoothScroller)
                 }
             })
             mAdapter!!.submitList(chats)
@@ -223,7 +246,8 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun sendMessage(sender: String, receiver: String?, message: String) {
-        val chat = Chat(sender, receiver, message, false, System.currentTimeMillis(), "")
+        val chat = Chat(sender, receiver, message, false,
+                System.currentTimeMillis(), "")
         if (mViewModel != null) {
             if (shouldAddChatUser) {
                 UsersViewModel.saveChatListUser(mChatItem)
@@ -236,27 +260,35 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun sendNotification(receiver: String?, username: String?, message: String) {
-        val tokens = FirebaseDatabase.getInstance().getReference("Tokens")
+        val tokens = FirebaseDatabase
+                .getInstance()
+                .getReference("Tokens")
         tokens.keepSynced(true)
-        val query = tokens.orderByKey().equalTo(receiver)
+        val query = tokens
+                .orderByKey()
+                .equalTo(receiver)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 for (snapshot in dataSnapshot.children) {
                     val token = snapshot.getValue(Token::class.java)
-                    val data = Data(myid, R.drawable.livechat, "$username:$message", "New Message", userid)
+                    val data = Data(myid, R.drawable.livechat,
+                            "$username:$message", "New Message", userid)
                     if (BuildConfig.DEBUG && token == null) {
                         error("Assertion failed")
                     }
+
                     val sender = Sender(data, token!!.token)
                     apiService!!.sendNotification(sender)
                             .enqueue(object : retrofit2.Callback<MyResponse?> {
-                                override fun onResponse(call: Call<MyResponse?>, response: Response<MyResponse?>) {
+                                override fun onResponse(call: Call<MyResponse?>,
+                                                        response: Response<MyResponse?>) {
                                     if (response.code() == 200) {
                                         if (BuildConfig.DEBUG && response.body() == null) {
                                             error("Assertion failed")
                                         }
                                         if (response.body()!!.success != 1) {
-                                            Toast.makeText(applicationContext, "Failed!", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(applicationContext, "Failed!",
+                                                    Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
@@ -327,9 +359,11 @@ class MessageActivity : AppCompatActivity() {
         val saveCurrentTime: String
         val saveCurrentDate: String
         val calendar = Calendar.getInstance()
-        @SuppressLint("SimpleDateFormat") val currentDate = SimpleDateFormat("MMM dd")
+        @SuppressLint("SimpleDateFormat")
+        val currentDate = SimpleDateFormat("MMM dd")
         saveCurrentDate = currentDate.format(calendar.time)
-        @SuppressLint("SimpleDateFormat") val currentTime = SimpleDateFormat("hh:mm a")
+        @SuppressLint("SimpleDateFormat")
+        val currentTime = SimpleDateFormat("hh:mm a")
         saveCurrentTime = currentTime.format(calendar.time)
         val hashMap = HashMap<String, Any>()
         hashMap["time"] = saveCurrentTime
@@ -340,8 +374,13 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun listenToFirebaseRealtimeStatus(){
-        val rootRef : DatabaseReference = FirebaseDatabase.getInstance().reference
-        val userRef = rootRef.child("Users").child(userid!!).child("status")
+        val rootRef : DatabaseReference = FirebaseDatabase
+                .getInstance()
+                .reference
+        val userRef = rootRef
+                .child("Users")
+                .child(userid!!)
+                .child("status")
         userRef.addValueEventListener(object : ValueEventListener{
             @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -349,12 +388,14 @@ class MessageActivity : AppCompatActivity() {
                     if (user != null) {
                         when(user.status){
                             "online" -> {
-                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity,
+                                mTime?.setTextColor(ContextCompat
+                                        .getColor(this@MessageActivity,
                                         R.color.colorAccent))
                                 mTime?.text = getString(R.string.active_now)
                             }
                             "offline" -> {
-                                mTime?.setTextColor(ContextCompat.getColor(this@MessageActivity,
+                                mTime?.setTextColor(ContextCompat
+                                        .getColor(this@MessageActivity,
                                         R.color.colorAccent))
                                 mTime?.text = "Active "+user.date+", "+user.time
                             }
@@ -386,9 +427,11 @@ class MessageActivity : AppCompatActivity() {
         val query = messagesRef
                 .whereEqualTo("sender", userId)
                 .whereEqualTo("receiver", myId)
-                .whereGreaterThan("date", System.currentTimeMillis() - 30 * 60 * 1000)
+                .whereGreaterThan("date",
+                        System.currentTimeMillis() - 30 * 60 * 1000)
                 .orderBy("date", Query.Direction.DESCENDING)
-        query.addSnapshotListener(this) { snapshots: QuerySnapshot?, e: FirebaseFirestoreException? ->
+        query.addSnapshotListener(this) { snapshots: QuerySnapshot?,
+                                          e: FirebaseFirestoreException? ->
             if (e != null) {
                 Timber.d("error while listening %s", e.toString())
                 return@addSnapshotListener
@@ -420,10 +463,12 @@ class MessageActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.data != null) {
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data
+                != null && data.data != null) {
             imageUri = data.data
             val selectedImagePath = imageUri
-            val selectedImageBmp = MediaStore.Images.Media.getBitmap(contentResolver, selectedImagePath)
+            val selectedImageBmp = MediaStore.Images.Media.getBitmap(contentResolver,
+                    selectedImagePath)
             val outputStream = ByteArrayOutputStream()
             selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
             val selectedImageBytes = outputStream.toByteArray()

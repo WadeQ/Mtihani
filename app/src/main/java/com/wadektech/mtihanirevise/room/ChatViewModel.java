@@ -20,7 +20,9 @@ public class ChatViewModel extends ViewModel {
                 .getInstance (Objects.requireNonNull(MtihaniRevise.Companion
                         .getApp())
                         .getApplicationContext ());
-        chats = new LivePagedListBuilder<> (mtihaniDatabase.chatDao ().getAllChats (), /* page size */ 20)
+        chats = new LivePagedListBuilder<> (mtihaniDatabase
+                .chatDao ()
+                .getAllChats (), 20)
                 .build ();
 
     }
@@ -30,6 +32,8 @@ public class ChatViewModel extends ViewModel {
                 .getInstance (Objects.requireNonNull(MtihaniRevise.Companion
                         .getApp())
                         .getApplicationContext ());
-        mtihaniDatabase.chatDao ().insertChatsToDatabase (chats);
+        mtihaniDatabase
+                .chatDao ()
+                .insertChatsToDatabase (chats);
     }
 }
