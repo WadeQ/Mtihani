@@ -1,6 +1,9 @@
 package com.wadektech.mtihanirevise.adapter;
 
 import android.annotation.SuppressLint;
+
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
 import com.wadektech.mtihanirevise.room.ChatItem;
+import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
 import com.wadektech.mtihanirevise.utils.Constants;
 
@@ -66,6 +75,32 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         } else {
             holder.mTime.setText(String.valueOf(user.getDate()));
         }
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("Users")
+                .whereEqualTo("userId", user.getUserId())
+                .addSnapshotListener((value, error) -> {
+                    if (error != null) {
+                        Timber.e("listen:error%s", error.getMessage());
+                        return;
+                    }
+
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        String userStatus = dc.getDocument().toObject(User.class).getStatus();
+                        switch (userStatus){
+                            case "online":
+                                holder.mTime.setTextColor(ContextCompat
+                                                .getColor(context, R.color.green));
+                                holder.mTime.setText(user.getStatus());
+
+                            case "offline":
+                                holder.mTime.setText("" + user.getDate() + ", " + user.getTime());
+
+                            default:
+                                holder.mTime.setText("" + user.getDate());
+                        }
+                    }
+    });
 
         if (user.getImageURL().equals("default")) {
             holder.mProfileImage.setImageResource(R.drawable.profile);

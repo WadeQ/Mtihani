@@ -43,12 +43,12 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         val firestore = FirebaseFirestore.getInstance()
         firestore.collection("Users")
                 .whereEqualTo("userId", user.userId)
-                .addSnapshotListener { snapshots: QuerySnapshot?,
-                                       e: FirebaseFirestoreException? ->
+                .addSnapshotListener(fun(snapshots: QuerySnapshot?, e: FirebaseFirestoreException?) {
                     if (e != null) {
                         Timber.e("listen:error%s", e.message)
-                        return@addSnapshotListener
+                        return
                     }
+
                     for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
                         Timber.d("Status listener: %s",
                                 dc.document.toObject(User::class.java).status)
@@ -65,11 +65,11 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
                                 holder.mUserOnlineStatus.text = user.status
                             }
                             else -> {
-                                holder.mUserOnlineStatus.text = ""+user.date+ ", "+user.time
+                                holder.mUserOnlineStatus.text = "" + user.date + ", " + user.time
                             }
                         }
                     }
-                }
+                })
         if (user.imageURL == "default") {
             holder.mProfileImage.setImageResource(R.drawable.profile)
         } else {
