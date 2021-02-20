@@ -5,17 +5,25 @@ import android.annotation.SuppressLint;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.paging.PagedListAdapter;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +33,7 @@ import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihanirevise.R;
 import com.wadektech.mtihanirevise.database.MtihaniDatabase;
+import com.wadektech.mtihanirevise.pojo.Status;
 import com.wadektech.mtihanirevise.room.ChatItem;
 import com.wadektech.mtihanirevise.room.User;
 import com.wadektech.mtihanirevise.ui.MessageActivity;
@@ -64,43 +73,53 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         assert user != null;
         holder.mUsername.setText(user.getUsername());
 
-        long since = System.currentTimeMillis() - user.getDate();
-        long seconds = since/1000;
-        long minutes = seconds/60;
-        long hours = minutes/60;
-        long days = hours/24 ;
+//        long since = System.currentTimeMillis() - user.getDate();
+//        long seconds = since / 1000;
+//        long minutes = seconds / 60;
+//        long hours = minutes / 60;
+//        long days = hours / 24;
+//
+//        if (days < 1) {
+//            holder.mTime.setText(user.getTime());
+//        } else {
+//            holder.mTime.setText(String.valueOf(user.getDate()));
+//        }
 
-        if (days < 1){
-            holder.mTime.setText(user.getTime());
-        } else {
-            holder.mTime.setText(String.valueOf(user.getDate()));
-        }
+        DatabaseReference dRef = FirebaseDatabase
+                .getInstance()
+                .getReference();
+        dRef.child("Users")
+                .child(user.getUserId())
+                .child("status")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Status user = snapshot.getValue(Status.class);
+                        if (user != null) {
+                            switch (user.getStatus()) {
+                                case "online":
+                                    holder.mTime.setTextColor(ContextCompat
+                                            .getColor(context, R.color.green));
+                                    holder.mTime.setText("online");
+                                    break;
 
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        firestore.collection("Users")
-                .whereEqualTo("userId", user.getUserId())
-                .addSnapshotListener((value, error) -> {
-                    if (error != null) {
-                        Timber.e("listen:error%s", error.getMessage());
-                        return;
-                    }
+                                case "offline":
+                                    holder.mTime.setTextColor(ContextCompat
+                                            .getColor(context, R.color.green));
+                                    holder.mTime.setText(" "+ user.getDate());
+                                    break;
 
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        String userStatus = dc.getDocument().toObject(User.class).getStatus();
-                        switch (userStatus){
-                            case "online":
-                                holder.mTime.setTextColor(ContextCompat
-                                                .getColor(context, R.color.green));
-                                holder.mTime.setText(user.getStatus());
-
-                            case "offline":
-                                holder.mTime.setText("" + user.getDate() + ", " + user.getTime());
-
-                            default:
-                                holder.mTime.setText("" + user.getDate());
+                                default:
+                                    holder.mTime.setText("offline");
+                            }
                         }
                     }
-    });
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
         if (user.getImageURL().equals("default")) {
             holder.mProfileImage.setImageResource(R.drawable.profile);

@@ -1,29 +1,28 @@
-package com.wadektech.mtihanirevise.ui
+package com.wadektech.mtihanirevise.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSmoothScroller
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
-import androidx.recyclerview.widget.RecyclerView.SmoothScroller
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
@@ -37,10 +36,12 @@ import com.wadektech.mtihanirevise.BuildConfig
 import com.wadektech.mtihanirevise.R
 import com.wadektech.mtihanirevise.adapter.MessageAdapter
 import com.wadektech.mtihanirevise.database.MtihaniDatabase
-import com.wadektech.mtihanirevise.fragments.APIService
+import com.wadektech.mtihanirevise.fragments.ProfileFragment.IMAGE_REQUEST
 import com.wadektech.mtihanirevise.notification.*
 import com.wadektech.mtihanirevise.pojo.Status
 import com.wadektech.mtihanirevise.room.*
+import com.wadektech.mtihanirevise.ui.ChatActivity
+import com.wadektech.mtihanirevise.ui.MessageActivity
 import com.wadektech.mtihanirevise.utils.Constants
 import com.wadektech.mtihanirevise.utils.InjectorUtils
 import com.wadektech.mtihanirevise.utils.StorageUtil
@@ -51,87 +52,81 @@ import retrofit2.Call
 import retrofit2.Response
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessageActivity : AppCompatActivity() {
+class MessageFragment : BottomSheetDialogFragment() {
     private var imageView: CircleImageView? = null
     private var userName: TextView? = null
     private var mTime: TextView? = null
-
     //FirebaseUser firebaseUser;
     var reference: DatabaseReference? = null
     var editSend: EditText? = null
     var btnSend: ImageButton? = null
     var mSendImageMessage: ImageButton? = null
     var mAdapter: MessageAdapter? = null
-
     // List<Chat> chats;
     var mRecycler: RecyclerView? = null
     private var mChatItem: ChatItem? = null
     private var shouldAddChatUser = true
     var mtihaniDatabase: MtihaniDatabase? = null
     private var chatViewModel: ChatViewModel? = null
-    private var smoothScroller: SmoothScroller? = null
+    private var smoothScroller: RecyclerView.SmoothScroller? = null
     private var myid: String? = null
     private var status: String? = null
-    private var date: Long? = null
-    private var formattedDate: String? = null
+    private val date: String? = null
     private var userid: String? = null
     private var userNameString: String? = null
     private var time: String? = null
     var notify = false
     var apiService: APIService? = null
+    private val chatDao: ChatDao? = null
     private var imageURL: String? = null
+    private val seenListener: ValueEventListener? = null
     private var mViewModel: MessagesActivityViewModel? = null
+    private val checker = ""
     private var imageUri: Uri? = null
+    private val myImageUrl = ""
+    private val imageUploadTask: StorageTask<*>? = null
 
 
-
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP_MR1)
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_message)
-        title = null
-        val topToolBar = findViewById<Toolbar>(R.id.main_app_bar)
-        setSupportActionBar(topToolBar)
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setDisplayShowHomeEnabled(true)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_message, container, false)
+        val topToolBar = view.findViewById<Toolbar>(R.id.main_app_bar)
+        (activity as AppCompatActivity).setSupportActionBar(topToolBar)
+        if ((activity as AppCompatActivity).supportActionBar != null) {
+            (activity as AppCompatActivity).supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            (activity as AppCompatActivity).supportActionBar!!.setDisplayShowHomeEnabled(true)
         }
         topToolBar.setNavigationOnClickListener { v: View? ->
-            startActivity(Intent(this@MessageActivity,
+            startActivity(Intent(requireContext(),
                     ChatActivity::class.java)
                     .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
-
-        subscribeToLiveUpdates()
 
         apiService = Client.getClient("https://fcm.googleapis.com/")
                 .create(APIService::class.java)
         reference = FirebaseDatabase.getInstance().getReference("Chats")
         reference!!.keepSynced(true)
-        imageView = findViewById(R.id.chat_user_profile)
-        userName = findViewById(R.id.username)
-        editSend = findViewById(R.id.et_send_message)
-        btnSend = findViewById(R.id.btn_send_message)
-        mRecycler = findViewById(R.id.rv_message)
-        mSendImageMessage = findViewById(R.id.btn_send_image)
-        mTime = findViewById(R.id.tv_time)
+        imageView = view.findViewById(R.id.chat_user_profile)
+        userName = view.findViewById(R.id.username)
+        editSend = view.findViewById(R.id.et_send_message)
+        btnSend = view.findViewById(R.id.btn_send_message)
+        mRecycler = view.findViewById(R.id.rv_message)
+        mSendImageMessage = view.findViewById(R.id.btn_send_image)
+        mTime = view.findViewById(R.id.tv_time)
 
-        intent = intent
-        mChatItem = intent.getParcelableExtra("mChatItem")
-        mChatItem?.let {
+        val mArgs = arguments
+        val item: ChatItem = mArgs!!.getParcelable("mChatItem")
+        item?.let {
             userid = it.userId
             imageURL = it.imageURL
             userNameString = it.username
             time = it.time
             status = it.status
-            date = it.date
         }
-
-        formattedDate = DateFormat.getDateInstance().format(date)
 
         if (savedInstanceState != null) {
             if (savedInstanceState.containsKey("mChatItem")) {
@@ -151,20 +146,22 @@ class MessageActivity : AppCompatActivity() {
 
         //setting up recyclerview
         mRecycler?.setHasFixedSize(true)
-        val linearLayoutManager = LinearLayoutManager(this,
+        val linearLayoutManager = LinearLayoutManager(requireContext(),
                 LinearLayoutManager.VERTICAL, false)
         linearLayoutManager.stackFromEnd = true
         mRecycler?.layoutManager = linearLayoutManager
         //creating the adapter
-        mAdapter = MessageAdapter(this@MessageActivity, imageURL)
+        mAdapter = MessageAdapter(requireContext(), imageURL)
         //getting viewmodel
         mRecycler?.adapter = mAdapter
         chatViewModel = ViewModelProviders.of(this)
                 .get(ChatViewModel::class.java)
         //observing the pagelist from viewmodel
-        chatViewModel!!.chats.observe(this, Observer { pagedList:
-                                                       PagedList<Chat?> -> mAdapter!!
-                                                    .submitList(pagedList) })
+        chatViewModel!!.chats.observe(requireActivity(),
+                androidx.lifecycle.Observer {
+            mAdapter!!.submitList(it)
+        })
+
         btnSend?.setOnClickListener {
             notify = true
             val message = editSend?.text.toString().trim {
@@ -174,7 +171,7 @@ class MessageActivity : AppCompatActivity() {
             if (message != "") {
                 sendMessage(Constants.getUserId(), userid, message)
             } else {
-                Toast.makeText(this, "Blank message!",
+                Toast.makeText(requireContext(), "Blank message!",
                         Toast.LENGTH_SHORT).show()
             }
             editSend?.setText("")
@@ -185,13 +182,13 @@ class MessageActivity : AppCompatActivity() {
                 .provideMessagesViewModelFactory(myid, userid)
         mViewModel = ViewModelProviders.of(this, factory)
                 .get(MessagesActivityViewModel::class.java)
-        smoothScroller = object : LinearSmoothScroller(this) {
+        smoothScroller = object : LinearSmoothScroller(requireContext()) {
             override fun getVerticalSnapPreference(): Int {
                 return SNAP_TO_END
             }
         }
 
-        mAdapter!!.registerAdapterDataObserver(object : AdapterDataObserver() {
+        mAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                 super.onItemRangeInserted(positionStart, itemCount)
                 smoothScroller?.targetPosition = positionStart
@@ -200,39 +197,43 @@ class MessageActivity : AppCompatActivity() {
             }
         })
 
-        mViewModel!!.messagesList.observe(this, Observer { pagedList:
-                                                           PagedList<Chat?> -> mAdapter!!.
-                                                            submitList(pagedList) })
+        mViewModel!!.messagesList.observe(requireActivity(),
+                androidx.lifecycle.Observer {
+            mAdapter!!.submitList(it)
+        })
+
         userName?.text = userNameString
 
         if (imageURL == "default") {
             imageView?.setImageResource(R.drawable.profile)
         } else {
             val defaultImageResId = R.drawable.profile
-            Picasso.with(applicationContext)
+            Picasso.with(requireContext())
                     .load(imageURL)
                     .networkPolicy(NetworkPolicy.OFFLINE)
                     .into(imageView, object : Callback {
                         override fun onSuccess() {}
                         override fun onError() {
-                            Picasso.with(this@MessageActivity)
+                            Picasso.with(requireContext())
                                     .load(imageURL)
                                     .error(defaultImageResId)
                                     .into(imageView)
                         }
                     })
         }
+
+        return view
     }
 
     private fun onMessagesReceived(chats: PagedList<Chat>?) {
         if (chats != null) {
             monitor++
-            smoothScroller = object : LinearSmoothScroller(this) {
+            smoothScroller = object : LinearSmoothScroller(requireContext()) {
                 override fun getVerticalSnapPreference(): Int {
                     return SNAP_TO_END
                 }
             }
-            mAdapter!!.registerAdapterDataObserver(object : AdapterDataObserver() {
+            mAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
                 override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
                     super.onItemRangeInserted(positionStart, itemCount)
                     // mLinearLayout.scrollToPosition(positionStart);
@@ -288,7 +289,7 @@ class MessageActivity : AppCompatActivity() {
                                             error("Assertion failed")
                                         }
                                         if (response.body()!!.success != 1) {
-                                            Toast.makeText(applicationContext, "Failed!",
+                                            Toast.makeText(requireContext(), "Failed!",
                                                     Toast.LENGTH_SHORT).show()
                                         }
                                     }
@@ -304,104 +305,70 @@ class MessageActivity : AppCompatActivity() {
     }
 
     private fun currentUser(userid: String?) {
-        val editor = getSharedPreferences("PREFS", MODE_PRIVATE).edit()
-        editor.putString("currentuser", userid)
-        editor.apply()
+        val editor = activity?.getSharedPreferences("PREFS",
+                AppCompatActivity.MODE_PRIVATE)?.edit()
+        editor?.putString("currentuser", userid)
+        editor?.apply()
     }
 
     override fun onStart() {
         super.onStart()
         Timber.d("ONSTART")
-        updateUserStatus("online")
-        subscribeToLiveUpdates()
+        updateTimeAndDate("online")
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onStop() {
         super.onStop()
-        updateUserStatus("offline")
-        subscribeToLiveUpdates()
+        updateTimeAndDate("offline")
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onResume() {
         super.onResume()
         //        updateStatus("online");
         currentUser(userid)
-        updateUserStatus("online")
-        subscribeToLiveUpdates()
-        newIncomingMessageListener(Constants.getUserId(), userid)
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        updateUserStatus("online")
-        subscribeToLiveUpdates()
+        updateTimeAndDate("online")
+        listenToFirebaseRealtimeStatus()
         newIncomingMessageListener(Constants.getUserId(), userid)
     }
 
     override fun onPause() {
         super.onPause()
+        //reference.removeEventListener(seenListener);
+//        updateStatus("offline");
         currentUser("none")
-        updateUserStatus("offline")
-        subscribeToLiveUpdates()
+        updateTimeAndDate("offline")
+        listenToFirebaseRealtimeStatus()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        updateUserStatus("offline")
-        subscribeToLiveUpdates()
+        updateTimeAndDate("offline")
+        listenToFirebaseRealtimeStatus()
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun updateUserStatus(status: String) {
+    private fun updateTimeAndDate(status: String) {
+        val dbRef = FirebaseDatabase.getInstance().reference
+        val userRef = dbRef
+                .child("Users")
+                .child(myid!!)
+                .child("status")
         val saveCurrentTime: String
+        val saveCurrentDate: String
         val calendar = Calendar.getInstance()
+        @SuppressLint("SimpleDateFormat")
+        val currentDate = SimpleDateFormat("MMM dd")
+        saveCurrentDate = currentDate.format(calendar.time)
+        @SuppressLint("SimpleDateFormat")
         val currentTime = SimpleDateFormat("hh:mm a")
         saveCurrentTime = currentTime.format(calendar.time)
-        val saveCurrentDate : Long = System.currentTimeMillis()
         val hashMap = HashMap<String, Any>()
         hashMap["time"] = saveCurrentTime
         hashMap["date"] = saveCurrentDate
         hashMap["status"] = status
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .document(myid!!)
-                .update(hashMap)
-    }
+        userRef.updateChildren(hashMap)
 
-    @SuppressLint("SetTextI18n")
-    private fun subscribeToLiveUpdates(){
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("Users")
-                .whereEqualTo("userId", userid)
-                .addSnapshotListener { value: QuerySnapshot?,
-                                       error: FirebaseFirestoreException? ->
-                    if (error != null) {
-                        Timber.e("listen:error%s", error.message)
-                        return@addSnapshotListener
-                    }
-                    for (dc in value!!.documentChanges) {
-                        val userStatus = dc.document.toObject(User::class.java).status
-                        when (userStatus) {
-                            "online" -> {
-                                mTime?.setTextColor(ContextCompat
-                                        .getColor(this@MessageActivity,
-                                                R.color.colorAccent))
-                                mTime?.text = getString(R.string.active_now)
-                            }
-
-                            "offline" -> {
-                                mTime?.setTextColor(ContextCompat
-                                        .getColor(this@MessageActivity,
-                                                R.color.colorAccent))
-                                mTime?.text = "Active $formattedDate, $time"
-                            }
-                            else -> {
-                                mTime?.text = "offline"
-                            }
-                        }
-                    }
-                }
     }
 
     private fun listenToFirebaseRealtimeStatus(){
@@ -415,26 +382,26 @@ class MessageActivity : AppCompatActivity() {
         userRef.addValueEventListener(object : ValueEventListener{
             @SuppressLint("SetTextI18n")
             override fun onDataChange(snapshot: DataSnapshot) {
-                    val user = snapshot.getValue(Status::class.java)
-                    if (user != null) {
-                        when(user.status){
-                            "online" -> {
-                                mTime?.setTextColor(ContextCompat
-                                        .getColor(this@MessageActivity,
-                                        R.color.colorAccent))
-                                mTime?.text = getString(R.string.active_now)
-                            }
-                            "offline" -> {
-                                mTime?.setTextColor(ContextCompat
-                                        .getColor(this@MessageActivity,
-                                        R.color.colorAccent))
-                                mTime?.text = "Active "+user.date+", "+user.time
-                            }
-                            else -> {
-                                mTime?.text = "offline"
-                            }
+                val user = snapshot.getValue(Status::class.java)
+                if (user != null) {
+                    when(user.status){
+                        "online" -> {
+                            mTime?.setTextColor(ContextCompat
+                                    .getColor(requireContext(),
+                                            R.color.colorAccent))
+                            mTime?.text = getString(R.string.active_now)
+                        }
+                        "offline" -> {
+                            mTime?.setTextColor(ContextCompat
+                                    .getColor(requireContext(),
+                                            R.color.colorAccent))
+                            mTime?.text = "Active "+user.date+", "+user.time
+                        }
+                        else -> {
+                            mTime?.text = "offline"
                         }
                     }
+                }
             }
 
             @SuppressLint("BinaryOperationInTimber")
@@ -461,7 +428,7 @@ class MessageActivity : AppCompatActivity() {
                 .whereGreaterThan("date",
                         System.currentTimeMillis() - 30 * 60 * 1000)
                 .orderBy("date", Query.Direction.DESCENDING)
-        query.addSnapshotListener(this) { snapshots: QuerySnapshot?,
+        query.addSnapshotListener(requireActivity()) { snapshots: QuerySnapshot?,
                                           e: FirebaseFirestoreException? ->
             if (e != null) {
                 Timber.d("error while listening %s", e.toString())
@@ -494,11 +461,11 @@ class MessageActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data
+        if (requestCode == IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data
                 != null && data.data != null) {
             imageUri = data.data
             val selectedImagePath = imageUri
-            val selectedImageBmp = MediaStore.Images.Media.getBitmap(contentResolver,
+            val selectedImageBmp = MediaStore.Images.Media.getBitmap(activity?.contentResolver,
                     selectedImagePath)
             val outputStream = ByteArrayOutputStream()
             selectedImageBmp.compress(Bitmap.CompressFormat.JPEG, 90, outputStream)
@@ -514,4 +481,5 @@ class MessageActivity : AppCompatActivity() {
         // private String imageurl;
         private var monitor = 0
     }
+
 }

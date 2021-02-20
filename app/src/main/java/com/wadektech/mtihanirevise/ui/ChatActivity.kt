@@ -40,6 +40,7 @@ class ChatActivity : AppCompatActivity() {
     private var viewPagerAdapter: ViewPagerAdapter? = null
     private var mHandler: Handler? = null
     var mAuth: FirebaseAuth? = null
+    private var myid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +60,13 @@ class ChatActivity : AppCompatActivity() {
                 .get(ChatActivityViewModel::class.java)
         viewModel.downloadUsers()
 
+        myid = Constants.getUserId()
+
     }
 
     override fun onStart() {
         super.onStart()
-        updateUserStatus("online")
+        updateTimeAndDate("online")
         unreadCountFromRoom
     }
 
@@ -95,22 +98,22 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        updateUserStatus("online")
+        updateTimeAndDate("online")
     }
 
     override fun onStop() {
         super.onStop()
-        updateUserStatus("offline")
+        updateTimeAndDate("offline")
     }
 
     override fun onPause() {
         super.onPause()
-        updateUserStatus("offline")
+        updateTimeAndDate("offline")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        updateUserStatus("offline")
+        updateTimeAndDate("offline")
     }
 
     //Update the value background thread to UI thread
@@ -151,21 +154,26 @@ class ChatActivity : AppCompatActivity() {
             }.start()
         }
 
-    @SuppressLint("SimpleDateFormat")
-    private fun updateUserStatus(status: String) {
+    private fun updateTimeAndDate(status: String) {
+        val dbRef = FirebaseDatabase.getInstance().reference
+        val userRef = dbRef
+                .child("Users")
+                .child(myid!!)
+                .child("status")
         val saveCurrentTime: String
+        val saveCurrentDate: String
         val calendar = Calendar.getInstance()
+        @SuppressLint("SimpleDateFormat")
+        val currentDate = SimpleDateFormat("MMM dd")
+        saveCurrentDate = currentDate.format(calendar.time)
+        @SuppressLint("SimpleDateFormat")
         val currentTime = SimpleDateFormat("hh:mm a")
         saveCurrentTime = currentTime.format(calendar.time)
-        val saveCurrentDate : Long = System.currentTimeMillis()
         val hashMap = HashMap<String, Any>()
         hashMap["time"] = saveCurrentTime
         hashMap["date"] = saveCurrentDate
         hashMap["status"] = status
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .document(Constants.getUserId())
-                .update(hashMap)
+        userRef.updateChildren(hashMap)
+
     }
 }

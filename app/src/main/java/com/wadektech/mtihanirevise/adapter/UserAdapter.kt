@@ -3,28 +3,28 @@ package com.wadektech.mtihanirevise.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentTransaction
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.database.*
 import com.squareup.picasso.Callback
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import com.wadektech.mtihanirevise.R
+import com.wadektech.mtihanirevise.fragments.MessageFragment
+import com.wadektech.mtihanirevise.pojo.Status
 import com.wadektech.mtihanirevise.room.ChatItem
 import com.wadektech.mtihanirevise.room.User
 import com.wadektech.mtihanirevise.ui.MessageActivity
-import com.wadektech.mtihanirevise.utils.Constants
 import de.hdodenhof.circleimageview.CircleImageView
-import hotchemi.android.rate.AppRate.with
 import timber.log.Timber
-import java.util.*
 
 class UserAdapter(private val context: Context, private val isChatting: Boolean)
     : PagedListAdapter<User?, UserAdapter.ViewHolder>(User.DIFF_CALLBACK) {
@@ -40,36 +40,44 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         holder.mStatus.text = user.update
         holder.mUsername.text = user.username
 
-        val firestore = FirebaseFirestore.getInstance()
-        firestore.collection("Users")
-                .whereEqualTo("userId", user.userId)
-                .addSnapshotListener(fun(snapshots: QuerySnapshot?, e: FirebaseFirestoreException?) {
-                    if (e != null) {
-                        Timber.e("listen:error%s", e.message)
-                        return
-                    }
-
-                    for (dc in Objects.requireNonNull(snapshots)!!.documentChanges) {
-                        Timber.d("Status listener: %s",
-                                dc.document.toObject(User::class.java).status)
-                        val userStatus = dc.document.toObject(User::class.java)
-                        when (userStatus.status) {
+         val rootRef : DatabaseReference = FirebaseDatabase
+                .getInstance()
+                .reference
+         val userRef = rootRef
+                .child("Users")
+                .child(user.userId)
+                .child("status")
+        userRef.addValueEventListener(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(snapshot: DataSnapshot) {
+                    val user = snapshot.getValue(Status::class.java)
+                    if (user != null) {
+                        when(user.status){
                             "online" -> {
-                                holder.mUserOnlineStatus
-                                        .setTextColor(ContextCompat
-                                                .getColor(context, R.color.green))
-                                holder.mUserOnlineStatus.text = user.status
-
+                                holder.mUserOnlineStatus.setTextColor(ContextCompat
+                                        .getColor(context,
+                                                R.color.green))
+                                holder.mUserOnlineStatus.text = "online"
                             }
                             "offline" -> {
-                                holder.mUserOnlineStatus.text = user.status
+                                holder.mUserOnlineStatus.setTextColor(ContextCompat
+                                        .getColor(context,
+                                                R.color.green))
+                                holder.mUserOnlineStatus.text = "offline"
                             }
                             else -> {
-                                holder.mUserOnlineStatus.text = "" + user.date + ", " + user.time
+                                holder.mUserOnlineStatus.text = "offline"
                             }
                         }
                     }
-                })
+            }
+
+            @SuppressLint("BinaryOperationInTimber")
+            override fun onCancelled(error: DatabaseError) {
+                Timber.e("Error listening to realtime Status "+error.message)
+            }
+        })
+
         if (user.imageURL == "default") {
             holder.mProfileImage.setImageResource(R.drawable.profile)
         } else {
