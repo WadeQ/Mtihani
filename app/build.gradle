@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.wadektech.mtihanirevise"
+        applicationId "com.wadektech.mtihani"
         minSdkVersion 16
         targetSdkVersion 28
         multiDexEnabled true

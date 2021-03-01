@@ -2,7 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.wadektech.mtihanirevise">
+    package="com.wadektech.mtihani">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -15,7 +15,7 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name=".persistence.MtihaniRevise"
+        android:name="com.wadektech.mtihani.persistence.MtihaniRevise"
         android:icon="@mipmap/logoicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logoicon"
@@ -23,10 +23,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".ui.SettingsActivity"
+            android:name="com.wadektech.mtihani.ui.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name=".ui.MainSliderActivity"
+            android:name="com.wadektech.mtihani.ui.MainSliderActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,34 +36,34 @@
         </activity>
 
         <activity
-            android:name=".auth.SignUpActivity"
+            android:name="com.wadektech.mtihani.auth.SignUpActivity"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".ui.PastPapersActivity"
+            android:name="com.wadektech.mtihani.ui.PastPapersActivity"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".ui.PaperPerSubject"
+            android:name="com.wadektech.mtihani.ui.PaperPerSubject"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".pdfViewer.ItemDetailActivity"
+            android:name="com.wadektech.mtihani.pdfViewer.ItemDetailActivity"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".ui.DeveloperProfile"
+            android:name="com.wadektech.mtihani.ui.DeveloperProfile"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name=".ui.ChatActivity" />
+        <activity android:name="com.wadektech.mtihani.ui.ChatActivity" />
 
         <activity
-            android:name=".auth.LoginActivity"
+            android:name="com.wadektech.mtihani.auth.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.MessageActivity" />
+        <activity android:name="com.wadektech.mtihani.ui.MessageActivity" />
 
         <service
-            android:name=".notification.MyFirebaseIdService"
+            android:name="com.wadektech.mtihani.notification.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -71,7 +71,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".notification.MyFirebaseMessaging"
+            android:name="com.wadektech.mtihani.notification.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -80,15 +80,15 @@
         </service>
 
         <activity
-            android:name=".ui.StatusUpdate"
+            android:name="com.wadektech.mtihani.ui.StatusUpdate"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.PDFViewerActivity"
+            android:name="com.wadektech.mtihani.ui.PDFViewerActivity"
             android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7833667602532832~2075738114" />
+            android:value="ca-app-pub-7833667602532832~9691753036" />
     </application>
 
 </manifest>

@@ -100,8 +100,8 @@
     <string name="pdf_download">PDF Download</string>
     <string name="cancel">Cancel</string>
     <string name="open_PDF">OPEN PDF</string>
-    <string name="test_ap_id">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="interstitial_ad_test_id">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="banner_ad_id">ca-app-pub-7833667602532832/5369364649</string>
+    <string name="interstitial_ad_id">ca-app-pub-7833667602532832/1495173597</string>
     <string name="login_with_google">Login with Google</string>
     <string name="app_version">App Version</string>
     <string name="registered_symbol">Version 1.0, Mtihani Revise®</string>
