@@ -116,7 +116,7 @@ class MessageFragment : BottomSheetDialogFragment() {
         mTime = view.findViewById(R.id.tv_time)
 
         val mArgs = arguments
-        val item: ChatItem = mArgs!!.getParcelable("mChatItem")
+        val item: ChatItem? = mArgs!!.getParcelable("mChatItem")
         item?.let {
             userid = it.userId
             imageURL = it.imageURL
