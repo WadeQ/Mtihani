@@ -17,6 +17,7 @@ public class PaperPerSubjectViewModel extends ViewModel {
     public LiveData<String> getPdfsDownloadResponse(){
         return mRepository.getPdfsDownloadResponse();
     }
+
     public LiveData<List<SinglePDF>> getPdfPerCategoryResponse(){
         return mRepository.getPdfPerCategoryResponse();
     }

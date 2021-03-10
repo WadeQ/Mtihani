@@ -87,7 +87,7 @@ public class SignUpActivity extends AppCompatActivity {
         mConnectionProgressDialog = new ProgressDialog(this);
 
         btnSignUp.setOnClickListener(v -> {
-            String userNmae = etUsername.getText().toString().trim();
+            String username = etUsername.getText().toString().trim();
             String password = etPassword.getText().toString().trim();
             String email = etEmail.getText().toString().trim();
 
@@ -95,10 +95,10 @@ public class SignUpActivity extends AppCompatActivity {
                 etEmail.setError("Please Enter Your Email Address!");
             } else if (TextUtils.isEmpty(password)) {
                 etPassword.setError("Please Enter Secure Password!");
-            } else if (TextUtils.isEmpty(userNmae)) {
+            } else if (TextUtils.isEmpty(username)) {
                 etUsername.setError("Please Enter username!");
             } else {
-                registerUser(password, userNmae, email);
+                registerUser(username,email, password);
             }
         });
 
@@ -248,14 +248,14 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void registerUser(final String etUsername, String etPassword, String etEmail) {
+    private void registerUser(String username,String email, String password) {
         //showing progress dialog when registering user
         mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
         mConnectionProgressDialog.setTitle("Signing In");
         mConnectionProgressDialog.setMessage("Signing user, please be patient.");
         mConnectionProgressDialog.show();
 
-        mAuth.createUserWithEmailAndPassword(etEmail, etPassword).addOnCompleteListener(task -> {
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
             //We have received a response, we need to close/exit the Progress Dialog now
             mConnectionProgressDialog.dismiss();
             //checking if task is successfully implemented
@@ -265,6 +265,7 @@ public class SignUpActivity extends AppCompatActivity {
                 if (firebaseUser != null) {
                     userId = firebaseUser.getUid();
                 }
+
                 assert userId != null;
                 reference = FirebaseDatabase
                         .getInstance()
@@ -284,20 +285,20 @@ public class SignUpActivity extends AppCompatActivity {
                 String time = (String) DateFormat.format(delegate, calendar.getTime());
 
                 User user = new User(userId,
-                        etUsername,
+                        username,
                         "default",
                         "offline",
-                        etUsername.toLowerCase(),
+                        username.toLowerCase(),
                         "Hello there! I use Mtihani Revise.",
                         time,
-                        System.currentTimeMillis(), etEmail);
+                        System.currentTimeMillis(), email);
                 SharedPreferences pfs = getSharedPreferences(Constants
                         .myPreferences, MODE_PRIVATE);
                 SharedPreferences.Editor editor = pfs.edit();
                 editor.putString(Constants.userId, userId);
-                editor.putString(Constants.userName, etUsername);
+                editor.putString(Constants.userName, username);
                 editor.putString(Constants.imageURL, "default");
-                editor.putString(Constants.email, etEmail);
+                editor.putString(Constants.email, email);
                 editor.apply();
                 FirebaseFirestore
                         .getInstance()

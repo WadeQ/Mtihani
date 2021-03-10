@@ -56,7 +56,10 @@ public class StatusUpdate extends AppCompatActivity {
                         .update("update" , updatestatus)
                         .addOnCompleteListener(task -> {
                             pDialog.dismiss();
-                            Snackbar snackbar = Snackbar.make(mCoordinate, "Successfully updated your status..." , Snackbar.LENGTH_SHORT);
+                            Snackbar snackbar = Snackbar.make(
+                                    mCoordinate,
+                                    "Successfully updated your status..." ,
+                                    Snackbar.LENGTH_SHORT);
                             snackbar.show();
                             //clear edit text
                             statusUpdate.getEditText().setText("");

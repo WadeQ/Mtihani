@@ -23,10 +23,12 @@ public class ReselectableSpinner extends androidx.appcompat.widget.AppCompatSpin
         boolean sameSelected = position == getSelectedItemPosition();
         super.setSelection(position, animate);
         if (sameSelected) {
-            // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
+            // Spinner does not call the OnItemSelectedListener if the same item is selected, so
+            // do it manually now
             // Timber.d("setSelection advanced called");
 
-            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this,
+                    getSelectedView(), position, getSelectedItemId());
 
         }
     }
@@ -37,8 +39,10 @@ public class ReselectableSpinner extends androidx.appcompat.widget.AppCompatSpin
         super.setSelection(position);
         if (sameSelected) {
             // Timber.d("setSelection called");
-            // Spinner does not call the OnItemSelectedListener if the same item is selected, so do it manually now
-            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this, getSelectedView(), position, getSelectedItemId());
+            // Spinner does not call the OnItemSelectedListener if the same item is selected, so
+            // do it manually now
+            Objects.requireNonNull(getOnItemSelectedListener()).onItemSelected(this,
+                    getSelectedView(), position, getSelectedItemId());
         }
     }
 }

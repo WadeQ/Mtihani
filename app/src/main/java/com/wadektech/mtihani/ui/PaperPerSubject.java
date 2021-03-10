@@ -101,7 +101,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         mStatus = findViewById(R.id.tv_status);
         //loading pdfs based on selected year
         singlePDFList = new ArrayList<>();
-        LinearLayoutManager manager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager manager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL,false);
         mRecycler.setLayoutManager(manager);
         mSinglePDFAdapter = new SinglePDFAdapter(singlePDFList, this);
         mRecycler.setAdapter(mSinglePDFAdapter);
@@ -110,7 +111,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         viewModel.downloadPDFsPerCategory(category);
         viewModel.getPdfPerCategoryResponse().observe(this, this::onPDFsReceived);
         viewModel.getPdfsDownloadResponse().observe(this, this::onResponseReceived);
-        viewModel.getSinglePDFDownloadResponse().observe(this, this::onPDFDownloadProgressReceived);
+        viewModel.getSinglePDFDownloadResponse().observe(this,
+                this::onPDFDownloadProgressReceived);
         viewModel.getProgressUpdate().observe(this,this::onProgressUpdate);
         mSwipe.setOnRefreshListener(() -> viewModel.downloadPDFsPerCategory(category));
 
@@ -159,7 +161,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         final SearchView searchView = (SearchView) getActionView(menu.findItem(R.id.action_search));
         searchView.setOnQueryTextListener(this);
         Drawable drawColor = getResources().getDrawable(R.drawable.searchcolor);
-        Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT, Toolbar.LayoutParams.MATCH_PARENT);
+        Toolbar.LayoutParams params = new Toolbar.LayoutParams(Toolbar.LayoutParams.MATCH_PARENT,
+                Toolbar.LayoutParams.MATCH_PARENT);
         searchView.setLayoutParams(params);
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("Search");
@@ -238,15 +241,19 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
 
     private void preCheck() {
         //check permissions first!
-        int gallery_permission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int gallery_permission = ContextCompat
+                .checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (gallery_permission != PackageManager.PERMISSION_GRANTED) {
                 //check if permission has ever been denied
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                if (ActivityCompat
+                        .shouldShowRequestPermissionRationale(this,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setMessage("Permission to access files is required for Mtihani Revise to save PDF files inside your device storage")
                             .setTitle("Permission Required")
-                            .setPositiveButton("OK", (dialog, which) -> ask_Gallery_Permission()).setNegativeButton("CANCEL", (dialog, which) -> {
+                            .setPositiveButton("OK", (dialog, which) -> ask_Gallery_Permission())
+                            .setNegativeButton("CANCEL", (dialog, which) -> {
                     });
                     AlertDialog dialog = builder.create();
                     dialog.show();

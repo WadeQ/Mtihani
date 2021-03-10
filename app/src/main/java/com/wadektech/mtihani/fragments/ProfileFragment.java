@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ import static android.app.Activity.RESULT_OK;
 public class ProfileFragment extends Fragment {
     CircleImageView profileImage;
     TextView userName, statusDisplay;
-    TextView userEmail ;
+    TextView userEmail;
     DatabaseReference databaseReference;
     StorageReference storageReference;
     public static final int IMAGE_REQUEST = 1;
@@ -62,7 +63,8 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -80,27 +82,29 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
-FirebaseFirestore
-        .getInstance()
-        .collection("Users")
-        .document(Constants.getUserId())
-        .get()
-        .addOnSuccessListener(requireActivity(), snapshot -> {
-            if(snapshot != null){
-                if(snapshot.exists()){
-                    User user = snapshot.toObject(User.class);
-                    if(user != null){
-                        String status = user.getUpdate();
-                        SharedPreferences pfs =
-                                Objects.requireNonNull(MtihaniRevise.Companion.getApp())
-                                .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pfs.edit();
-                        editor.putString(Constants.status, status);
-                        editor.apply();
+        FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .document(Constants.getUserId())
+                .get()
+                .addOnSuccessListener(requireActivity(), snapshot -> {
+                    if (snapshot != null) {
+                        if (snapshot.exists()) {
+                            User user = snapshot.toObject(User.class);
+                            if (user != null) {
+                                String status = user.getUpdate();
+                                SharedPreferences pfs =
+                                        Objects.requireNonNull(MtihaniRevise.Companion.getApp())
+                                                .getApplicationContext()
+                                                .getSharedPreferences(Constants.myPreferences,
+                                                        Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = pfs.edit();
+                                editor.putString(Constants.status, status);
+                                editor.apply();
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
 
         btnStatus.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), StatusUpdate.class);
@@ -108,10 +112,11 @@ FirebaseFirestore
         });
         storageReference = FirebaseStorage.getInstance().getReference("uploads");
 
-        SharedPreferences pfs = requireActivity().getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
-        String imageURL = pfs.getString(Constants.imageURL,"");
+        SharedPreferences pfs = requireActivity().getSharedPreferences(Constants.myPreferences,
+                Context.MODE_PRIVATE);
+        String imageURL = pfs.getString(Constants.imageURL, "");
         assert imageURL != null;
-        if(imageURL.equals("")|| imageURL.equals("default")) {
+        if (imageURL.equals("") || imageURL.equals("default")) {
             FirebaseFirestore
                     .getInstance()
                     .collection("Users")
@@ -156,7 +161,7 @@ FirebaseFirestore
                             }
                         }
                     });
-        }else{
+        } else {
             Picasso.with(getActivity())
                     .load(imageURL)
                     .error(R.drawable.profile)
@@ -198,13 +203,15 @@ FirebaseFirestore
                     Uri downloadUri = task.getResult();
                     assert downloadUri != null;
                     String mUri = downloadUri.toString();
-                        SharedPreferences pfs = Objects.requireNonNull(MtihaniRevise
-                                .Companion
-                                .getApp())
-                                .getApplicationContext().getSharedPreferences(Constants.myPreferences, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = pfs.edit();
-                        editor.putString(Constants.imageURL, mUri);
-                        editor.apply();
+                    SharedPreferences pfs = Objects.requireNonNull(MtihaniRevise
+                            .Companion
+                            .getApp())
+                            .getApplicationContext()
+                            .getSharedPreferences(Constants.myPreferences
+                                    , Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pfs.edit();
+                    editor.putString(Constants.imageURL, mUri);
+                    editor.apply();
 
                     FirebaseFirestore
                             .getInstance()
@@ -229,10 +236,14 @@ FirebaseFirestore
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK
+                && data != null && data.getData() != null) {
             imageUri = data.getData();
             if (uploadTask != null && uploadTask.isInProgress()) {
-                Toast.makeText(getContext(), "Upload is in progress...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(
+                        getContext(),
+                        "Upload is in progress...",
+                        Toast.LENGTH_SHORT).show();
             } else {
                 uploadImage();
             }

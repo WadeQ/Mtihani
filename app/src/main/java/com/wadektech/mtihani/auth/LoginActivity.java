@@ -125,6 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
+
     @Override
     protected void onStart() {
         super.onStart ();
@@ -133,10 +134,12 @@ public class LoginActivity extends AppCompatActivity {
        // mAuth.addAuthStateListener(mAuthListener);
 
     }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult (requestCode, resultCode, data);
@@ -161,6 +164,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
+
     public void firebaseAuthWithGoogle(GoogleSignInAccount account) {
         AuthCredential credential = GoogleAuthProvider.getCredential (account.getIdToken (),
                 null);

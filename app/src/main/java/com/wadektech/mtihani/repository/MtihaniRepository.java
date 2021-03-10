@@ -44,6 +44,7 @@ public class MtihaniRepository {
     private static MtihaniRepository sInstance;
     private static final String TAG = "MtihaniRepository";
 
+
     public synchronized static MtihaniRepository getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
@@ -520,7 +521,13 @@ public class MtihaniRepository {
         StorageReference storageRef = storage.getReference("PDF_Files");
         StorageReference islandRef = storageRef.child(fileName);
 
-        File rootPath = new File(Environment.getExternalStorageDirectory(), "Mtihani");
+        File rootPath = new File(
+                Objects.requireNonNull(MtihaniRevise
+                        .Companion
+                        .getApp())
+                        .getApplicationContext()
+                        .getExternalFilesDir(null)
+                        .getAbsolutePath(), "Mtihani");
         if (!rootPath.exists()) {
             rootPath.mkdirs();
         }
@@ -537,7 +544,8 @@ public class MtihaniRepository {
                     singlePDFDownloadResponse.setValue("success");
                 }).addOnFailureListener(exception -> {
             // Log.e("firebase ", ";local tem file not created  created " + exception.toString());
-            singlePDFDownloadResponse.setValue("An error occurred");
+            singlePDFDownloadResponse.setValue("An error occurred.");
+            Timber.d("Error downloading pdf: "+exception.getCause().toString());
         });
 
     }

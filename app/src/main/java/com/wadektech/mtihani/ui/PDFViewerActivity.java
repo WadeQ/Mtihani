@@ -13,8 +13,10 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.wadektech.mtihani.R;
+import com.wadektech.mtihani.persistence.MtihaniRevise;
 
 import java.io.File;
+import java.util.Objects;
 
 import static com.google.android.gms.ads.AdRequest.ERROR_CODE_NETWORK_ERROR;
 
@@ -38,7 +40,13 @@ public class PDFViewerActivity extends AppCompatActivity {
         }
 
         pdfView = findViewById(R.id.pdfViewer);
-        File rootPath = new File(Environment.getExternalStorageDirectory(), "Mtihani");
+        File rootPath = new File(
+                Objects.requireNonNull(MtihaniRevise
+                        .Companion
+                        .getApp())
+                        .getApplicationContext()
+                        .getExternalFilesDir(null)
+                        .getAbsolutePath(), "Mtihani");
         final File localFile = new File(rootPath, fileName);
         pdfView.fromFile(localFile)
                // .pages(0, 1, 2, 3, 4, 5) // all pages are displayed by default
@@ -47,8 +55,17 @@ public class PDFViewerActivity extends AppCompatActivity {
                 .enableDoubletap(true)
                 .onRender(nbPages -> pdfView.jumpTo(currentPage))
                 .defaultPage(0)
-                .onError(t -> Toast.makeText(PDFViewerActivity.this, "PDF error", Toast.LENGTH_SHORT).show())
-                .onPageError((page, t) -> Toast.makeText(PDFViewerActivity.this, "PDF page error", Toast.LENGTH_SHORT).show())
+                .onError(t -> Toast.makeText(
+                        PDFViewerActivity.this,
+                        "PDF error: "+t.getMessage(),
+                        Toast.LENGTH_SHORT).show()
+                )
+
+                .onPageError((page, t) -> Toast.makeText(
+                        PDFViewerActivity.this,
+                        "PDF page error",
+                        Toast.LENGTH_SHORT).show())
+
                 .enableAnnotationRendering(false) // render annotations (such as comments, colors or forms)
                 .password(null)
                 .scrollHandle(null)
