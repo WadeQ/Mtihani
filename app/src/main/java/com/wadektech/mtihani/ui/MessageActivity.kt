@@ -169,7 +169,6 @@ class MessageActivity : AppCompatActivity() {
             val message = editSend?.text.toString().trim {
                 it <= ' '
             }
-
             if (message != "") {
                 sendMessage(Constants.getUserId(), userid, message)
             } else {
@@ -380,8 +379,7 @@ class MessageActivity : AppCompatActivity() {
                         return@addSnapshotListener
                     }
                     for (dc in value!!.documentChanges) {
-                        val userStatus = dc.document.toObject(User::class.java).status
-                        when (userStatus) {
+                        when (dc.document.toObject(User::class.java).status) {
                             "online" -> {
                                 mTime?.setTextColor(ContextCompat
                                         .getColor(this@MessageActivity,

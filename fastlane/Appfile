@@ -1,0 +1,2 @@
+json_key_file("/home/wadek/Documents/fastlane/pc-api-7847140212594822230-558-dd30e389340c.json") # Path to the json secret file - Follow https://docs.fastlane.tools/actions/supply/#setup to get one
+package_name("com.wadektech.mtihani") # e.g. com.krausefx.app

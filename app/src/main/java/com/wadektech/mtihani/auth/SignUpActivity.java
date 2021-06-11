@@ -1,5 +1,6 @@
 package com.wadektech.mtihani.auth;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,8 +14,10 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,10 +34,14 @@ import com.wadektech.mtihani.R;
 import com.wadektech.mtihani.room.User;
 import com.wadektech.mtihani.ui.PastPapersActivity;
 import com.wadektech.mtihani.utils.Constants;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
+
 import timber.log.Timber;
+
 import static android.widget.Toast.LENGTH_SHORT;
 
 
@@ -51,7 +58,7 @@ public class SignUpActivity extends AppCompatActivity {
     private AlertDialog alertDialogAndroid;
     String user;
     private String imageURL;
-    CheckBox mCheckPassword ;
+    CheckBox mCheckPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +105,7 @@ public class SignUpActivity extends AppCompatActivity {
             } else if (TextUtils.isEmpty(username)) {
                 etUsername.setError("Please Enter username!");
             } else {
-                registerUser(username,email, password);
+                registerUser(username, email, password);
             }
         });
 
@@ -117,7 +124,7 @@ public class SignUpActivity extends AppCompatActivity {
         mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
                 .enableAutoManage(this,
                         connectionResult -> Toast.makeText(getApplicationContext(),
-                        "You got an error", LENGTH_SHORT).show())
+                                "You got an error", LENGTH_SHORT).show())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
@@ -182,7 +189,8 @@ public class SignUpActivity extends AppCompatActivity {
                         reference = FirebaseDatabase
                                 .getInstance()
                                 .getReference("Users")
-                                .child(user.getUid());
+                                .child(user.getUid())
+                                .child("status");
                         reference.keepSynced(true);
 
                         String name = user.getDisplayName();
@@ -193,12 +201,27 @@ public class SignUpActivity extends AppCompatActivity {
                         } else {
                             imageURL = "default";
                         }
-                       HashMap<String, Object> hashMap = new HashMap<>();
-                        hashMap.put("status", "offline");
-                        reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
 
-                        }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (),
-                                "Error saving data " + e.toString () , LENGTH_SHORT).show ());
+                        String saveCurrentTime;
+                        String saveCurrentDate;
+                        Calendar cal = Calendar.getInstance();
+
+
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd");
+                        saveCurrentDate = currentDate.format(cal.getTime());
+                        @SuppressLint("SimpleDateFormat")
+                        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+                        saveCurrentTime = currentTime.format(cal.getTime());
+
+                        HashMap<String, Object> hashMap = new HashMap<>();
+                        hashMap.put("status", "offline");
+                        hashMap.put("date", saveCurrentDate);
+                        hashMap.put("time", saveCurrentTime);
+                        reference.updateChildren(hashMap).addOnSuccessListener(aVoid -> {
+
+                        }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
+                                "Error saving data " + e.toString(), LENGTH_SHORT).show());
 
                         assert name != null;
                         User mUser = new User(userId, name, imageURL, "offline",
@@ -231,8 +254,8 @@ public class SignUpActivity extends AppCompatActivity {
                                             Timber.d("error:%s", task12.getException()
                                                     .toString());
                                         Toast.makeText(this, "Error saving data " +
-                                                Objects.requireNonNull(task12.getException())
-                                                        .toString(),
+                                                        Objects.requireNonNull(task12.getException())
+                                                                .toString(),
                                                 LENGTH_SHORT).show();
                                     }
                                 });
@@ -248,7 +271,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-    private void registerUser(String username,String email, String password) {
+    private void registerUser(String username, String email, String password) {
         //showing progress dialog when registering user
         mConnectionProgressDialog = new ProgressDialog(SignUpActivity.this);
         mConnectionProgressDialog.setTitle("Signing In");
@@ -270,14 +293,29 @@ public class SignUpActivity extends AppCompatActivity {
                 reference = FirebaseDatabase
                         .getInstance()
                         .getReference("Users")
-                        .child(userId);
+                        .child(userId)
+                        .child("status");
+                reference.keepSynced(true);
+
+                String saveCurrentTime;
+                String saveCurrentDate;
+                Calendar cal = Calendar.getInstance();
+
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd");
+                saveCurrentDate = currentDate.format(cal.getTime());
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+                saveCurrentTime = currentTime.format(cal.getTime());
 
                 HashMap<String, Object> hashMap = new HashMap<>();
                 hashMap.put("status", "offline");
-                reference.updateChildren (hashMap).addOnSuccessListener (aVoid -> {
+                hashMap.put("date", saveCurrentDate);
+                hashMap.put("time", saveCurrentTime);
+                reference.updateChildren(hashMap).addOnSuccessListener(aVoid -> {
 
-                }).addOnFailureListener (e -> Toast.makeText (getApplicationContext (),
-                        "Error saving data " + e.toString () , LENGTH_SHORT).show ());
+                }).addOnFailureListener(e -> Toast.makeText(getApplicationContext(),
+                        "Error saving data " + e.toString(), LENGTH_SHORT).show());
 
                 Calendar calendar = Calendar.getInstance();
 
@@ -323,5 +361,6 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
     }
+
 }
 

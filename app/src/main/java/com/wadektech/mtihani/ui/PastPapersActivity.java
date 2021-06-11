@@ -134,31 +134,11 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
 
     private List<RowModel> getAllItemList() {
         List<RowModel> allItems = new ArrayList<>();
-        allItems.add(new RowModel("KCSE 1995", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 1996", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 1997", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 1998", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 1999", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2000", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2001", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2002", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2003", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2004", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2005", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2006", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2007", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2008", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2009", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2010", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2011", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2012", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2013", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2014", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2015", R.drawable.pdf));
-        allItems.add(new RowModel("KCSE 2016", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 1995-2016", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2017", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2018", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2019", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2021", R.drawable.pdf));
         allItems.add(new RowModel("KCSE ANSWERS", R.drawable.pdf));
 
         return allItems;

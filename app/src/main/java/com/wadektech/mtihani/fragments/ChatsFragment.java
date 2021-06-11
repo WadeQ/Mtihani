@@ -55,7 +55,6 @@ public class ChatsFragment extends Fragment {
     }
 
     private void chatList() {
-
         UsersViewModel viewModel = ViewModelProviders.of(requireActivity())
                 .get(UsersViewModel.class);
         viewModel.getChatList().observe(getViewLifecycleOwner(),usersList->{

@@ -36,7 +36,7 @@ public interface SingleMessageDao {
     DataSource.Factory<Integer, Chat> getChatMessages(String myId, String userId);
 
     @Query("SELECT message FROM messages WHERE (sender =:myId AND receiver =:userId) OR (sender =:userId AND receiver =:myId) ORDER BY date DESC LIMIT 1")
-   String getLastMessage(String myId, String userId);
+    String getLastMessage(String myId, String userId);
 
     @Query("DELETE FROM messages")
     void deleteMessages();

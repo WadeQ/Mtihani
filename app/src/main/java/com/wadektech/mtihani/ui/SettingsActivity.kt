@@ -185,7 +185,7 @@ class SettingsActivity : AppCompatActivity() {
             val sendIntent = Intent()
             sendIntent.action = Intent.ACTION_SEND
             sendIntent.putExtra(Intent.EXTRA_TEXT,
-                    "Hey, want access to all your K.C.S.E past exam papers from 2008 to 2017 at the convenience of your smartphone? Download Mtihani Revise at: https://play.google.com/store/apps/details?id=com.google.android.apps.plus")
+                    "Hey, want access to all your K.C.S.E past exam papers from 2008 to 2019 at the convenience of your smartphone? Download Mtihani KCSE at: https://play.google.com/store/apps/details?id=com.wadektech.mtihani")
             sendIntent.type = "text/plain"
             startActivity(sendIntent)
     }

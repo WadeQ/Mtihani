@@ -17,6 +17,37 @@ public class Constants {
     public static final String email = "email";
     public static final String status = "statusUpdate";
     public static final String prefKey = "key";
+    public static final String profileId = "profileID";
+    public static final String followerCount = "followers";
+    public static final String followingCount = "following";
+
+
+    public static String getUserProfileID(){
+        SharedPreferences pfs = MtihaniRevise
+                .Companion
+                .getApp()
+                .getApplicationContext()
+                .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        return pfs.getString(Constants.profileId,"");
+    }
+
+    public static String getFollowerCount(){
+        SharedPreferences pfs = MtihaniRevise
+                .Companion
+                .getApp()
+                .getApplicationContext()
+                .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        return pfs.getString(Constants.followerCount,"");
+    }
+
+    public static String getFollowingCount(){
+        SharedPreferences pfs = MtihaniRevise
+                .Companion
+                .getApp()
+                .getApplicationContext()
+                .getSharedPreferences(Constants.myPreferences,Context.MODE_PRIVATE);
+        return pfs.getString(Constants.followingCount,"");
+    }
 
     public static String getUserId(){
         SharedPreferences pfs = MtihaniRevise

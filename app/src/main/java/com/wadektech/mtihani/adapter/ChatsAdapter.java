@@ -57,18 +57,6 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
         assert user != null;
         holder.mUsername.setText(user.getUsername());
 
-//        long since = System.currentTimeMillis() - user.getDate();
-//        long seconds = since / 1000;
-//        long minutes = seconds / 60;
-//        long hours = minutes / 60;
-//        long days = hours / 24;
-//
-//        if (days < 1) {
-//            holder.mTime.setText(user.getTime());
-//        } else {
-//            holder.mTime.setText(String.valueOf(user.getDate()));
-//        }
-
         DatabaseReference dRef = FirebaseDatabase
                 .getInstance()
                 .getReference();
@@ -128,7 +116,10 @@ public class ChatsAdapter extends PagedListAdapter<ChatItem, ChatsAdapter.ViewHo
                     });
         }
 
-        holder.lastMessage(user.getUserId());
+        if (user.getUserId() != Constants.getUserId()){
+            holder.lastMessage(user.getUserId());
+        }
+
         holder.itemView.setOnClickListener(v -> {
             ChatItem chatItem = new ChatItem(
                     user.getUserId(), user.getUsername(), user.getImageURL(),
