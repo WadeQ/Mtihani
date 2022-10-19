@@ -14,6 +14,6 @@ public interface ChatDao {
     void insertChatsToDatabase(List<Chat> chats);
 
     // LiveData updates the list automatically if changes are observed
-    @Query("SELECT * FROM messages")
+    @Query("SELECT * FROM messages ORDER BY date")
     androidx.paging.DataSource.Factory<Integer, Chat> getAllChats();
 }

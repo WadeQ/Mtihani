@@ -11,6 +11,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -33,7 +34,8 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
-    Button btnlogin, btnSignUp, googleLogin;
+    Button btnlogin, googleLogin;
+    TextView btnSignUp;
     EditText loginEmail, loginPassword;
     FirebaseAuth mAuth;
     GoogleSignInClient mGoogleSignInClient ;

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,10 +33,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdCallback;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,12 +65,15 @@ import java.util.List;
 import static androidx.core.view.MenuItemCompat.expandActionView;
 import static androidx.core.view.MenuItemCompat.getActionView;
 
+import timber.log.Timber;
+
 //import com.google.firebase.auth.FirebaseAuth;
 //import com.google.firebase.auth.FirebaseUser;
 
 
 public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQueryTextListener,
         SinglePDFAdapter.OnSinglePDFClickHandler {
+    private static final String TAG = "PaperPerSubject";
     //public PdfAdapter mAdapter;
     //private FirebaseUser firebaseUser;
     public TextView mStatus;
@@ -75,13 +89,17 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
     private ProgressBar progressBar;
     private AlertDialog mDialog;
     private InterstitialAd interstitialAd;
+    private RewardedAd mRewardedAd;
+    //creating Object of Rewarded Ad Load Callback
+    RewardedAdLoadCallback rewardedAdLoadCallback;
+    //creating Object of Rewarded Ad Callback
+    RewardedAdCallback rewardedAdCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(null);
         setContentView(R.layout.activity_paper_per_subject);
-        MobileAds.initialize(this, getString(R.string.banner_ad_id));
         Toolbar topToolBar = findViewById(R.id.toolbar);
         mSwipe = findViewById(R.id.swipe);
         mSwipe.setRefreshing(true);
@@ -97,6 +115,33 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         mRecycler.setLayoutManager(new LinearLayoutManager(this));
 
         List<PdfModel> pdfListItems = getAllItemList();
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+                //init completed
+                Timber.d("onInitializationComplete: %s", initializationStatus.toString());
+            }
+        });
+
+        mRewardedAd = new RewardedAd( this, "ca-app-pub-3940256099942544/5224354917" ) ;
+
+        loadRewardedVideoAd();
+
+        // creating  RewardedAdLoadCallback for Rewarded Ad with some 2 Override methods
+        rewardedAdLoadCallback =new RewardedAdLoadCallback(){
+            @Override
+            public void onRewardedAdLoaded() {
+                // Showing a simple Toast message to user when Rewarded Ad Failed to Load
+                Toast.makeText (PaperPerSubject.this, "Rewarded Ad is Loaded", Toast.LENGTH_LONG).show() ;
+            }
+
+            @Override
+            public void onRewardedAdFailedToLoad( LoadAdError adError) {
+                // Showing a simple Toast message to user when Rewarded Ad Failed to Load
+                Toast.makeText (PaperPerSubject.this, "Rewarded Ad failed to load with error "+adError.getMessage(), Toast.LENGTH_LONG).show() ;
+            }
+        };
 
         mStatus = findViewById(R.id.tv_status);
         //loading pdfs based on selected year
@@ -270,7 +315,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                         downloadMonitor();
                         viewModel.downloadPDF(singlePDF.getFileName());
                     }else{
-                        loadAd();
+                        loadRewardedVideoAd();
                     }
                 }
             }
@@ -284,7 +329,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                     downloadMonitor();
                     viewModel.downloadPDF(singlePDF.getFileName());
                 }else{
-                    loadAd();
+                    loadRewardedVideoAd();
                 }
             }
         }
@@ -307,7 +352,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                             downloadMonitor();
                             viewModel.downloadPDF(singlePDF.getFileName());
                         }else{
-                            loadAd();
+                            loadRewardedVideoAd();
                         }
                     }
                 } else {
@@ -333,58 +378,122 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             if(mDialog != null)
                 mDialog.dismiss();
         });
+
         openBtn.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
-            interstitialAd = new InterstitialAd(PaperPerSubject.this);
-            interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-            interstitialAd.loadAd(new AdRequest.Builder().build());
-            interstitialAd.setAdListener(new AdListener() {
-                @Override
-                public void onAdLoaded() {
-                    // Code to be executed when an ad finishes loading.
-                    progressBar.setVisibility(View.INVISIBLE);
-                    mDialog.dismiss();
-                    interstitialAd.show();
-                }
-
-                @Override
-                public void onAdFailedToLoad(int errorCode) {
-                    // Code to be executed when an ad request fails.
-                    Intent intent = new Intent(PaperPerSubject.this, PDFViewerActivity.class);
-                    intent.putExtra("fileName",singlePDF.getFileName());
-                    startActivity(intent);
-                }
-
-                @Override
-                public void onAdOpened() {
-                    // Code to be executed when the ad is displayed.
-                }
-
-                @Override
-                public void onAdLeftApplication() {
-                    progressBar.setVisibility(View.INVISIBLE);
-                    mDialog.dismiss();
-                    // Code to be executed when the user has left the app.
-                }
-
-                @Override
-                public void onAdClosed() {
-                    // Code to be executed when when the interstitial ad is closed.
-                    progressBar.setVisibility(View.INVISIBLE);
-                    mDialog.dismiss();
-                    Intent intent = new Intent(PaperPerSubject.this, PDFViewerActivity.class);
-                    intent.putExtra("fileName",singlePDF.getFileName());
-                    startActivity(intent);
-                }
-            });
+            showRewardedAd();
+//            interstitialAd = new InterstitialAd(PaperPerSubject.this);
+//            interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
+//            interstitialAd.loadAd(new AdRequest.Builder().build());
+//            interstitialAd.setAdListener(new AdListener() {
+//                @Override
+//                public void onAdLoaded() {
+//                    // Code to be executed when an ad finishes loading.
+//                    progressBar.setVisibility(View.INVISIBLE);
+//                    mDialog.dismiss();
+//                    interstitialAd.show();
+//                }
+//
+//                @Override
+//                public void onAdFailedToLoad(int errorCode) {
+//                    // Code to be executed when an ad request fails.
+//                    Intent intent = new Intent(PaperPerSubject.this,
+//                            PDFViewerActivity.class);
+//                    intent.putExtra("fileName",singlePDF.getFileName());
+//                    startActivity(intent);
+//                }
+//
+//                @Override
+//                public void onAdOpened() {
+//                    // Code to be executed when the ad is displayed.
+//                }
+//
+//                @Override
+//                public void onAdLeftApplication() {
+//                    progressBar.setVisibility(View.INVISIBLE);
+//                    mDialog.dismiss();
+//                    // Code to be executed when the user has left the app.
+//                }
+//
+//                @Override
+//                public void onAdClosed() {
+//                    // Code to be executed when when the interstitial ad is closed.
+//                    progressBar.setVisibility(View.INVISIBLE);
+//                    mDialog.dismiss();
+//                    Intent intent = new Intent(PaperPerSubject.this,
+//                            PDFViewerActivity.class);
+//                    intent.putExtra("fileName",singlePDF.getFileName());
+//                    startActivity(intent);
+//                }
+//            });
         });
 
         alertDialogBuilderUserInput
                 .setCancelable(false);
-
         mDialog = alertDialogBuilderUserInput.create();
         mDialog.show();
     }
+
+    private void loadRewardedVideoAd(){
+        // Creating  an Ad Request
+        AdRequest adRequest = new AdRequest.Builder().build();
+        // load Rewarded Ad with the Request
+        mRewardedAd.loadAd(adRequest, rewardedAdLoadCallback);
+    }
+
+    private void showRewardedAd() {
+        if (mRewardedAd.isLoaded()) {
+            //creating the Rewarded Ad Callback and showing the user appropriate message
+            rewardedAdCallback = new RewardedAdCallback() {@Override
+            public void onRewardedAdOpened() {
+                // Showing a simple Toast message to user when Rewarded Ad is opened
+                Toast.makeText(PaperPerSubject.this, "Rewarded Ad is Opened", Toast.LENGTH_LONG).show();
+            }
+
+                @Override
+                public void onRewardedAdClosed() {
+                    progressBar.setVisibility(View.INVISIBLE);
+//                    mDialog.dismiss();
+//                    Intent intent = new Intent(PaperPerSubject.this,
+//                            PDFViewerActivity.class);
+//                    intent.putExtra("fileName",singlePDF.getFileName());
+//                    startActivity(intent);
+                }
+
+                @Override
+                public void onUserEarnedReward(@NonNull com.google.android.gms.ads.rewarded.RewardItem rewardItem) {
+                    progressBar.setVisibility(View.INVISIBLE);
+                    mDialog.dismiss();
+                    Intent intent = new Intent(PaperPerSubject.this,
+                            PDFViewerActivity.class);
+                    intent.putExtra("fileName",singlePDF.getFileName());
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onRewardedAdFailedToShow(AdError adError) {
+                    // Showing a simple Toast message to user when Rewarded Ad Failed to Show
+                    Toast.makeText(PaperPerSubject.this, "Rewarded Ad failed to show due to error:" + adError.toString(), Toast.LENGTH_LONG).show();
+                    loadRewardedVideoAd();
+                }
+            };
+
+            //showing the ad Rewarded Ad if it is loaded
+            mRewardedAd.show(PaperPerSubject.this, rewardedAdCallback);
+            // Showing a simple Toast message to user when an Rewarded ad is shown to the user
+            Toast.makeText(PaperPerSubject.this, "Rewarded Ad  is loaded and Now showing ad  ", Toast.LENGTH_LONG).show();
+
+        }
+        else {
+            //Load the Rewarded ad if it is not loaded
+            loadRewardedVideoAd();
+            // Showing a simple Toast message to user when Rewarded ad is not loaded
+            Toast.makeText(PaperPerSubject.this, "Rewarded Ad is not Loaded ", Toast.LENGTH_LONG).show();
+
+        }
+
+    }
+
     private void loadAd(){
         mSwipe.setRefreshing(true);
         MobileAds.initialize(this, getString(R.string.banner_ad_id));
@@ -403,7 +512,8 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             public void onAdFailedToLoad(int errorCode) {
                 // Code to be executed when an ad request fails.
                 mSwipe.setRefreshing(false);
-                Intent intent = new Intent(PaperPerSubject.this, PDFViewerActivity.class);
+                Intent intent = new Intent(PaperPerSubject.this,
+                        PDFViewerActivity.class);
                 intent.putExtra("fileName",singlePDF.getFileName());
                 startActivity(intent);
             }
@@ -423,10 +533,12 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             public void onAdClosed() {
                 // Code to be executed when when the interstitial ad is closed.
                 mSwipe.setRefreshing(false);
-                Intent intent = new Intent(PaperPerSubject.this, PDFViewerActivity.class);
+                Intent intent = new Intent(PaperPerSubject.this,
+                        PDFViewerActivity.class);
                 intent.putExtra("fileName",singlePDF.getFileName());
                 startActivity(intent);
             }
         });
     }
+
 }

@@ -13,6 +13,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -46,8 +47,9 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 
 public class SignUpActivity extends AppCompatActivity {
-    Button mLogin, btnSignUp;
+    Button btnSignUp;
     EditText etPassword, etUsername, etEmail;
+    TextView mLogin;
     private static final int RC_SIGN_IN = 1;
     DatabaseReference reference;
     private GoogleApiClient mGoogleApiClient;

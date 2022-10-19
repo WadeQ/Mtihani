@@ -52,6 +52,11 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
         holder.mStatus.text = user.update
         holder.mUsername.text = user.username
 
+        holder.mProfileImage.setOnClickListener {
+            val intent = Intent(context, ProfileFragment::class.java)
+            context.startActivity(intent)
+        }
+
         val rootRef : DatabaseReference = FirebaseDatabase
                 .getInstance()
                 .reference
@@ -242,12 +247,12 @@ class UserAdapter(private val context: Context, private val isChatting: Boolean)
     }
 
     private fun sendFollowRequest() {
+        materialDesignAnimatedDialog.dismiss()
         Toast.makeText(
             context,
             "Follow back request has been sent successfully," +
                     " after user accepts you will able to chat.",
             Toast.LENGTH_LONG).show()
-        materialDesignAnimatedDialog.dismiss()
     }
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

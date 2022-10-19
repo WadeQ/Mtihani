@@ -192,7 +192,6 @@ public class MtihaniRepository {
     }
 
     public static void saveNewMessages(List<Chat> chats) {
-        //Remember Room is accessed from a background thread at all times!
         MtihaniAppExecutors
                 .getInstance()
                 .getDiskIO()
@@ -318,8 +317,8 @@ public class MtihaniRepository {
                                 }
                             } else {
                                 if (task.getException() != null) {
-                                    Log.d(TAG, "error onUserAtEndLoaded"
-                                            + task.getException().toString());
+                                    Timber.tag(TAG).d("error onUserAtEndLoaded%s",
+                                            task.getException().toString());
                                 }
                             }
                         });

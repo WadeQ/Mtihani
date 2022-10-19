@@ -18,7 +18,7 @@
         android:layout_height="@dimen/_40sdp"
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/edit_text_bg"
@@ -31,9 +31,9 @@
         android:textStyle="bold|italic"
         app:fontFamily="sans-serif-light"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/et_password"
@@ -68,6 +68,7 @@
         android:text="@string/show_password"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:textColor="@color/followers"
         app:layout_constraintBottom_toTopOf="@+id/btn_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -85,6 +86,7 @@
         android:layout_marginRight="16dp"
         android:background="@drawable/btn_bg"
         android:text="@string/login"
+        android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
@@ -95,7 +97,7 @@
         app:layout_constraintTop_toBottomOf="@+id/password_check" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/textView"
+        android:id="@+id/btn_sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -105,31 +107,11 @@
         android:layout_marginRight="8dp"
         android:text="@string/not_yet_registered"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_20ssp"
+        android:textSize="@dimen/_15ssp"
         app:fontFamily="@font/proximanovaregular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_login" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_up"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:background="@drawable/btn_bg"
-        android:text="@string/sign_up"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold"
-        app:fontFamily="@font/proximanovaregular"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/tv_google_login"
@@ -150,7 +132,7 @@
         android:text="@string/login_with_google"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_20ssp"
+        android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
         app:fontFamily="@font/proximanovaregular"
         app:layout_constraintEnd_toEndOf="parent"
@@ -168,8 +150,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:text="@string/email"
-        android:textAllCaps="true"
-        android:textColor="@color/text"
+        android:textAllCaps="false"
+        android:textColor="@color/followers"
         android:textSize="@dimen/_15ssp"
         android:textStyle="bold"
         app:fontFamily="sans-serif-light"
@@ -189,8 +171,8 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="8dp"
         android:text="@string/password"
-        android:textAllCaps="true"
-        android:textColor="@color/text"
+        android:textAllCaps="false"
+        android:textColor="@color/followers"
         android:textSize="@dimen/_15ssp"
         android:textStyle="bold"
         app:fontFamily="@font/proximanovaregular"
@@ -213,13 +195,27 @@
         android:text="@string/or"
         android:textAllCaps="true"
         android:textColor="@color/colorWhite"
-        android:textSize="@dimen/_20ssp"
+        android:textSize="@dimen/_16ssp"
         android:textStyle="italic"
         app:fontFamily="@font/proximanovaregular"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_sign_up" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/wadeklogo" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,8 +3,8 @@
     <string name="desc_1">Find all the KCSE past papers from 1996 to 2017 and challenge your examiners with A\'s!</string>
     <string name="slide_header_1" tools:ignore="TypographyEllipsis">Revision...</string>
     <string name="btn_next">skip</string>
-    <string name="password">password</string>
-    <string name="username">username</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
     <string name="sign_in">Sign In</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="font">sans-serif</string>
@@ -14,7 +14,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="login">Login</string>
     <string name="reset_success">Welcome back! Password reset was successful,you can now log in below to access your account.</string>
-    <string name="email">email</string>
+    <string name="email">Email</string>
     <string name="send">send</string>
     <string name="enter_your_email_to_send_password_reset_instructions">Enter your email to send password reset instructions</string>
     <string name="reset">Reset</string>
@@ -25,7 +25,7 @@
     <string name="subject_paper">Subject Paper</string>
     <string name="kcse_1996">KCSE 1996</string>
     <string name="year">Year</string>
-    <string name="sign_in_with_google">Sign In with Google</string>
+    <string name="sign_in_with_google">Sign up with Google</string>
     <string name="search">Search</string>
     <string name="menu">menu</string>
     <string name="rate_app">Rate app</string>
@@ -73,7 +73,7 @@
     <string name="upload_pdf">Upload Pdf</string>
     <string name="navigate_to_app">Navigate to App</string>
     <string name="logout_admin">Logout</string>
-    <string name="already_registered_login">Already registered?</string>
+    <string name="already_registered_login">Already registered? Click to Login</string>
     <string name="user_information">User information</string>
     <string name="users_analytics">Users Analytics</string>
     <string name="broadcast_message">Broadcast Message</string>
@@ -82,7 +82,7 @@
     <string name="tap">Select File</string>
     <string name="upload">Upload File</string>
     <string name="no_selected_file">No selected file!</string>
-    <string name="not_yet_registered">Not yet registered?</string>
+    <string name="not_yet_registered">Not yet registered? Click to Register.</string>
     <string name="status">status</string>
     <string name="hello_am_using_mtihani_revise">Hello! Am using mtihani revise.</string>
     <string name="search_users">Search...</string>
@@ -102,6 +102,7 @@
     <string name="open_PDF">OPEN PDF</string>
     <string name="banner_ad_id">ca-app-pub-7833667602532832/5369364649</string>
     <string name="interstitial_ad_id">ca-app-pub-7833667602532832/1495173597</string>
+    <string name="rewarded_ad_id">ca-app-pub-3940256099942544/5224354917</string>
     <string name="login_with_google">Login with Google</string>
     <string name="app_version">App Version</string>
     <string name="registered_symbol">Version 1.0, Mtihani Revise®</string>
