@@ -1,7 +1,9 @@
 package com.wadektech.mtihani.ui;
 
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -20,6 +22,12 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.Task;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -40,6 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import timber.log.Timber;
 
 public class PastPapersActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener,
         RecyclerViewAdapter.OnItemClickHandler {
@@ -54,6 +63,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     private SwipeRefreshLayout mSwipe;
     NiftyDialogBuilder materialDesignAnimatedDialog;
     private Handler mHandler;
+    private final int UPDATE_REQUEST_CODE = 34;
 
 
     @Override
@@ -66,6 +76,8 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         setSupportActionBar(topToolBar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         materialDesignAnimatedDialog = NiftyDialogBuilder.getInstance(this);
+
+        checkForUpdates();
 
         ChatActivityViewModel viewModel = ViewModelProviders.of(this).get(ChatActivityViewModel.class);
         viewModel.loadUserUnreadChats(Constants.getUserId());
@@ -106,6 +118,47 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        checkForUpdates();
+    }
+
+    private void checkForUpdates(){
+        AppUpdateManager appUpdateManager = AppUpdateManagerFactory.create(this);
+        // Returns an intent object that you use to check for an update.
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    // This example applies an immediate update. To apply a flexible update
+                    // instead, pass in AppUpdateType.FLEXIBLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
+                // Request the update.
+                try {
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo, AppUpdateType.IMMEDIATE,
+                            PastPapersActivity.this, UPDATE_REQUEST_CODE);
+                } catch (IntentSender.SendIntentException e){
+                    Timber.e("checkForUpdates failed with exception %s", e.getMessage());
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data == null) return;
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            Toast.makeText(this, "Update Download started...", Toast.LENGTH_LONG).show();
+            if (resultCode != RESULT_OK) {
+                Timber.d("Update flow failed! Result code: %s", resultCode);
+                // If the update is cancelled or fails,
+                // you can request to start the update again.
+            }
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -138,6 +191,7 @@ public class PastPapersActivity extends AppCompatActivity implements GoogleApiCl
         allItems.add(new RowModel("KCSE 2017", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2018", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2019", R.drawable.pdf));
+        allItems.add(new RowModel("KCSE 2020", R.drawable.pdf));
         allItems.add(new RowModel("KCSE 2021", R.drawable.pdf));
         allItems.add(new RowModel("KCSE ANSWERS", R.drawable.pdf));
 

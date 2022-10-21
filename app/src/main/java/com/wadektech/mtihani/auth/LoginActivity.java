@@ -88,9 +88,17 @@ public class LoginActivity extends AppCompatActivity {
                 loginPassword.setError ("Please enter a strong email of more that 6 characters!");
             } else {
                 mAuth.signInWithEmailAndPassword (email, password).addOnCompleteListener (task -> {
+                    mConnectionProgressDialog = new ProgressDialog (LoginActivity.this);
+                    mConnectionProgressDialog.setProgressStyle (ProgressDialog.STYLE_SPINNER);
+                    mConnectionProgressDialog.setTitle ("Welcome back...");
+                    mConnectionProgressDialog.setMessage ("Please be patient as we log you in");
+                    mConnectionProgressDialog.show ();
                     if (task.isSuccessful ()) {
-                       viewModel.signInReturningUser(email);
+                        mConnectionProgressDialog.dismiss();
+                        viewModel.signInReturningUser(email);
                     } else {
+                        mConnectionProgressDialog.dismiss();
+                        Timber.d("Auth failed with %s", task.getException().getCause());
                         Toast.makeText (getApplicationContext (),
                                 "Authentication Failed! Please check your network and try again"
                                         + task.getException (), Toast.LENGTH_SHORT).show ();
@@ -103,7 +111,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent (this, SignUpActivity.class);
             finish();
             startActivity (intent);
-
         });
 
         mCheckPassword.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -159,7 +166,7 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Something went wrong.",
                         LENGTH_SHORT).show();
                 mConnectionProgressDialog.dismiss();
-                Timber.e("Login failed with error type is");
+                Timber.e("Login failed with error type is" +resultCode);
             }
         }
     }

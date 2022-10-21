@@ -124,8 +124,7 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
             }
         });
 
-        mRewardedAd = new RewardedAd( this, "ca-app-pub-3940256099942544/5224354917" ) ;
-
+        mRewardedAd = new RewardedAd( this, getString(R.string.rewarded_ad_id) ) ;
         loadRewardedVideoAd();
 
         // creating  RewardedAdLoadCallback for Rewarded Ad with some 2 Override methods
@@ -161,6 +160,12 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         viewModel.getProgressUpdate().observe(this,this::onProgressUpdate);
         mSwipe.setOnRefreshListener(() -> viewModel.downloadPDFsPerCategory(category));
 
+    }
+
+    @Override
+    protected void onResume() {
+        loadRewardedVideoAd();
+        super.onResume();
     }
 
     @SuppressLint("SetTextI18n")
@@ -382,50 +387,6 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
         openBtn.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
             showRewardedAd();
-//            interstitialAd = new InterstitialAd(PaperPerSubject.this);
-//            interstitialAd.setAdUnitId(getString(R.string.interstitial_ad_id));
-//            interstitialAd.loadAd(new AdRequest.Builder().build());
-//            interstitialAd.setAdListener(new AdListener() {
-//                @Override
-//                public void onAdLoaded() {
-//                    // Code to be executed when an ad finishes loading.
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                    mDialog.dismiss();
-//                    interstitialAd.show();
-//                }
-//
-//                @Override
-//                public void onAdFailedToLoad(int errorCode) {
-//                    // Code to be executed when an ad request fails.
-//                    Intent intent = new Intent(PaperPerSubject.this,
-//                            PDFViewerActivity.class);
-//                    intent.putExtra("fileName",singlePDF.getFileName());
-//                    startActivity(intent);
-//                }
-//
-//                @Override
-//                public void onAdOpened() {
-//                    // Code to be executed when the ad is displayed.
-//                }
-//
-//                @Override
-//                public void onAdLeftApplication() {
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                    mDialog.dismiss();
-//                    // Code to be executed when the user has left the app.
-//                }
-//
-//                @Override
-//                public void onAdClosed() {
-//                    // Code to be executed when when the interstitial ad is closed.
-//                    progressBar.setVisibility(View.INVISIBLE);
-//                    mDialog.dismiss();
-//                    Intent intent = new Intent(PaperPerSubject.this,
-//                            PDFViewerActivity.class);
-//                    intent.putExtra("fileName",singlePDF.getFileName());
-//                    startActivity(intent);
-//                }
-//            });
         });
 
         alertDialogBuilderUserInput
@@ -453,11 +414,11 @@ public class PaperPerSubject extends AppCompatActivity implements SearchView.OnQ
                 @Override
                 public void onRewardedAdClosed() {
                     progressBar.setVisibility(View.INVISIBLE);
-//                    mDialog.dismiss();
-//                    Intent intent = new Intent(PaperPerSubject.this,
-//                            PDFViewerActivity.class);
+                    mDialog.dismiss();
+                    Intent intent = new Intent(PaperPerSubject.this,
+                            PastPapersActivity.class);
 //                    intent.putExtra("fileName",singlePDF.getFileName());
-//                    startActivity(intent);
+                    startActivity(intent);
                 }
 
                 @Override
