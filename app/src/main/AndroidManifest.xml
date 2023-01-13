@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID"/>
 
     <supports-screens
         android:largeScreens="true"
@@ -15,7 +16,7 @@
         android:xlargeScreens="true" />
 
     <application
-        android:name="com.wadektech.mtihani.persistence.MtihaniRevise"
+        android:name="com.wadektech.mtihani.app.MtihaniRevise"
         android:icon="@mipmap/logoicon"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logoicon"
@@ -23,10 +24,10 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.wadektech.mtihani.ui.SettingsActivity"
+            android:name="com.wadektech.mtihani.settings.SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity
-            android:name="com.wadektech.mtihani.ui.MainSliderActivity"
+            android:name="com.wadektech.mtihani.splash.MainSliderActivity"
             tools:ignore="InnerclassSeparator"
             android:exported="true">
             <intent-filter>
@@ -36,34 +37,34 @@
         </activity>
 
         <activity
-            android:name="com.wadektech.mtihani.auth.SignUpActivity"
+            android:name="com.wadektech.mtihani.auth.presentation.SignUpActivity"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name="com.wadektech.mtihani.ui.PastPapersActivity"
+            android:name="com.wadektech.mtihani.pdf.presentation.ui.PastPapersActivity"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name="com.wadektech.mtihani.ui.PaperPerSubject"
+            android:name="com.wadektech.mtihani.pdf.presentation.ui.PaperPerSubject"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name="com.wadektech.mtihani.pdfViewer.ItemDetailActivity"
+            android:name="com.wadektech.mtihani.pdf.pdfViewer.ItemDetailActivity"
             android:screenOrientation="portrait"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name="com.wadektech.mtihani.ui.DeveloperProfile"
+            android:name="com.wadektech.mtihani.profile.DeveloperProfile"
             tools:ignore="InnerclassSeparator" />
-        <activity android:name="com.wadektech.mtihani.ui.ChatActivity" />
+        <activity android:name="com.wadektech.mtihani.chat.presentation.ui.ChatActivity" />
 
         <activity
-            android:name="com.wadektech.mtihani.auth.LoginActivity"
+            android:name="com.wadektech.mtihani.auth.presentation.LoginActivity"
             android:screenOrientation="portrait" />
-        <activity android:name="com.wadektech.mtihani.ui.MessageActivity" />
+        <activity android:name="com.wadektech.mtihani.chat.presentation.ui.MessageActivity" />
 
         <service
-            android:name="com.wadektech.mtihani.notification.MyFirebaseIdService"
+            android:name="com.wadektech.mtihani.notification.domain.MyFirebaseIdService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -71,7 +72,7 @@
             </intent-filter>
         </service>
         <service
-            android:name="com.wadektech.mtihani.notification.MyFirebaseMessaging"
+            android:name="com.wadektech.mtihani.notification.domain.MyFirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -80,10 +81,10 @@
         </service>
 
         <activity
-            android:name="com.wadektech.mtihani.ui.StatusUpdate"
+            android:name="com.wadektech.mtihani.chat.presentation.ui.StatusUpdate"
             android:screenOrientation="portrait" />
         <activity
-            android:name="com.wadektech.mtihani.ui.PDFViewerActivity"
+            android:name="com.wadektech.mtihani.pdf.presentation.ui.PDFViewerActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

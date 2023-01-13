@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.wadektech.mtihani.fragments.ProfileFragment"
+    tools:context="com.wadektech.mtihani.chat.presentation.ui.ProfileFragment"
     android:background="@color/profileBackground">
 
     <com.google.android.material.appbar.AppBarLayout

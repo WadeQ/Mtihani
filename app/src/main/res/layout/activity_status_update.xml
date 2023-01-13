@@ -12,7 +12,7 @@
         android:id="@+id/relativeLayout5"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.StatusUpdate">
+        tools:context=".chat.presentation.ui.StatusUpdate">
 
         <Button
             android:id="@+id/btnUpdate"

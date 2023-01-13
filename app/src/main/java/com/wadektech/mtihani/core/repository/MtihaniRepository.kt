@@ -1,750 +1,768 @@
-package com.wadektech.mtihani.repository;
+package com.wadektech.mtihani.core.repository
 
-import androidx.lifecycle.LiveData;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
+import android.annotation.SuppressLint
+import android.util.Log
+import com.wadektech.mtihani.app.MtihaniRevise.Companion.app
+import com.wadektech.mtihani.core.SingleLiveEvent
+import com.wadektech.mtihani.pdf.domain.pojo.SinglePDF
+import com.wadektech.mtihani.core.InjectorUtils
+import timber.log.Timber
+import com.google.firebase.storage.FirebaseStorage
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
+import com.wadektech.mtihani.chat.data.localDatasource.room.Chat
+import com.wadektech.mtihani.chat.data.firebaseDataSource.MessagesBoundaryCallback
+import androidx.paging.LivePagedListBuilder
+import com.google.android.gms.tasks.*
+import com.google.firebase.firestore.*
+import com.wadektech.mtihani.core.MtihaniAppExecutors
+import com.google.firebase.storage.FileDownloadTask
+import com.wadektech.mtihani.chat.data.localDatasource.MtihaniDatabase
+import com.wadektech.mtihani.core.Constants
+import com.wadektech.mtihani.chat.data.firebaseDataSource.UsersBoundaryCallback
+import com.wadektech.mtihani.chat.data.localDatasource.room.ChatItem
+import com.wadektech.mtihani.chat.data.localDatasource.room.User
+import java.io.File
+import java.lang.Exception
+import java.util.*
 
-import android.annotation.SuppressLint;
-import android.os.Environment;
-import android.util.Log;
-
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.wadektech.mtihani.database.MessagesBoundaryCallback;
-import com.wadektech.mtihani.database.MtihaniDatabase;
-import com.wadektech.mtihani.database.UsersBoundaryCallback;
-import com.wadektech.mtihani.persistence.MtihaniRevise;
-import com.wadektech.mtihani.pojo.SinglePDF;
-import com.wadektech.mtihani.room.Chat;
-import com.wadektech.mtihani.room.ChatItem;
-import com.wadektech.mtihani.room.User;
-import com.wadektech.mtihani.utils.Constants;
-import com.wadektech.mtihani.utils.InjectorUtils;
-import com.wadektech.mtihani.utils.MtihaniAppExecutors;
-import com.wadektech.mtihani.utils.SingleLiveEvent;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-
-import timber.log.Timber;
-
-public class MtihaniRepository {
-    private static final Object LOCK = new Object();
-    private static MtihaniRepository sInstance;
-    private static final String TAG = "MtihaniRepository";
-
-
-    public synchronized static MtihaniRepository getInstance() {
-        if (sInstance == null) {
-            synchronized (LOCK) {
-                sInstance = new MtihaniRepository ();
-            }
-        }
-        return sInstance;
-    }
-
-    private SingleLiveEvent<String> adminPassword;
-    private SingleLiveEvent<String> uploadResponse;
-    private SingleLiveEvent<List<SinglePDF>> pdfPerCategoryResponse;
-    private SingleLiveEvent<String> pdfsDownloadResponse;
-    private SingleLiveEvent<String> singlePDFDownloadResponse;
-    private SingleLiveEvent<Integer> progressUpdate;
-
-    public static LiveData<PagedList<Chat>> loadMessagesFromRoom(String myId, String userId) {
-        downloadMessages(myId,userId);
-        MessagesBoundaryCallback boundaryCallback = new MessagesBoundaryCallback(myId, userId);
-        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
-                .setPageSize(30)
-                .setPrefetchDistance(5)
-                .build());
-        return new LivePagedListBuilder<> (MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext())
-                .singleMessageDao()
-                .getChatMessages(myId, userId), pagedListConfig)
-                .setBoundaryCallback(boundaryCallback)
-                .build();
-    }
-
-    private static void downloadMessages(String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                .getApplicationContext());
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference messages = firestore.collection("messages");
-
-        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", myId)
-                .whereEqualTo("receiver", userId)
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(100)
-                .get());
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", userId)
-                .whereEqualTo("receiver", myId)
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(100)
-                .get());
-        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
-                .toArray(new Task[2]));
-        combinedTask.addOnCompleteListener(MtihaniAppExecutors.getInstance().getDiskIO(),
-                tasks -> {
-                    if (tasks.getResult() != null) {
-                        for (Task task : tasks.getResult()) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
-                                assert snapshot != null;
-                                if (!snapshot.isEmpty()) {
-                                    List<Chat> chatList = new ArrayList<>();
-                                    for(DocumentSnapshot document:snapshot.getDocuments()){
-                                        Chat chat = document.toObject(Chat.class);
-                                        if(chat != null){
-                                            chat.setDocumentId(document.getId());
-                                            chatList.add(chat);
-                                        }
-                                    }
-                                    Log.d(TAG, "message chats received are: %s"
-                                            + chatList.size());
-                                    db.singleMessageDao()
-                                            .saveChatsList(chatList);
-                                } else {
-                                    Log.d(TAG, "messages snapshot is empty");
-                                }
-                            } else {
-                                if (task.getException() != null)
-                                    Log.d(TAG, task.getException().toString());
-                            }
-
-                        }
-                    }
-                });
-    }
-
-    public static LiveData<PagedList<User>> loadUsersFromRoom() {
-        UsersBoundaryCallback boundaryCallback = new UsersBoundaryCallback();
-        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
-                .setPrefetchDistance(5)
-                .setEnablePlaceholders(true)
-                .setPageSize(50)
-                .build());
-        return new LivePagedListBuilder<> (MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext())
-                .usersDao()
-                .getAllUsers(Constants.getUserId()), pagedListConfig)
-                .setBoundaryCallback(boundaryCallback)
-                .build();
-    }
-
-
-    public static LiveData<PagedList<User>> searchUsersFromRoom(String filter) {
-        UsersBoundaryCallback boundaryCallback = new UsersBoundaryCallback();
-        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
-                .setPrefetchDistance(5)
-                .setEnablePlaceholders(true)
-                .setPageSize(50)
-                .build());
-        return new LivePagedListBuilder<> (MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext())
-                .usersDao()
-                .searchUsers(filter), pagedListConfig)
-                .setBoundaryCallback(boundaryCallback)
-                .build();
-    }
-
-    public static void saveMessage(Chat chat) {
-        MtihaniAppExecutors
-                .getInstance()
-                .getDiskIO()
-                .execute(() ->
-                        MtihaniDatabase
-                                .getInstance(Objects.requireNonNull(MtihaniRevise
-                                        .Companion
-                                        .getApp())
-                                        .getApplicationContext())
-                                .singleMessageDao()
-                                .add(chat));
-    }
-
-    public static void saveNewMessages(List<Chat> chats) {
-        MtihaniAppExecutors
-                .getInstance()
-                .getDiskIO()
-                .execute(() ->
-                        MtihaniDatabase
-                                .getInstance(Objects.requireNonNull(MtihaniRevise
-                                        .Companion
-                                        .getApp())
-                                        .getApplicationContext())
-                                .singleMessageDao()
-                                .saveChatsList(chats));
-    }
-
-    public static void sendMessageToFirebase(Chat chat) {
-        FirebaseFirestore.getInstance()
-                .collection("messages")
-                .document()
-                .set(chat);
-
-    }
-
-    public static void onZeroUsersLoaded() {
-        MtihaniDatabase db = MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                .Companion
-                .getApp())
-                .getApplicationContext());
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get()
-                .addOnCompleteListener(MtihaniAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                        , task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    if (!task.getResult().isEmpty()) {
-                                        db
-                                                .usersDao()
-                                                .saveUsersList(task.getResult()
-                                                        .toObjects(User.class));
-                                    } else {
-                                        Log.d(TAG, "onZeroUsersLoaded list is empty");
-                                    }
-                                }
-                            } else {
-                                if (task.getException() != null) {
-                                    Log.d(TAG, "error onZeroUsersLoaded"
-                                            + task.getException().toString());
-                                }
-                            }
-                        });
-    }
-
-    public static void onUserAtFrontLoaded(User itemAtFront) {
-        MtihaniDatabase db = MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext());
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .whereGreaterThan("date", itemAtFront.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get()
-                .addOnCompleteListener(MtihaniAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                        , task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    if (!task.getResult().isEmpty()) {
-                                        db
-                                                .usersDao()
-                                                .saveUsersList(task.getResult()
-                                                        .toObjects(User.class));
-                                    } else {
-                                        Log.d(TAG, "onUserAtFrontLoaded list is empty");
-                                    }
-                                }
-                            } else {
-                                if (task.getException() != null) {
-                                    Log.d(TAG, "error onUserAtFrontLoaded"
-                                            + task.getException().toString());
-                                }
-                            }
-                        });
-    }
-
-    public static void onUserAtEndLoaded(User itemAtEnd) {
-        MtihaniDatabase db = MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext());
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .whereLessThan("date", itemAtEnd.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get()
-                .addOnCompleteListener(MtihaniAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                        , task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    if (!task.getResult().isEmpty()) {
-                                        db
-                                                .usersDao()
-                                                .saveUsersList(task.getResult()
-                                                        .toObjects(User.class));
-                                    } else {
-                                        Log.d(TAG, "onUserAtEndLoaded list is empty");
-                                    }
-                                }
-                            } else {
-                                if (task.getException() != null) {
-                                    Timber.tag(TAG).d("error onUserAtEndLoaded%s",
-                                            task.getException().toString());
-                                }
-                            }
-                        });
-    }
-
-    public static LiveData<PagedList<ChatItem>> loadChatList() {
-        PagedList.Config pagedListConfig = (new PagedList.Config.Builder()
-                .setPrefetchDistance(5)
-                .setEnablePlaceholders(true)
-                .setPageSize(50)
-                .build());
-        return new LivePagedListBuilder<> (MtihaniDatabase
-                .getInstance(Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext())
-                .chatDao()
-                .getAllChatUsers(), pagedListConfig)
-                .build();
-    }
-
-    public static void saveChatListUser(ChatItem user) {
-        MtihaniAppExecutors
-                .getInstance()
-                .getDiskIO()
-                .execute(()-> MtihaniDatabase
-                        .getInstance(Objects.requireNonNull(MtihaniRevise
-                                .Companion
-                                .getApp())
-                                .getApplicationContext())
-                        .chatDao()
-                        .addUser(user));
-    }
-
-    public static void updateMessage(Chat chat) {
-        MtihaniAppExecutors
-                .getInstance()
-                .getDiskIO()
-                .execute(()-> MtihaniDatabase
-                        .getInstance(Objects.requireNonNull(MtihaniRevise
-                                .Companion
-                                .getApp())
-                                .getApplicationContext())
-                        .singleMessageDao()
-                        .update(chat));
-        if(!Constants.getUserId().equals(chat.getSender())) {
-            HashMap<String, Object> hashMap = new HashMap<>();
-            hashMap.put("seen", true);
-            hashMap.put("documentId",chat.getDocumentId());
-            FirebaseFirestore
-                    .getInstance()
-                    .collection("messages")
-                    .document(chat.getDocumentId())
-                    .update(hashMap);
-        }
-    }
-
-    public static void downloadUsers() {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
-                .Companion.getApp()).getApplicationContext());
-        FirebaseFirestore
-                .getInstance()
-                .collection("Users")
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(100)
-                .get()
-                .addOnCompleteListener(MtihaniAppExecutors
-                                .getInstance()
-                                .getDiskIO()
-                        , task -> {
-                            if (task.isSuccessful()) {
-                                if (task.getResult() != null) {
-                                    if (!task.getResult().isEmpty()) {
-                                        db
-                                                .usersDao()
-                                                .saveUsersList(task.getResult().toObjects(User.class));
-                                    } else {
-                                        Log.d(TAG, "downloadUsers list is empty");
-                                    }
-                                }
-                            } else {
-                                if (task.getException() != null) {
-                                    Log.d(TAG, "error downloadUsers" + task.getException().toString());
-                                }
-                            }
-                        });
-    }
-
-    public SingleLiveEvent<String> getAdminPasswordResponse() {
-        if (adminPassword != null) {
-            return adminPassword;
+class MtihaniRepository {
+    private var adminPassword: SingleLiveEvent<String>? = null
+    var uploadResponse: SingleLiveEvent<String>? = null
+        get() = if (field != null) {
+            field
         } else {
-            adminPassword = InjectorUtils.provideSingleLiveEvent();
-            return adminPassword;
+            field = InjectorUtils.provideSingleLiveEvent()
+            field
         }
-    }
-
-    public SingleLiveEvent<String> getSinglePDFDownloadResponse() {
-        if (singlePDFDownloadResponse != null) {
-            return singlePDFDownloadResponse;
+        private set
+    private var pdfPerCategoryResponse: SingleLiveEvent<List<SinglePDF>>? = null
+    private var pdfsDownloadResponse: SingleLiveEvent<String>? = null
+    private var singlePDFDownloadResponse: SingleLiveEvent<String>? = null
+    private var progressUpdate: SingleLiveEvent<Int>? = null
+    val adminPasswordResponse: SingleLiveEvent<String>?
+        get() = if (adminPassword != null) {
+            adminPassword
         } else {
-            singlePDFDownloadResponse = InjectorUtils.provideSingleLiveEvent();
-            return singlePDFDownloadResponse;
+            adminPassword = InjectorUtils.provideSingleLiveEvent()
+            adminPassword
         }
-    }
 
-    public SingleLiveEvent<Integer> getProgressUpdate() {
-        if (progressUpdate != null) {
-            return progressUpdate;
+    fun getSinglePDFDownloadResponse(): SingleLiveEvent<String>? {
+        return if (singlePDFDownloadResponse != null) {
+            singlePDFDownloadResponse
         } else {
-            progressUpdate = InjectorUtils.provideIntSingleLiveEvent();
-            return progressUpdate;
+            singlePDFDownloadResponse = InjectorUtils.provideSingleLiveEvent()
+            singlePDFDownloadResponse
         }
     }
 
-    public SingleLiveEvent<List<SinglePDF>> getPdfPerCategoryResponse() {
-        if (pdfPerCategoryResponse != null) {
-            return pdfPerCategoryResponse;
+    fun getProgressUpdate(): SingleLiveEvent<Int>? {
+        return if (progressUpdate != null) {
+            progressUpdate
         } else {
-            pdfPerCategoryResponse = InjectorUtils.provideListSingleLiveEvent();
-            return pdfPerCategoryResponse;
+            progressUpdate = InjectorUtils.provideIntSingleLiveEvent()
+            progressUpdate
         }
     }
 
-    public void getAdminPassword() {
-        adminPassword = InjectorUtils.provideSingleLiveEvent();
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference password = db.collection("admin_password");
+    fun getPdfPerCategoryResponse(): SingleLiveEvent<List<SinglePDF>>? {
+        return if (pdfPerCategoryResponse != null) {
+            pdfPerCategoryResponse
+        } else {
+            pdfPerCategoryResponse = InjectorUtils.provideListSingleLiveEvent()
+            pdfPerCategoryResponse
+        }
+    }
+
+    fun getAdminPassword() {
+        adminPassword = InjectorUtils.provideSingleLiveEvent()
+        val db = FirebaseFirestore.getInstance()
+        val password = db.collection("admin_password")
         password.document("password_id")
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    if (snapshot.exists()) {
-                        if (snapshot.get("password") != null) {
-                            adminPassword.setValue(snapshot.get("password").toString());
-                            adminPassword = null;
-                        } else {
-                            adminPassword.setValue("password is empty");
-                            adminPassword = null;
-
-                        }
-                    }
-                })
-                .addOnFailureListener(e -> adminPassword.setValue("Unable to authenticate, please try again"));
-    }
-
-    public SingleLiveEvent<String> getUploadResponse() {
-        if (uploadResponse != null) {
-            return uploadResponse;
-        } else {
-            uploadResponse = InjectorUtils.provideSingleLiveEvent();
-            return uploadResponse;
-        }
-    }
-
-    public SingleLiveEvent<String> getPdfsDownloadResponse() {
-        if (pdfsDownloadResponse != null) {
-            return pdfsDownloadResponse;
-        } else {
-            pdfsDownloadResponse = InjectorUtils.provideSingleLiveEvent();
-            return pdfsDownloadResponse;
-        }
-    }
-
-    private void savePDFDownloadUrlInDb(String pdfUrl, String category, String fileName) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Map<String, Object> map = InjectorUtils.provideStringHashMap();
-        map.put("pdfUrl", pdfUrl);
-        map.put("category", category);
-        map.put("fileName", fileName);
-        CollectionReference ref = db.collection("PDFs");
-        ref.document()
-                .set(map)
-                .addOnSuccessListener(aVoid -> Log.d(TAG, "token sent to server!"))
-                .addOnFailureListener(e -> Log.d(TAG, "failed to send token to server: %s" + e.toString()));
-    }
-
-    public void downloadPDFPerCategory(String category) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        CollectionReference ref = db.collection("PDFs");
-        ref.whereEqualTo("category", category)
-                .get()
-                .addOnSuccessListener(snapshot -> {
-                    if (!snapshot.isEmpty()) {
-                        pdfsDownloadResponse.setValue("loaded");
-                        pdfPerCategoryResponse.setValue(snapshot.toObjects(SinglePDF.class));
-
+            .get()
+            .addOnSuccessListener { snapshot: DocumentSnapshot ->
+                if (snapshot.exists()) {
+                    adminPassword = if (snapshot["password"] != null) {
+                        adminPassword?.value = snapshot["password"].toString()
+                        null
                     } else {
-                        pdfsDownloadResponse.setValue("empty");
+                        adminPassword?.value = "password is empty"
+                        null
                     }
-                })
-                .addOnFailureListener(e -> pdfsDownloadResponse.setValue(e.toString()));
+                }
+            }
+            .addOnFailureListener { e: Exception? -> adminPassword?.setValue("Unable to authenticate, please try again") }
     }
 
-    public void downloadPDF(String fileName) {
-        if (progressUpdate == null)
-            progressUpdate = InjectorUtils.provideIntSingleLiveEvent();
-
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference storageRef = storage.getReference("PDF_Files");
-        StorageReference islandRef = storageRef.child(fileName);
-
-        File rootPath = new File(
-                Objects.requireNonNull(MtihaniRevise
-                        .Companion
-                        .getApp())
-                        .getApplicationContext()
-                        .getExternalFilesDir(null)
-                        .getAbsolutePath(), "Mtihani");
-        if (!rootPath.exists()) {
-            rootPath.mkdirs();
+    fun getPdfsDownloadResponse(): SingleLiveEvent<String>? {
+        return if (pdfsDownloadResponse != null) {
+            pdfsDownloadResponse
+        } else {
+            pdfsDownloadResponse = InjectorUtils.provideSingleLiveEvent()
+            pdfsDownloadResponse
         }
-
-        final File localFile = new File(rootPath, fileName);
-
-        islandRef.getFile(localFile)
-                .addOnProgressListener(taskSnapshot -> {
-                    int count = (int) (100 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
-                    progressUpdate.setValue(count);
-                })
-                .addOnSuccessListener(taskSnapshot -> {
-                    //  updateDb(timestamp,localFile.toString(),position);
-                    singlePDFDownloadResponse.setValue("success");
-                }).addOnFailureListener(exception -> {
-            // Log.e("firebase ", ";local tem file not created  created " + exception.toString());
-            singlePDFDownloadResponse.setValue("An error occurred.");
-            Timber.d("Error downloading pdf: "+exception.getCause().toString());
-        });
-
     }
-
-    /**
-     * This method gets fired when the database has zero messages
-     * when it is the case then the first 200 messages will be downloaded from the server
-     *
-     * @param myId
-     * @param userId
-     */
-    public static void onZeroItemsLoaded(String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
-                .Companion
-                .getApp()).getApplicationContext());
-
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference messages = firestore.collection("messages");
-
-        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", myId)
-                .whereEqualTo("receiver", userId)
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", userId)
-                .whereEqualTo("receiver", myId)
-                .whereLessThan("date", System.currentTimeMillis())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
-        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
-                .toArray(new Task[2]));
-        combinedTask.addOnCompleteListener(MtihaniAppExecutors.getInstance().getDiskIO(),
-                tasks -> {
-                    if (tasks.getResult() != null) {
-                        for (Task task : tasks.getResult()) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
-                                assert snapshot != null;
-                                if (!snapshot.isEmpty()) {
-                                    List<Chat> chatList = new ArrayList<>();
-                                    for(DocumentSnapshot document:snapshot.getDocuments()){
-                                        Chat chat = document.toObject(Chat.class);
-                                        if(chat != null){
-                                            chat.setDocumentId(document.getId());
-                                            chatList.add(chat);
-                                        }
-                                    }
-                                    Log.d(TAG, "onZeroItemLoaded chats received are: %s" + chatList.size());
-                                    db.singleMessageDao()
-                                            .saveChatsList(chatList);
-                                } else {
-                                    Log.d(TAG, "onZeroItemLoaded snapshot is empty");
-                                }
-                            } else {
-                                if (task.getException() != null)
-                                    Log.d(TAG, task.getException().toString());
-                            }
-
-                        }
-                    }
-                });
-    }
-
-    /**
-     * This method will be fired after the first message has been loaded from the database
-     * This method will seek to download any newer messages from the servers
-     *
-     * @param itemAtFront
-     */
-    public static void onItemAtFrontLoaded(Chat itemAtFront, String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
-                .Companion
-                .getApp()).getApplicationContext());
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference messages = firestore.collection("messages");
-
-        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", myId)
-                .whereEqualTo("receiver", userId)
-                .whereLessThan("date", itemAtFront.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
-
-        queryArrayList.add(messages.
-                whereEqualTo("sender", userId)
-                .whereEqualTo("receiver", myId)
-                .whereLessThan("date", itemAtFront.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
-        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
-                .toArray(new Task[2]));
-        combinedTask.addOnCompleteListener(MtihaniAppExecutors.getInstance().getDiskIO(),
-                tasks -> {
-                    if (tasks.getResult() != null) {
-                        for (Task task : tasks.getResult()) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
-                                assert snapshot != null;
-                                if (!snapshot.isEmpty()) {
-                                    List<Chat> chatList = new ArrayList<>();
-                                    for(DocumentSnapshot document:snapshot.getDocuments()){
-                                        Chat chat = document.toObject(Chat.class);
-                                        if(chat != null){
-                                            chat.setDocumentId(document.getId());
-                                            chatList.add(chat);
-                                        }
-                                    }
-                                    Log.d(TAG, "onItemAtFrontLoaded chats received are: %s" + chatList.size());
-                                    db.singleMessageDao()
-                                            .saveChatsList(chatList);
-                                } else {
-                                    Log.d(TAG, "onItemAtFrontLoaded snapshot is empty");
-                                }
-                            } else {
-                                if (task.getException() != null)
-                                    Log.d(TAG, task.getException().toString());
-                            }
-
-                        }
-                    }
-                });
-
-    }
-
-    /**
-     * This method will be fired when the database loads the last remaining item
-     * This is a clear indication that the local database has run out of items
-     * hence we fetch more from firebase
-     *
-     * @param itemAtEnd
-     */
 
     @SuppressLint("TimberArgCount")
-    public static void onItemAtEndLoaded(Chat itemAtEnd, String myId, String userId) {
-        MtihaniDatabase db = MtihaniDatabase.getInstance(Objects.requireNonNull(MtihaniRevise
-                .Companion
-                .getApp()).getApplicationContext());
-        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-        CollectionReference messages = firestore.collection("messages");
+    private fun savePDFDownloadUrlInDb(pdfUrl: String, category: String, fileName: String) {
+        val db = FirebaseFirestore.getInstance()
+        val map = InjectorUtils.provideStringHashMap()
+        map["pdfUrl"] = pdfUrl
+        map["category"] = category
+        map["fileName"] = fileName
+        val ref = db.collection("PDFs")
+        ref.document()
+            .set(map)
+            .addOnSuccessListener { aVoid: Void? -> Timber.tag(TAG).d("token sent to server!") }
+            .addOnFailureListener { e: Exception ->
+                Timber.tag(TAG).d("failed to send token to server: %s%s", e.toString())
+            }
+    }
 
-        List<Task<QuerySnapshot>> queryArrayList = new ArrayList<>();
+    fun downloadPDFPerCategory(category: String?) {
+        val db = FirebaseFirestore.getInstance()
+        val ref = db.collection("PDFs")
+        ref.whereEqualTo("category", category)
+            .get()
+            .addOnSuccessListener { snapshot: QuerySnapshot ->
+                if (!snapshot.isEmpty) {
+                    pdfsDownloadResponse!!.value = "loaded"
+                    pdfPerCategoryResponse!!.setValue(snapshot.toObjects(SinglePDF::class.java))
+                } else {
+                    pdfsDownloadResponse!!.setValue("empty")
+                }
+            }
+            .addOnFailureListener { e: Exception -> pdfsDownloadResponse!!.setValue(e.toString()) }
+    }
 
-        queryArrayList.add(messages.
-                whereEqualTo("sender", myId)
-                .whereEqualTo("receiver", userId)
-                .whereGreaterThan("date", itemAtEnd.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
+    fun downloadPDF(fileName: String?) {
+        if (progressUpdate == null) progressUpdate = InjectorUtils.provideIntSingleLiveEvent()
+        val storage = FirebaseStorage.getInstance()
+        val storageRef = storage.getReference("PDF_Files")
+        val islandRef = storageRef.child(fileName!!)
+        val rootPath = File(
+            Objects.requireNonNull(app)
+                ?.applicationContext
+                ?.getExternalFilesDir(null)
+                ?.absolutePath , "Mtihani"
+        )
+        if (!rootPath.exists()) {
+            rootPath.mkdirs()
+        }
+        val localFile = File(rootPath, fileName)
+        islandRef.getFile(localFile)
+            .addOnProgressListener { taskSnapshot: FileDownloadTask.TaskSnapshot ->
+                val count =
+                    (100 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount).toInt()
+                progressUpdate!!.setValue(count)
+            }
+            .addOnSuccessListener {
+                //  updateDb(timestamp,localFile.toString(),position);
+                singlePDFDownloadResponse!!.setValue("success")
+            }.addOnFailureListener { exception: Exception ->
+                // Log.e("firebase ", ";local tem file not created  created " + exception.toString());
+                singlePDFDownloadResponse!!.value = "An error occurred."
+                Timber.d("Error downloading pdf: %s", exception.cause.toString())
+            }
+    }
 
-        queryArrayList.add(messages.
-                whereEqualTo("sender", userId)
-                .whereEqualTo("receiver", myId)
-                .whereLessThan("date", itemAtEnd.getDate())
-                .orderBy("date", Query.Direction.DESCENDING)
-                .limit(50)
-                .get());
-        Task<List<Task<?>>> combinedTask = Tasks.whenAllComplete(queryArrayList
-                .toArray(new Task[2]));
-        combinedTask.addOnCompleteListener(MtihaniAppExecutors.getInstance().getDiskIO(),
-                tasks -> {
-                    if (tasks.getResult() != null) {
-                        for (Task task : tasks.getResult()) {
-                            if (task.isSuccessful()) {
-                                QuerySnapshot snapshot = (QuerySnapshot) task.getResult();
-                                assert snapshot != null;
-                                if (!snapshot.isEmpty()) {
+    companion object {
+        private val LOCK = Any()
+        private var sInstance: MtihaniRepository? = null
+        private const val TAG = "MtihaniRepository"
 
-                                    List<Chat> chatList = new ArrayList<>();
-                                    for(DocumentSnapshot document:snapshot.getDocuments()){
-                                       Chat chat = document.toObject(Chat.class);
-                                       if(chat != null){
-                                           chat.setDocumentId(document.getId());
-                                           chatList.add(chat);
-                                       }
+        @JvmStatic
+        @get:Synchronized
+        val instance: MtihaniRepository?
+            get() {
+                if (sInstance == null) {
+                    synchronized(LOCK) { sInstance = MtihaniRepository() }
+                }
+                return sInstance
+            }
+
+        @JvmStatic
+        fun loadMessagesFromRoom(myId: String, userId: String): LiveData<PagedList<Chat>> {
+            downloadMessages(myId, userId)
+            val boundaryCallback =
+                MessagesBoundaryCallback(
+                    myId,
+                    userId
+                )
+            val pagedListConfig = PagedList.Config.Builder()
+                .setPageSize(30)
+                .setPrefetchDistance(5)
+                .build()
+            return LivePagedListBuilder(
+                MtihaniDatabase
+                    .getInstance(
+                        Objects.requireNonNull(app)
+                            ?.applicationContext
+                    )
+                    .singleMessageDao()
+                    .getChatMessages(myId, userId), pagedListConfig
+            )
+                .setBoundaryCallback(boundaryCallback)
+                .build()
+        }
+
+        @SuppressLint("TimberArgCount")
+        private fun downloadMessages(myId: String, userId: String) {
+            val db = MtihaniDatabase
+                .getInstance(
+                    Objects.requireNonNull(app)?.applicationContext
+                )
+            val firestore = FirebaseFirestore.getInstance()
+            val messages = firestore.collection("messages")
+            val queryArrayList: MutableList<Task<QuerySnapshot>> = ArrayList()
+            queryArrayList.add(
+                messages.whereEqualTo("sender", myId)
+                    .whereEqualTo("receiver", userId)
+                    .whereLessThan("date", System.currentTimeMillis())
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(100)
+                    .get()
+            )
+            queryArrayList.add(
+                messages.whereEqualTo("sender", userId)
+                    .whereEqualTo("receiver", myId)
+                    .whereLessThan("date", System.currentTimeMillis())
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(100)
+                    .get()
+            )
+            val combinedTask = Tasks.whenAllComplete(
+                *queryArrayList
+                    .toTypedArray<Task<*>>()
+            )
+            combinedTask.addOnCompleteListener(
+                MtihaniAppExecutors.getInstance().diskIO
+            ) { tasks: Task<List<Task<*>>?> ->
+                if (tasks.result != null) {
+                    for (task in tasks.result!!) {
+                        if (task.isSuccessful) {
+                            val snapshot = (task.result as QuerySnapshot)
+                            if (!snapshot.isEmpty) {
+                                val chatList: MutableList<Chat> = ArrayList()
+                                for (document in snapshot.documents) {
+                                    val chat = document.toObject(Chat::class.java)
+                                    if (chat != null) {
+                                        chat.documentId = document.id
+                                        chatList.add(chat)
                                     }
-                                    Timber.d("onItemAtEndLoaded chats received are: ", +chatList.size());
-                                    db.singleMessageDao()
-                                            .saveChatsList(chatList);
-                                } else {
-                                    Timber.d("onItemAtEndLoaded snapshot is empty");
                                 }
+                                Timber.tag(TAG).d("message chats received are: %s%s", chatList.size)
+                                db.singleMessageDao()
+                                    .saveChatsList(chatList)
                             } else {
-                                if (task.getException() != null)
-                                    Timber.d(task.getException().toString());
+                                Log.d(TAG, "messages snapshot is empty")
                             }
-
+                        } else {
+                            if (task.exception != null) Log.d(TAG, task.exception.toString())
                         }
                     }
-                });
+                }
+            }
+        }
+
+        @JvmStatic
+        fun loadUsersFromRoom(): LiveData<PagedList<User>> {
+            val boundaryCallback =
+                UsersBoundaryCallback()
+            val pagedListConfig = PagedList.Config.Builder()
+                .setPrefetchDistance(5)
+                .setEnablePlaceholders(true)
+                .setPageSize(50)
+                .build()
+            return LivePagedListBuilder(
+                MtihaniDatabase
+                    .getInstance(
+                        Objects.requireNonNull(app)
+                            ?.applicationContext
+                    )
+                    .usersDao()
+                    .getAllUsers(Constants.getUserId()), pagedListConfig
+            )
+                .setBoundaryCallback(boundaryCallback)
+                .build()
+        }
+
+        @JvmStatic
+        fun searchUsersFromRoom(filter: String?): LiveData<PagedList<User>> {
+            val boundaryCallback =
+                UsersBoundaryCallback()
+            val pagedListConfig = PagedList.Config.Builder()
+                .setPrefetchDistance(5)
+                .setEnablePlaceholders(true)
+                .setPageSize(50)
+                .build()
+            return LivePagedListBuilder(
+                MtihaniDatabase
+                    .getInstance(
+                        Objects.requireNonNull(app)?.applicationContext
+                    )
+                    .usersDao()
+                    .searchUsers(filter), pagedListConfig
+            )
+                .setBoundaryCallback(boundaryCallback)
+                .build()
+        }
+
+        @JvmStatic
+        fun saveMessage(chat: Chat?) {
+            MtihaniAppExecutors
+                .getInstance()
+                .diskIO
+                .execute {
+                    MtihaniDatabase
+                        .getInstance(
+                            Objects.requireNonNull(app)?.applicationContext
+                        )
+                        .singleMessageDao()
+                        .add(chat)
+                }
+        }
+
+        @JvmStatic
+        fun saveNewMessages(chats: List<Chat?>?) {
+            MtihaniAppExecutors
+                .getInstance()
+                .diskIO
+                .execute {
+                    MtihaniDatabase
+                        .getInstance(
+                            Objects.requireNonNull(app)?.applicationContext
+                        )
+                        .singleMessageDao()
+                        .saveChatsList(chats)
+                }
+        }
+
+        @JvmStatic
+        fun sendMessageToFirebase(chat: Chat?) {
+            FirebaseFirestore.getInstance()
+                .collection("messages")
+                .document()
+                .set(chat!!)
+        }
+
+        @JvmStatic
+        fun onZeroUsersLoaded() {
+            val db = MtihaniDatabase
+                .getInstance(
+                    Objects.requireNonNull(app)?.applicationContext
+                )
+            FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .whereLessThan("date", System.currentTimeMillis())
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(50)
+                .get()
+                .addOnCompleteListener(
+                    MtihaniAppExecutors
+                        .getInstance()
+                        .diskIO
+                ) { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        if (task.result != null) {
+                            if (!task.result!!.isEmpty) {
+                                db
+                                    .usersDao()
+                                    .saveUsersList(
+                                        task.result!!
+                                            .toObjects(User::class.java)
+                                    )
+                            } else {
+                                Timber.tag(TAG).d("onZeroUsersLoaded list is empty")
+                            }
+                        }
+                    } else {
+                        if (task.exception != null) {
+                            Timber.tag(TAG)
+                                .d("error onZeroUsersLoaded%s", task.exception.toString())
+                        }
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun onUserAtFrontLoaded(itemAtFront: User) {
+            val db = MtihaniDatabase
+                .getInstance(
+                    Objects.requireNonNull(app)
+                        ?.applicationContext
+                )
+            FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .whereGreaterThan("date", itemAtFront.date)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(50)
+                .get()
+                .addOnCompleteListener(
+                    MtihaniAppExecutors
+                        .getInstance()
+                        .diskIO
+                ) { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        if (task.result != null) {
+                            if (!task.result!!.isEmpty) {
+                                db
+                                    .usersDao()
+                                    .saveUsersList(
+                                        task.result!!
+                                            .toObjects(User::class.java)
+                                    )
+                            } else {
+                                Timber.tag(TAG).d("onUserAtFrontLoaded list is empty")
+                            }
+                        }
+                    } else {
+                        if (task.exception != null) {
+                            Timber.tag(TAG)
+                                .d("error onUserAtFrontLoaded%s", task.exception.toString())
+                        }
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun onUserAtEndLoaded(itemAtEnd: User) {
+            val db = MtihaniDatabase
+                .getInstance(
+                    Objects.requireNonNull(app)?.applicationContext
+                )
+            FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .whereLessThan("date", itemAtEnd.date)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(50)
+                .get()
+                .addOnCompleteListener(
+                    MtihaniAppExecutors
+                        .getInstance()
+                        .diskIO
+                ) { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        if (task.result != null) {
+                            if (!task.result!!.isEmpty) {
+                                db
+                                    .usersDao()
+                                    .saveUsersList(
+                                        task.result!!
+                                            .toObjects(User::class.java)
+                                    )
+                            } else {
+                                Timber.tag(TAG).d("onUserAtEndLoaded list is empty")
+                            }
+                        }
+                    } else {
+                        if (task.exception != null) {
+                            Timber.tag(TAG).d(
+                                "error onUserAtEndLoaded%s",
+                                task.exception.toString()
+                            )
+                        }
+                    }
+                }
+        }
+
+        @JvmStatic
+        fun loadChatList(): LiveData<PagedList<ChatItem>> {
+            val pagedListConfig = PagedList.Config.Builder()
+                .setPrefetchDistance(5)
+                .setEnablePlaceholders(true)
+                .setPageSize(50)
+                .build()
+            return LivePagedListBuilder(
+                MtihaniDatabase
+                    .getInstance(
+                        Objects.requireNonNull(app)?.applicationContext
+                    )
+                    .chatDao()
+                    .allChatUsers, pagedListConfig
+            )
+                .build()
+        }
+
+        @JvmStatic
+        fun saveChatListUser(user: ChatItem?) {
+            MtihaniAppExecutors
+                .getInstance()
+                .diskIO
+                .execute {
+                    MtihaniDatabase
+                        .getInstance(
+                            Objects.requireNonNull(app)?.applicationContext
+                        )
+                        .chatDao()
+                        .addUser(user)
+                }
+        }
+
+        @JvmStatic
+        fun updateMessage(chat: Chat) {
+            MtihaniAppExecutors
+                .getInstance()
+                .diskIO
+                .execute {
+                    MtihaniDatabase
+                        .getInstance(
+                            Objects.requireNonNull(app)?.applicationContext
+                        )
+                        .singleMessageDao()
+                        .update(chat)
+                }
+            if (Constants.getUserId() != chat.sender) {
+                val hashMap = HashMap<String, Any>()
+                hashMap["seen"] = true
+                hashMap["documentId"] = chat.documentId
+                FirebaseFirestore
+                    .getInstance()
+                    .collection("messages")
+                    .document(chat.documentId)
+                    .update(hashMap)
+            }
+        }
+
+        @JvmStatic
+        fun downloadUsers() {
+            val db = MtihaniDatabase.getInstance(Objects.requireNonNull(app)?.applicationContext)
+            FirebaseFirestore
+                .getInstance()
+                .collection("Users")
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(100)
+                .get()
+                .addOnCompleteListener(
+                    MtihaniAppExecutors
+                        .getInstance()
+                        .diskIO
+                ) { task: Task<QuerySnapshot?> ->
+                    if (task.isSuccessful) {
+                        if (task.result != null) {
+                            if (!task.result!!.isEmpty) {
+                                db
+                                    .usersDao()
+                                    .saveUsersList(
+                                        task.result!!.toObjects(
+                                            User::class.java
+                                        )
+                                    )
+                            } else {
+                                Timber.tag(TAG).d("downloadUsers list is empty")
+                            }
+                        }
+                    } else {
+                        if (task.exception != null) {
+                            Timber.tag(TAG).d("error downloadUsers%s", task.exception.toString())
+                        }
+                    }
+                }
+        }
+
+        /**
+         * This method gets fired when the database has zero messages
+         * when it is the case then the first 200 messages will be downloaded from the server
+         *
+         * @param myId
+         * @param userId
+         */
+        @JvmStatic
+        @SuppressLint("TimberArgCount")
+        fun onZeroItemsLoaded(myId: String?, userId: String?) {
+            val db = MtihaniDatabase.getInstance(
+                Objects.requireNonNull(app)?.applicationContext
+            )
+            val firestore = FirebaseFirestore.getInstance()
+            val messages = firestore.collection("messages")
+            val queryArrayList: MutableList<Task<QuerySnapshot>> = ArrayList()
+            queryArrayList.add(
+                messages.whereEqualTo("sender", myId)
+                    .whereEqualTo("receiver", userId)
+                    .whereLessThan("date", System.currentTimeMillis())
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            queryArrayList.add(
+                messages.whereEqualTo("sender", userId)
+                    .whereEqualTo("receiver", myId)
+                    .whereLessThan("date", System.currentTimeMillis())
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            val combinedTask = Tasks.whenAllComplete(
+                *queryArrayList
+                    .toTypedArray<Task<*>>()
+            )
+            combinedTask.addOnCompleteListener(
+                MtihaniAppExecutors.getInstance().diskIO
+            ) { tasks: Task<List<Task<*>>?> ->
+                if (tasks.result != null) {
+                    for (task in tasks.result!!) {
+                        if (task.isSuccessful) {
+                            val snapshot = (task.result as QuerySnapshot)
+                            if (!snapshot.isEmpty) {
+                                val chatList: MutableList<Chat> = ArrayList()
+                                for (document in snapshot.documents) {
+                                    val chat = document.toObject(Chat::class.java)
+                                    if (chat != null) {
+                                        chat.documentId = document.id
+                                        chatList.add(chat)
+                                    }
+                                }
+                                Timber.tag(TAG)
+                                    .d("onZeroItemLoaded chats received are: %s%s", chatList.size)
+                                db.singleMessageDao()
+                                    .saveChatsList(chatList)
+                            } else {
+                                Timber.tag(TAG).d("onZeroItemLoaded snapshot is empty")
+                            }
+                        } else {
+                            if (task.exception != null) Timber.tag(TAG).d(task.exception.toString())
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * This method will be fired after the first message has been loaded from the database
+         * This method will seek to download any newer messages from the servers
+         *
+         * @param itemAtFront
+         */
+        @JvmStatic
+        @SuppressLint("TimberArgCount")
+        fun onItemAtFrontLoaded(itemAtFront: Chat, myId: String?, userId: String?) {
+            val db = MtihaniDatabase.getInstance(
+                Objects.requireNonNull(app)?.applicationContext
+            )
+            val firestore = FirebaseFirestore.getInstance()
+            val messages = firestore.collection("messages")
+            val queryArrayList: MutableList<Task<QuerySnapshot>> = ArrayList()
+            queryArrayList.add(
+                messages.whereEqualTo("sender", myId)
+                    .whereEqualTo("receiver", userId)
+                    .whereLessThan("date", itemAtFront.date)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            queryArrayList.add(
+                messages.whereEqualTo("sender", userId)
+                    .whereEqualTo("receiver", myId)
+                    .whereLessThan("date", itemAtFront.date)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            val combinedTask = Tasks.whenAllComplete(
+                *queryArrayList
+                    .toTypedArray<Task<*>>()
+            )
+            combinedTask.addOnCompleteListener(
+                MtihaniAppExecutors.getInstance().diskIO
+            ) { tasks: Task<List<Task<*>>?> ->
+                if (tasks.result != null) {
+                    for (task in tasks.result!!) {
+                        if (task.isSuccessful) {
+                            val snapshot = (task.result as QuerySnapshot)
+                            if (!snapshot.isEmpty) {
+                                val chatList: MutableList<Chat> = ArrayList()
+                                for (document in snapshot.documents) {
+                                    val chat = document.toObject(Chat::class.java)
+                                    if (chat != null) {
+                                        chat.documentId = document.id
+                                        chatList.add(chat)
+                                    }
+                                }
+                                Timber.tag(TAG).d(
+                                    "onItemAtFrontLoaded chats received are: " +
+                                            "%s" + chatList.size
+                                )
+                                db.singleMessageDao()
+                                    .saveChatsList(chatList)
+                            } else {
+                                Timber.tag(TAG).d("onItemAtFrontLoaded snapshot is empty")
+                            }
+                        } else {
+                            if (task.exception != null) Timber.tag(TAG).d(task.exception.toString())
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * This method will be fired when the database loads the last remaining item
+         * This is a clear indication that the local database has run out of items
+         * hence we fetch more from firebase
+         *
+         * @param itemAtEnd
+         */
+        @JvmStatic
+        @SuppressLint("TimberArgCount")
+        fun onItemAtEndLoaded(itemAtEnd: Chat, myId: String?, userId: String?) {
+            val db = MtihaniDatabase.getInstance(
+                Objects.requireNonNull(app)?.applicationContext
+            )
+            val firestore = FirebaseFirestore.getInstance()
+            val messages = firestore.collection("messages")
+            val queryArrayList: MutableList<Task<QuerySnapshot>> = ArrayList()
+            queryArrayList.add(
+                messages.whereEqualTo("sender", myId)
+                    .whereEqualTo("receiver", userId)
+                    .whereGreaterThan("date", itemAtEnd.date)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            queryArrayList.add(
+                messages.whereEqualTo("sender", userId)
+                    .whereEqualTo("receiver", myId)
+                    .whereLessThan("date", itemAtEnd.date)
+                    .orderBy("date", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+            )
+            val combinedTask = Tasks.whenAllComplete(
+                *queryArrayList
+                    .toTypedArray<Task<*>>()
+            )
+            combinedTask.addOnCompleteListener(
+                MtihaniAppExecutors.getInstance().diskIO
+            ) { tasks: Task<List<Task<*>>?> ->
+                if (tasks.result != null) {
+                    for (task in tasks.result!!) {
+                        if (task.isSuccessful) {
+                            val snapshot = (task.result as QuerySnapshot)
+                            if (!snapshot.isEmpty) {
+                                val chatList: MutableList<Chat> = ArrayList()
+                                for (document in snapshot.documents) {
+                                    val chat = document.toObject(Chat::class.java)
+                                    if (chat != null) {
+                                        chat.documentId = document.id
+                                        chatList.add(chat)
+                                    }
+                                }
+                                Timber.d("onItemAtEndLoaded chats received are: ", +chatList.size)
+                                db.singleMessageDao()
+                                    .saveChatsList(chatList)
+                            } else {
+                                Timber.d("onItemAtEndLoaded snapshot is empty")
+                            }
+                        } else {
+                            if (task.exception != null) Timber.d(task.exception.toString())
+                        }
+                    }
+                }
+            }
+        }
     }
 }

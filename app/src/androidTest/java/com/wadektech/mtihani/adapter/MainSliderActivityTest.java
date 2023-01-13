@@ -5,7 +5,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
-import com.wadektech.mtihani.ui.MainSliderActivity;
+import com.wadektech.mtihani.splash.MainSliderActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

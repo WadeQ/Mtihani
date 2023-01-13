@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:padding="@dimen/_10sdp"
     android:layout_height="match_parent"
-    tools:context=".pdfViewer.ItemDetailActivity">
+    tools:context=".pdf.pdfViewer.ItemDetailActivity">
 
     <com.github.barteksc.pdfviewer.PDFView
         android:id="@+id/pdf_viewer"

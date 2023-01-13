@@ -9,7 +9,7 @@
     android:animateLayoutChanges="true"
     android:background="@drawable/loginbg"
     android:orientation="vertical"
-    tools:context=".auth.SignUpActivity"
+    tools:context=".auth.presentation.SignUpActivity"
     tools:ignore="contentDescription">
 
     <androidx.appcompat.widget.AppCompatEditText
