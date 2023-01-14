@@ -1,38 +1,27 @@
-package com.wadektech.mtihani.chat.presentation.viewmodels;
+package com.wadektech.mtihani.chat.presentation.viewmodels
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-import androidx.paging.PagedList;
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.paging.PagedList
+import com.wadektech.mtihani.chat.data.localDatasource.room.ChatItem
+import com.wadektech.mtihani.chat.data.localDatasource.room.User
+import com.wadektech.mtihani.chat.data.repository.ChatsRepositoryImpl
+import com.wadektech.mtihani.core.repository.MtihaniRepository
 
-import com.wadektech.mtihani.core.repository.MtihaniRepository;
-import com.wadektech.mtihani.chat.data.localDatasource.room.ChatItem;
-import com.wadektech.mtihani.chat.data.localDatasource.room.User;
 
-public class UsersViewModel extends ViewModel {
-    private final LiveData<PagedList<User>> usersList;
-    private final LiveData<PagedList<ChatItem>> chatList;
-   String singleUserEmail;
+class UsersViewModel : ViewModel() {
+    private val chatsRepositoryImpl = ChatsRepositoryImpl()
+    val usersList: LiveData<PagedList<User>> = chatsRepositoryImpl.loadUsersFromRoom()
+    val chatList: LiveData<PagedList<ChatItem>> = chatsRepositoryImpl.loadChatList()
 
-    public UsersViewModel() {
-       usersList= MtihaniRepository.loadUsersFromRoom();
-       chatList= MtihaniRepository.loadChatList();
+    fun getUsersByName(filter: String?): LiveData<PagedList<User>> {
+        return chatsRepositoryImpl.searchUsersFromRoom(filter)
     }
 
-    public static void saveChatListUser(ChatItem user) {
-        MtihaniRepository.saveChatListUser(user);
-    }
-
-    public LiveData<PagedList<User>> getUsersList() {
-        return usersList;
-    }
-    public LiveData<PagedList<User>> getUsersByName(String filter) {
-        return MtihaniRepository.searchUsersFromRoom(filter);
-    }
-
-    public LiveData<PagedList<ChatItem>> getChatList() {
-        return chatList;
-    }
-    public String getCurrentUserEmail(){
-        return singleUserEmail;
+    companion object {
+        private val chatsRepositoryImpl = ChatsRepositoryImpl()
+        fun saveChatListUser(user: ChatItem?) {
+            chatsRepositoryImpl.saveChatListUser(user)
+        }
     }
 }

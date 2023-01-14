@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.wadektech.mtihani.R;
-import com.wadektech.mtihani.core.repository.MtihaniRepository;
+import com.wadektech.mtihani.chat.data.repository.ChatsRepositoryImpl;
 import com.wadektech.mtihani.chat.data.localDatasource.room.Chat;
 import com.wadektech.mtihani.core.Constants;
 
@@ -29,6 +29,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
     public static final int MSG_TYPE_RIGHT = 1;
     private Context context;
     private String imageurl;
+    private ChatsRepositoryImpl chatsRepository;
 
     public MessageAdapter(Context context, String imageurl) {
         super(Chat.DIFF_CALLBACK);
@@ -76,7 +77,7 @@ public class MessageAdapter extends PagedListAdapter<Chat, MessageAdapter.ViewHo
             String formattedDate = date.format(new Date(chat.getDate()));
             holder.mSeen.setText(""+formattedDate+", "+formattedTime);
             chat.setSeen(true);
-            MtihaniRepository.updateMessage(chat);
+            chatsRepository.updateMessage(chat);
 
         }
     }

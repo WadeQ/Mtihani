@@ -1,4 +1,4 @@
-package com.wadektech.mtihani.pdf.pdfViewer;
+package com.wadektech.mtihani.pdf.presentation.ui;
 
 import android.net.Uri;
 import android.os.Bundle;

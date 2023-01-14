@@ -1,4 +1,4 @@
-package com.wadektech.mtihani.chat.domain
+package com.wadektech.mtihani.chat.domain.repository
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList

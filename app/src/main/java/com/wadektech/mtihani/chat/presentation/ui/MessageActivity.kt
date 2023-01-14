@@ -42,7 +42,6 @@ import com.wadektech.mtihani.chat.presentation.viewmodels.ChatViewModel
 import com.wadektech.mtihani.notification.data.APIService
 import com.wadektech.mtihani.notification.*
 import com.wadektech.mtihani.pdf.domain.pojo.Status
-import com.wadektech.mtihani.room.*
 import com.wadektech.mtihani.core.Constants
 import com.wadektech.mtihani.core.InjectorUtils
 import com.wadektech.mtihani.core.StorageUtil
@@ -210,9 +209,10 @@ class MessageActivity : AppCompatActivity() {
             }
         })
 
-        mViewModel!!.messagesList.observe(this, Observer { pagedList:
-                                                           PagedList<Chat?> -> mAdapter!!.
-                                                            submitList(pagedList) })
+        mViewModel!!.messagesList.observe(this) { pagedList:
+                                                  PagedList<Chat> ->
+            mAdapter!!.submitList(pagedList)
+        }
         userName?.text = userNameString
 
         if (imageURL == "default") {

@@ -10,6 +10,7 @@ import android.util.Log;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.wadektech.mtihani.app.MtihaniRevise;
+import com.wadektech.mtihani.chat.data.repository.ChatsRepositoryImpl;
 import com.wadektech.mtihani.core.repository.MtihaniRepository;
 import com.wadektech.mtihani.chat.data.localDatasource.room.Chat;
 import com.wadektech.mtihani.chat.data.localDatasource.room.User;
@@ -26,6 +27,7 @@ public class ChatActivityViewModel extends ViewModel {
     private MutableLiveData<List<Chat>> unreadList;
     private MutableLiveData<String> emptyUnreadList;
     private MutableLiveData<String> returningUser;
+    private ChatsRepositoryImpl chatsRepository;
 
     public ChatActivityViewModel() {
         currentUser = new MutableLiveData<> ();
@@ -82,7 +84,7 @@ public class ChatActivityViewModel extends ViewModel {
                                         chatList.add(chat);
                                     }
                                 }
-                                MtihaniRepository.saveNewMessages(chatList);
+                                chatsRepository.saveNewMessages(chatList);
                             }else{
                                 Timber.d("unread list is empty");
 
@@ -158,6 +160,6 @@ public class ChatActivityViewModel extends ViewModel {
     }
 
     public void downloadUsers() {
-        MtihaniRepository.downloadUsers();
+        chatsRepository.downloadUsers();
     }
 }
